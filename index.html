@@ -2,27 +2,356 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>我的第一个GitHub网页</title>
-    <style>
-        /* 简单的样式美化 */
-        body {
-            font-family: "微软雅黑", Arial, sans-serif;
-            text-align: center;
-            margin-top: 100px;
-            background-color: #f5f5f5;
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FPGA开发者 - 资源分享站</title>
+    <!-- 引入Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入Font Awesome图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 自定义配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF', // 主色调（科技蓝）
+                        secondary: '#36CFC9', // 辅助色
+                        dark: '#1D2939', // 深色背景
+                        light: '#F9FAFB' // 浅色背景
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
         }
-        h1 {
-            color: #2d3748;
-        }
-        p {
-            color: #4a5568;
-            font-size: 18px;
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+            }
+            .btn-primary {
+                @apply bg-primary text-white py-2 px-4 rounded-lg hover:bg-primary/90 transition-all;
+            }
         }
     </style>
 </head>
-<body>
-    <h1>🎉 你好！这是我用GitHub Pages搭建的网页</h1>
-    <p>访问地址：https://<你的用户名>.github.io</p>
-    <p>比如：https://testuser.github.io</p>
+<body class="bg-light text-dark">
+    <!-- 导航栏 -->
+    <nav class="sticky top-0 bg-white shadow-sm z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#" class="text-xl font-bold text-primary flex items-center gap-2">
+                <i class="fa-solid fa-microchip"></i>
+                <span>FPGA开发者</span>
+            </a>
+            <div class="hidden md:flex gap-6">
+                <a href="#home" class="hover:text-primary transition-colors">首页</a>
+                <a href="#resources" class="hover:text-primary transition-colors">资源下载</a>
+                <a href="#tech-stack" class="hover:text-primary transition-colors">技术栈</a>
+                <a href="#about" class="hover:text-primary transition-colors">关于我</a>
+            </div>
+            <!-- 移动端菜单按钮 -->
+            <button class="md:hidden text-dark text-xl" id="menuBtn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+        <!-- 移动端菜单 -->
+        <div class="md:hidden hidden bg-white shadow-md absolute w-full" id="mobileMenu">
+            <div class="container mx-auto px-4 py-2 flex flex-col gap-3">
+                <a href="#home" class="py-2 hover:text-primary transition-colors">首页</a>
+                <a href="#resources" class="py-2 hover:text-primary transition-colors">资源下载</a>
+                <a href="#tech-stack" class="py-2 hover:text-primary transition-colors">技术栈</a>
+                <a href="#about" class="py-2 hover:text-primary transition-colors">关于我</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 首页Hero区域 -->
+    <section id="home" class="bg-gradient-to-r from-primary/5 to-secondary/5 py-16 md:py-24">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-3xl md:text-5xl font-bold mb-6 text-dark">
+                FPGA开源资源与项目分享
+            </h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+                专注于FPGA开发、数字电路设计、嵌入式系统，分享实用的开源项目、教程和工具，助力开发者快速上手FPGA开发
+            </p>
+            <a href="#resources" class="btn-primary inline-block">
+                <i class="fa-solid fa-download mr-2"></i>获取资源
+            </a>
+        </div>
+    </section>
+
+    <!-- 资源下载区 -->
+    <section id="resources" class="py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-2xl md:text-3xl font-bold text-center mb-12">
+                <i class="fa-solid fa-folder-open text-primary mr-2"></i>
+                FPGA资源下载
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 资源卡片1 -->
+                <div class="bg-white rounded-lg shadow-sm p-6 card-hover">
+                    <h3 class="text-xl font-semibold mb-3 text-primary">FPGA入门教程（Verilog）</h3>
+                    <p class="text-gray-600 mb-4">
+                        包含Verilog基础语法、组合逻辑/时序逻辑设计、仿真教程，适合零基础入门
+                    </p>
+                    <div class="mb-3 flex items-center gap-2 text-gray-500">
+                        <i class="fa-solid fa-key"></i>
+                        <span>提取码：8888</span>
+                    </div>
+                    <a href="https://pan.baidu.com/s/1xxxxxxxxxxxxxx" target="_blank" class="btn-primary w-full text-center block">
+                        <i class="fa-solid fa-cloud-download mr-2"></i>百度网盘下载
+                    </a>
+                </div>
+
+                <!-- 资源卡片2 -->
+                <div class="bg-white rounded-lg shadow-sm p-6 card-hover">
+                    <h3 class="text-xl font-semibold mb-3 text-primary">Zynq7020开发板例程</h3>
+                    <p class="text-gray-600 mb-4">
+                        包含LED闪烁、UART通信、SPI、I2C、DMA等基础例程，适配XC7Z020芯片
+                    </p>
+                    <div class="mb-3 flex items-center gap-2 text-gray-500">
+                        <i class="fa-solid fa-key"></i>
+                        <span>提取码：9999</span>
+                    </div>
+                    <a href="https://pan.baidu.com/s/2yyyyyyyyyyyyyy" target="_blank" class="btn-primary w-full text-center block">
+                        <i class="fa-solid fa-cloud-download mr-2"></i>百度网盘下载
+                    </a>
+                </div>
+
+                <!-- 资源卡片3 -->
+                <div class="bg-white rounded-lg shadow-sm p-6 card-hover">
+                    <h3 class="text-xl font-semibold mb-3 text-primary">Vivado工程模板</h3>
+                    <p class="text-gray-600 mb-4">
+                        包含不同FPGA芯片的Vivado工程模板，集成仿真、综合、实现流程配置
+                    </p>
+                    <div class="mb-3 flex items-center gap-2 text-gray-500">
+                        <i class="fa-solid fa-key"></i>
+                        <span>提取码：7777</span>
+                    </div>
+                    <a href="https://pan.baidu.com/s/3zzzzzzzzzzzzzz" target="_blank" class="btn-primary w-full text-center block">
+                        <i class="fa-solid fa-cloud-download mr-2"></i>百度网盘下载
+                    </a>
+                </div>
+
+                <!-- 资源卡片4 -->
+                <div class="bg-white rounded-lg shadow-sm p-6 card-hover">
+                    <h3 class="text-xl font-semibold mb-3 text-primary">FPGA图像处理项目</h3>
+                    <p class="text-gray-600 mb-4">
+                        基于FPGA的实时图像滤波、边缘检测、灰度化处理项目，包含完整代码和注释
+                    </p>
+                    <div class="mb-3 flex items-center gap-2 text-gray-500">
+                        <i class="fa-solid fa-key"></i>
+                        <span>提取码：6666</span>
+                    </div>
+                    <a href="https://pan.baidu.com/s/4aaaaaaaaaaaaaa" target="_blank" class="btn-primary w-full text-center block">
+                        <i class="fa-solid fa-cloud-download mr-2"></i>百度网盘下载
+                    </a>
+                </div>
+
+                <!-- 资源卡片5 -->
+                <div class="bg-white rounded-lg shadow-sm p-6 card-hover">
+                    <h3 class="text-xl font-semibold mb-3 text-primary">FPGA面试题合集</h3>
+                    <p class="text-gray-600 mb-4">
+                        整理各大公司FPGA工程师面试题，包含数字电路、Verilog、时序分析等考点
+                    </p>
+                    <div class="mb-3 flex items-center gap-2 text-gray-500">
+                        <i class="fa-solid fa-key"></i>
+                        <span>提取码：5555</span>
+                    </div>
+                    <a href="https://pan.baidu.com/s/5bbbbbbbbbbbbbb" target="_blank" class="btn-primary w-full text-center block">
+                        <i class="fa-solid fa-cloud-download mr-2"></i>百度网盘下载
+                    </a>
+                </div>
+
+                <!-- 资源卡片6 -->
+                <div class="bg-white rounded-lg shadow-sm p-6 card-hover">
+                    <h3 class="text-xl font-semibold mb-3 text-primary">FPGA工具安装包</h3>
+                    <p class="text-gray-600 mb-4">
+                        Vivado 2022.1、Modelsim SE-64 2020、ISE 14.7等工具安装包及破解教程
+                    </p>
+                    <div class="mb-3 flex items-center gap-2 text-gray-500">
+                        <i class="fa-solid fa-key"></i>
+                        <span>提取码：4444</span>
+                    </div>
+                    <a href="https://pan.baidu.com/s/6cccccccccccccc" target="_blank" class="btn-primary w-full text-center block">
+                        <i class="fa-solid fa-cloud-download mr-2"></i>百度网盘下载
+                    </a>
+                </div>
+            </div>
+
+            <!-- 资源说明 -->
+            <div class="mt-10 bg-primary/5 rounded-lg p-6 text-gray-700">
+                <h4 class="font-semibold text-lg mb-2">下载说明</h4>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>所有资源均为个人整理，仅供学习交流使用，禁止商用</li>
+                    <li>若网盘链接失效，请联系我更新（见「关于我」板块）</li>
+                    <li>部分大文件可能需要分卷下载，解压前请确认所有分卷完整</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技术栈展示 -->
+    <section id="tech-stack" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-2xl md:text-3xl font-bold text-center mb-12">
+                <i class="fa-solid fa-code text-primary mr-2"></i>
+                技术栈
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <!-- 技术项1 -->
+                <div class="bg-white rounded-lg p-6 shadow-sm card-hover">
+                    <i class="fa-solid fa-code text-4xl text-primary mb-4"></i>
+                    <h3 class="text-lg font-semibold">Verilog</h3>
+                    <p class="text-gray-600 text-sm mt-2">硬件描述语言</p>
+                </div>
+                <!-- 技术项2 -->
+                <div class="bg-white rounded-lg p-6 shadow-sm card-hover">
+                    <i class="fa-solid fa-code text-4xl text-primary mb-4"></i>
+                    <h3 class="text-lg font-semibold">VHDL</h3>
+                    <p class="text-gray-600 text-sm mt-2">硬件描述语言</p>
+                </div>
+                <!-- 技术项3 -->
+                <div class="bg-white rounded-lg p-6 shadow-sm card-hover">
+                    <i class="fa-solid fa-cogs text-4xl text-primary mb-4"></i>
+                    <h3 class="text-lg font-semibold">Vivado</h3>
+                    <p class="text-gray-600 text-sm mt-2">FPGA开发工具</p>
+                </div>
+                <!-- 技术项4 -->
+                <div class="bg-white rounded-lg p-6 shadow-sm card-hover">
+                    <i class="fa-solid fa-microchip text-4xl text-primary mb-4"></i>
+                    <h3 class="text-lg font-semibold">Zynq</h3>
+                    <p class="text-gray-600 text-sm mt-2">异构计算平台</p>
+                </div>
+                <!-- 技术项5 -->
+                <div class="bg-white rounded-lg p-6 shadow-sm card-hover">
+                    <i class="fa-solid fa-terminal text-4xl text-primary mb-4"></i>
+                    <h3 class="text-lg font-semibold">Linux</h3>
+                    <p class="text-gray-600 text-sm mt-2">嵌入式系统</p>
+                </div>
+                <!-- 技术项6 -->
+                <div class="bg-white rounded-lg p-6 shadow-sm card-hover">
+                    <i class="fa-solid fa-network-wired text-4xl text-primary mb-4"></i>
+                    <h3 class="text-lg font-semibold">AXI</h3>
+                    <p class="text-gray-600 text-sm mt-2">总线协议</p>
+                </div>
+                <!-- 技术项7 -->
+                <div class="bg-white rounded-lg p-6 shadow-sm card-hover">
+                    <i class="fa-solid fa-chart-line text-4xl text-primary mb-4"></i>
+                    <h3 class="text-lg font-semibold">MATLAB</h3>
+                    <p class="text-gray-600 text-sm mt-2">算法仿真</p>
+                </div>
+                <!-- 技术项8 -->
+                <div class="bg-white rounded-lg p-6 shadow-sm card-hover">
+                    <i class="fa-solid fa-test-tube text-4xl text-primary mb-4"></i>
+                    <h3 class="text-lg font-semibold">Modelsim</h3>
+                    <p class="text-gray-600 text-sm mt-2">仿真工具</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于我 -->
+    <section id="about" class="py-16">
+        <div class="container mx-auto px-4 max-w-3xl">
+            <h2 class="text-2xl md:text-3xl font-bold text-center mb-12">
+                <i class="fa-solid fa-user text-primary mr-2"></i>
+                关于我
+            </h2>
+            <div class="bg-white rounded-lg shadow-sm p-8">
+                <div class="flex flex-col md:flex-row items-center gap-6 mb-6">
+                    <div class="w-32 h-32 rounded-full bg-primary/10 flex items-center justify-center">
+                        <i class="fa-solid fa-user-circle text-6xl text-primary"></i>
+                    </div>
+                    <div class="text-center md:text-left">
+                        <h3 class="text-xl font-semibold">FPGA开发者 - 小李</h3>
+                        <p class="text-gray-600 mt-2">5年FPGA开发经验，专注于工业控制、数字信号处理方向</p>
+                    </div>
+                </div>
+                <div class="text-gray-700 space-y-4">
+                    <p>
+                        本人长期从事FPGA相关开发工作，熟悉Xilinx/Altera全系列FPGA芯片，擅长数字电路设计、高速接口开发、嵌入式系统集成。
+                    </p>
+                    <p>
+                        搭建这个网站的初衷是分享自己整理的学习资源和项目经验，希望能帮助更多FPGA初学者少走弯路。
+                    </p>
+                    <div class="pt-4 border-t border-gray-200">
+                        <h4 class="font-semibold mb-2">联系方式（资源链接失效可联系）：</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-center gap-3">
+                                <i class="fa-solid fa-envelope text-primary"></i>
+                                <span>fpga_dev@example.com</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="fa-solid fa-wechat text-primary"></i>
+                                <span>fpga_dev_2025</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="fa-solid fa-github text-primary"></i>
+                                <a href="https://github.com/fpga-dev" target="_blank" class="hover:text-primary">github.com/fpga-dev</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-2">© 2025 FPGA开发者 - 资源分享站</p>
+            <p class="text-gray-400 text-sm">
+                本站所有资源仅用于学习交流，请勿用于商业用途 | 如有侵权请联系删除
+            </p>
+        </div>
+    </footer>
+
+    <!-- 移动端菜单交互JS -->
+    <script>
+        // 移动端菜单切换
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            // 切换图标
+            const icon = menuBtn.querySelector('i');
+            if (icon.classList.contains('fa-bars')) {
+                icon.classList.replace('fa-bars', 'fa-xmark');
+            } else {
+                icon.classList.replace('fa-xmark', 'fa-bars');
+            }
+        });
+
+        // 点击菜单链接后关闭移动端菜单
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuBtn.querySelector('i').classList.replace('fa-xmark', 'fa-bars');
+            });
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80, // 偏移量适配导航栏
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
