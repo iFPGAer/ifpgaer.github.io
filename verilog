@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verilog教程 - FPGA开发者</title>
+    <!-- 复用主页面样式资源 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 保持和主页面一致的自定义配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36CFC9',
+                        dark: '#1D2939',
+                        light: '#F9FAFB'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+            }
+            .btn-primary {
+                @apply bg-primary text-white py-2 px-4 rounded-lg hover:bg-primary/90 transition-all;
+            }
+        }
+        /* 代码块样式优化 */
+        pre {
+            background-color: #f3f4f6;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+        code {
+            color: #1D2939;
+        }
+    </style>
+</head>
+<body class="bg-light text-dark">
+    <!-- 导航栏（链接回主页面的锚点） -->
+    <nav class="sticky top-0 bg-white shadow-sm z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-xl font-bold text-primary flex items-center gap-2">
+                <i class="fa-solid fa-microchip"></i>
+                <span>FPGA开发者</span>
+            </a>
+            <div class="hidden md:flex gap-6">
+                <a href="index.html#home" class="hover:text-primary transition-colors">首页</a>
+                <a href="index.html#resources" class="hover:text-primary transition-colors">资源下载</a>
+                <a href="index.html#tech-stack" class="hover:text-primary transition-colors">技术栈</a>
+                <a href="index.html#about" class="hover:text-primary transition-colors">关于我</a>
+            </div>
+            <!-- 移动端菜单按钮 -->
+            <button class="md:hidden text-dark text-xl" id="menuBtn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+        <!-- 移动端菜单 -->
+        <div class="md:hidden hidden bg-white shadow-md absolute w-full" id="mobileMenu">
+            <div class="container mx-auto px-4 py-2 flex flex-col gap-3">
+                <a href="index.html#home" class="py-2 hover:text-primary transition-colors">首页</a>
+                <a href="index.html#resources" class="py-2 hover:text-primary transition-colors">资源下载</a>
+                <a href="index.html#tech-stack" class="py-2 hover:text-primary transition-colors">技术栈</a>
+                <a href="index.html#about" class="py-2 hover:text-primary transition-colors">关于我</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Verilog专属内容区域 -->
+    <section class="py-16">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center text-primary">Verilog 完全学习指南</h2>
+            
+            <!-- Verilog简介 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+                <h3 class="text-xl font-semibold mb-4 flex items-center">
+                    <i class="fa-solid fa-book-open text-primary mr-2"></i>
+                    什么是Verilog？
+                </h3>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    Verilog是一种硬件描述语言（HDL），用于对数字电路进行建模、仿真和综合。它支持从算法级、寄存器传输级（RTL）、门级到开关级的多层次描述，是FPGA/ASIC开发中最主流的硬件描述语言之一。
+                </p>
+                <p class="text-gray-700 leading-relaxed">
+                    Verilog的核心优势在于语法简洁、贴近硬件本质，且被主流FPGA开发工具（Vivado、Quartus）全面支持，是FPGA开发者的必备技能。
+                </p>
+            </div>
+
+            <!-- 核心语法 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+                <h3 class="text-xl font-semibold mb-4 flex items-center">
+                    <i class="fa-solid fa-code text-primary mr-2"></i>
+                    核心语法速览
+                </h3>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-medium text-gray-800 mb-2">1. 模块定义（Module）</h4>
+                        <pre><code>module 模块名(
+    // 端口定义
+    input  clk,          // 时钟输入
+    input  rst_n,        // 复位输入（低有效）
+    output reg led       // LED输出（寄存器型）
+);
+
+// 内部逻辑写在这里
+
+endmodule</code></pre>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-gray-800 mb-2">2. 时序逻辑（always块）</h4>
+                        <pre><code>// 时钟触发的时序逻辑
+always @(posedge clk or negedge rst_n) begin
+    if(!rst_n) begin
+        // 复位逻辑
+        led <= 1'b0;
+    end else begin
+        // 正常逻辑
+        led <= ~led;
+    end
+end</code></pre>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-gray-800 mb-2">3. 组合逻辑</h4>
+                        <pre><code>// 组合逻辑（无时钟触发）
+always @(*) begin
+    if(en) begin
+        out = in1 + in2;
+    end else begin
+        out = 8'd0;
+    end
+end</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 实战示例 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+                <h3 class="text-xl font-semibold mb-4 flex items-center">
+                    <i class="fa-solid fa-cogs text-primary mr-2"></i>
+                    实战示例：LED闪烁
+                </h3>
+                <p class="text-gray-700 mb-4">基于50MHz时钟的LED闪烁例程（周期1秒）：</p>
+                <pre><code>module led_blink(
+    input         clk,      // 50MHz系统时钟
+    input         rst_n,    // 低电平复位
+    output reg    led       // LED输出引脚
+);
+
+// 计数器：50MHz时钟，计数到49_999_999为1秒
+reg [24:0] cnt;
+
+// 计数器逻辑
+always @(posedge clk or negedge rst_n) begin
+    if(!rst_n) begin
+        cnt <= 25'd0;
+    end else if(cnt == 25'd49_999_999) begin
+        cnt <= 25'd0;
+    end else begin
+        cnt <= cnt + 1'b1;
+    end
+end
+
+// LED翻转逻辑
+always @(posedge clk or negedge rst_n) begin
+    if(!rst_n) begin
+        led <= 1'b0;
+    end else if(cnt == 25'd49_999_999) begin
+        led <= ~led;
+    end
+end
+
+endmodule</code></pre>
+            </div>
+
+            <!-- 相关资源 -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h3 class="text-xl font-semibold mb-4 flex items-center">
+                    <i class="fa-solid fa-download text-primary mr-2"></i>
+                    Verilog相关资源
+                </h3>
+                <ul class="space-y-3">
+                    <li class="flex items-center gap-2">
+                        <i class="fa-solid fa-file-pdf text-primary"></i>
+                        <a href="index.html#resources" class="hover:text-primary transition-colors">Verilog入门教程PDF（含实战案例）</a>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fa-solid fa-file-code text-primary"></i>
+                        <a href="https://pan.baidu.com/s/1xxxxxxxxxxxxxx" target="_blank" class="hover:text-primary transition-colors">Verilog实战代码合集（提取码：8888）</a>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fa-solid fa-video text-primary"></i>
+                        <a href="https://pan.baidu.com/s/7vvvvvvvvvvvvvv" target="_blank" class="hover:text-primary transition-colors">Verilog视频教程（提取码：1234）</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚（和主页面保持一致） -->
+    <footer class="bg-dark text-white py-8 mt-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-2">© 2025 FPGA开发者 - 资源分享站</p>
+            <p class="text-gray-400 text-sm">
+                本站所有资源仅用于学习交流，请勿用于商业用途 | 如有侵权请联系删除
+            </p>
+        </div>
+    </footer>
+
+    <!-- 移动端菜单交互JS -->
+    <script>
+        // 移动端菜单切换
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            // 切换图标
+            const icon = menuBtn.querySelector('i');
+            if (icon.classList.contains('fa-bars')) {
+                icon.classList.replace('fa-bars', 'fa-xmark');
+            } else {
+                icon.classList.replace('fa-xmark', 'fa-bars');
+            }
+        });
+
+        // 点击菜单链接后关闭移动端菜单
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuBtn.querySelector('i').classList.replace('fa-xmark', 'fa-bars');
+            });
+        });
+
+        // 平滑滚动（针对本页锚点）
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
