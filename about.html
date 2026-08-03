@@ -1,1 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我 - iFPGAer.com</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        chipBlue: '#00A3FF',
+                        neonCyan: '#00F0C8',
+                        neonPurple: '#7B2FFD',
+                        darkBorder: 'rgba(0, 163, 255, 0.35)'
+                    },
+                    fontFamily: {
+                        tech: ['Orbitron', 'Rajdhani', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'float-up': 'floatUp 6s ease-in-out infinite'
+                    },
+                    keyframes: {
+                        floatUp: {
+                            '0%,100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-8px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-glow {
+                text-shadow: 0 0 10px #00A3FF, 0 0 20px rgba(0,163,255,0.5);
+            }
+            .text-shadow {
+                text-shadow: 0 0 6px rgba(0, 0, 0, 0.7);
+            }
+        }
+        * { scroll-behavior: smooth; }
+        body { color: #F6F8FF; overflow-x: hidden; }
+        /* 和首页完全一致背景 */
+        .bg-img-layer {
+            position: fixed;
+            inset: 0;
+            z-index: -3;
+            background-image: url('./assets/bg-fpga.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: brightness(1.05) contrast(1.08);
+            transform: none;
+            animation: none;
+        }
+        .bg-mask-layer {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.3));
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="relative overflow-x-hidden font-sans min-h-screen flex flex-col justify-between">
+    <!-- 背景和首页一模一样 -->
+    <div class="bg-img-layer"></div>
+    <div class="bg-mask-layer"></div>
 
+    <!-- 顶部导航 完全复用首页结构 -->
+    <nav class="sticky top-0 bg-white/5 backdrop-blur-none border-b border-chipBlue/20 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-tech font-bold text-chipBlue flex items-center gap-3 text-glow">
+                <i class="fa-solid fa-microchip text-3xl animate-float-up"></i>
+                <span>iFPGAer</span>
+            </a>
+            <div class="hidden lg:flex gap-8 font-tech tracking-wide text-shadow">
+                <a href="index.html" class="hover:text-chipBlue">首页</a>
+                <div class="relative group">
+                    <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
+                        资源库 <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </span>
+                    <div class="absolute hidden group-hover:block top-full left-0 mt-2 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44">
+                        <a href="resources.html" class="block py-2 hover:text-chipBlue">全部资源汇总</a>
+                        <a href="#" class="block py-2 hover:text-chipBlue">Verilog源码</a>
+                        <a href="#" class="block py-2 hover:text-chipBlue">开发板例程</a>
+                        <a href="#" class="block py-2 hover:text-chipBlue">工具安装包</a>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
+                        学习教程 <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </span>
+                    <div class="absolute hidden group-hover:block top-full left-0 mt-2 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44">
+                        <a href="verilog.html" class="block py-2 hover:text-chipBlue">Verilog完整指南</a>
+                        <a href="#" class="block py-2 hover:text-chipBlue">VHDL入门</a>
+                        <a href="#" class="block py-2 hover:text-chipBlue">Zynq软硬件协同</a>
+                        <a href="#" class="block py-2 hover:text-chipBlue">时序分析实战</a>
+                    </div>
+                </div>
+                <a href="tech.html" class="hover:text-chipBlue">技术矩阵</a>
+                <a href="about.html" class="text-chipBlue border-b border-chipBlue pb-1">关于我</a>
+            </div>
+            <button class="lg:hidden text-white text-2xl text-shadow" id="menuBtn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+        <div class="lg:hidden hidden bg-black/60 backdrop-blur-md border-b border-chipBlue/20 absolute w-full" id="mobileMenu">
+            <div class="container mx-auto px-4 py-4 flex flex-col gap-3 font-tech text-lg text-shadow">
+                <a href="index.html" class="py-2 hover:text-chipBlue">首页</a>
+                <a href="resources.html" class="py-2 hover:text-chipBlue">资源库</a>
+                <a href="verilog.html" class="py-2 hover:text-chipBlue">Verilog教程</a>
+                <a href="tech.html" class="py-2 hover:text-chipBlue">技术矩阵</a>
+                <a href="about.html" class="py-2 text-chipBlue">关于我</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面主体：垂直居中展示二维码卡片 -->
+    <main class="flex-grow flex items-center justify-center px-4">
+        <div class="bg-black/30 backdrop-blur-md border border-chipBlue/30 rounded-xl p-8 max-w-sm w-full text-center">
+            <h2 class="text-2xl font-tech text-chipBlue text-glow mb-6">联系二维码</h2>
+            <!-- 二维码图片，放在assets/qrcode.jpg -->
+            <img src="./assets/qrcode.jpg" alt="微信联系二维码" class="w-4/5 mx-auto rounded-lg mb-6">
+            <p class="text-gray-300 text-shadow">扫码交流FPGA开发相关问题</p>
+            <div class="mt-6 pt-6 border-t border-darkBorder text-left text-gray-300 space-y-2 text-shadow">
+                <p><i class="fa-solid fa-envelope text-chipBlue mr-2"></i>984962560@qq.com</p>
+                <p><i class="fa-solid fa-weixin text-neonCyan mr-2"></i>iFPGAer_2025</p>
+                <p><i class="fa-brands fa-github text-neonPurple mr-2"></i>github.com/iFPGAer</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 和首页完全一致 -->
+    <footer class="border-t border-chipBlue/20 bg-black/10 py-3">
+        <div class="container mx-auto px-4 text-center text-xs text-gray-300 text-shadow">
+            <div class="flex flex-wrap justify-center gap-x-5 gap-y-1 mb-2">
+                <span>联系：984962560@qq.com</span>
+                <span>微信：iFPGAer_2025</span>
+                <a href="https://github.com/iFPGAer" target="_blank" class="hover:text-chipBlue">Github</a>
+            </div>
+            <p>© 2026 iFPGAer 仅用于学习交流</p>
+        </div>
+    </footer>
+
+    <script>
+        // 移动端菜单逻辑 和首页通用
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            const icon = menuBtn.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-xmark');
+        });
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.onclick = () => mobileMenu.classList.add('hidden');
+        });
+    </script>
+</body>
+</html>
