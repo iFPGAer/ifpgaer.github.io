@@ -61,14 +61,47 @@
             }
         }
         * { scroll-behavior: smooth; }
-        body { background-color: #070A12; color: #F6F8FF; }
-        #particles-js { position: fixed; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        body { color: #F6F8FF; }
+        /* 底层自定义背景图，路径指向你上传的图片 */
+        .bg-img-layer {
+            position: fixed;
+            inset: 0;
+            z-index: -3;
+            /* 这里替换成你的图片文件名 */
+            background-image: url('./assets/bg-fpga.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            /* 图片模糊可选，取消注释开启轻微虚化 */
+            /* filter: blur(2px); */
+        }
+        /* 暗遮罩，防止图片过亮看不清文字 */
+        .bg-mask-layer {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background-color: rgba(7, 10, 18, 0.82);
+        }
+        /* 粒子层 */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body class="relative overflow-x-hidden font-sans">
-    <!-- 星空粒子背景 -->
+    <!-- 自定义背景图片层 -->
+    <div class="bg-img-layer"></div>
+    <!-- 深色遮罩 -->
+    <div class="bg-mask-layer"></div>
+    <!-- 粒子动画 -->
     <div id="particles-js"></div>
+
+    <!-- 页面主体内容 -->
     <div class="relative z-10 min-h-screen flex flex-col justify-between">
         <!-- 全局导航栏 -->
         <nav class="sticky top-0 bg-glass/80 backdrop-blur-xl border-b border-darkBorder z-50">
@@ -101,10 +134,9 @@
             </div>
         </nav>
 
-        <!-- 首页主体：仅板块入口，无任何资源列表/详情 -->
+        <!-- 首页主体：仅板块入口 -->
         <main class="py-24 flex-grow">
             <div class="container mx-auto px-4 max-w-5xl">
-                <!-- 头部品牌介绍 -->
                 <div class="text-center mb-20">
                     <h1 class="text-4xl md:text-6xl font-tech font-bold mb-6">
                         <span class="text-chipBlue text-glow">FPGA</span> 硬件设计资源门户
@@ -114,30 +146,22 @@
                     </p>
                 </div>
 
-                <!-- 四大板块跳转卡片（仅板块简介，无下载、无代码） -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <!-- 板块1：资源下载库 -->
                     <a href="resources.html" class="glass-card p-12 text-center block group">
                         <i class="fa-solid fa-folder-open text-6xl text-neonCyan group-hover:scale-110 transition-transform duration-300 mb-6"></i>
                         <h3 class="text-2xl font-tech font-semibold mb-3">资源下载库</h3>
                         <p class="text-gray-400">包含全套教程源码、开发板例程、工具安装包、面试题库，点击进入查看完整资源列表</p>
                     </a>
-
-                    <!-- 板块2：Verilog教程专区 -->
                     <a href="verilog.html" class="glass-card p-12 text-center block group">
                         <i class="fa-solid fa-code text-6xl text-chipBlue group-hover:scale-110 transition-transform duration-300 mb-6"></i>
                         <h3 class="text-2xl font-tech font-semibold mb-3">Verilog 完整教程</h3>
                         <p class="text-gray-400">硬件描述语言语法详解、时序/组合逻辑、可综合实战工程，完整教学文档</p>
                     </a>
-
-                    <!-- 板块3：硬件技术矩阵 -->
                     <a href="tech.html" class="glass-card p-12 text-center block group">
                         <i class="fa-solid fa-microchip text-6xl text-neonPink group-hover:scale-110 transition-transform duration-300 mb-6"></i>
                         <h3 class="text-2xl font-tech font-semibold mb-3">硬件技术矩阵</h3>
                         <p class="text-gray-400">Verilog/VHDL/Vivado/Zynq/AXI等开发技术完整介绍与学习路线</p>
                     </a>
-
-                    <!-- 板块4：开发者信息 -->
                     <a href="about.html" class="glass-card p-12 text-center block group">
                         <i class="fa-solid fa-user-astronaut text-6xl text-neonPurple group-hover:scale-110 transition-transform duration-300 mb-6"></i>
                         <h3 class="text-2xl font-tech font-semibold mb-3">关于开发者</h3>
@@ -155,9 +179,7 @@
         </footer>
     </div>
 
-    <!-- 全局交互JS -->
     <script>
-        // 粒子背景初始化
         particlesJS("particles-js", {
             particles: {
                 number: { value: 80, density: { enable: true, value_area: 800 } },
@@ -175,8 +197,6 @@
             },
             retina_detect: true
         });
-
-        // 移动端菜单切换
         const menuBtn = document.getElementById('menuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
         menuBtn.addEventListener('click', () => {
@@ -185,7 +205,6 @@
             icon.classList.toggle('fa-bars');
             icon.classList.toggle('fa-xmark');
         });
-        // 点击链接自动收起移动端菜单
         document.querySelectorAll('#mobileMenu a').forEach(link => {
             link.onclick = () => mobileMenu.classList.add('hidden');
         });
