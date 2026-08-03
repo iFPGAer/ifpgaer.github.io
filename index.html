@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iFPGAer.com</title>
+    <title>关于我 - iFPGAer.com</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -18,7 +18,6 @@
                     },
                     fontFamily: {
                         tech: ['Orbitron', 'Rajdhani', 'system-ui', 'sans-serif'],
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
                     },
                     animation: {
                         'float-up': 'floatUp 6s ease-in-out infinite'
@@ -44,7 +43,7 @@
         }
         * { scroll-behavior: smooth; }
         body { color: #F6F8FF; overflow-x: hidden; }
-        /* 高清亮背景 */
+        /* 和首页完全一致背景 */
         .bg-img-layer {
             position: fixed;
             inset: 0;
@@ -57,7 +56,6 @@
             transform: none;
             animation: none;
         }
-        /* 极淡渐变遮罩 */
         .bg-mask-layer {
             position: fixed;
             inset: 0;
@@ -68,11 +66,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body class="relative overflow-x-hidden font-sans min-h-screen flex flex-col justify-between">
-    <!-- 背景图层 -->
+    <!-- 背景和首页一模一样 -->
     <div class="bg-img-layer"></div>
     <div class="bg-mask-layer"></div>
 
-    <!-- 顶部导航栏（带下拉细分菜单） -->
+    <!-- 顶部导航 完全复用首页结构 -->
     <nav class="sticky top-0 bg-white/5 backdrop-blur-none border-b border-chipBlue/20 z-50">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="index.html" class="text-2xl font-tech font-bold text-chipBlue flex items-center gap-3 text-glow">
@@ -80,7 +78,7 @@
                 <span>iFPGAer</span>
             </a>
             <div class="hidden lg:flex gap-8 font-tech tracking-wide text-shadow">
-                <a href="index.html" class="text-chipBlue border-b border-chipBlue pb-1">首页</a>
+                <a href="index.html" class="hover:text-chipBlue">首页</a>
                 <div class="relative group">
                     <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
                         资源库 <i class="fa-solid fa-chevron-down text-xs"></i>
@@ -104,7 +102,7 @@
                     </div>
                 </div>
                 <a href="tech.html" class="hover:text-chipBlue">技术矩阵</a>
-                <a href="about.html" class="hover:text-chipBlue">关于我</a>
+                <a href="about.html" class="text-chipBlue border-b border-chipBlue pb-1">关于我</a>
             </div>
             <button class="lg:hidden text-white text-2xl text-shadow" id="menuBtn">
                 <i class="fa-solid fa-bars"></i>
@@ -112,35 +110,43 @@
         </div>
         <div class="lg:hidden hidden bg-black/60 backdrop-blur-md border-b border-chipBlue/20 absolute w-full" id="mobileMenu">
             <div class="container mx-auto px-4 py-4 flex flex-col gap-3 font-tech text-lg text-shadow">
-                <a href="index.html" class="py-2 text-chipBlue">首页</a>
+                <a href="index.html" class="py-2 hover:text-chipBlue">首页</a>
                 <a href="resources.html" class="py-2 hover:text-chipBlue">资源库</a>
                 <a href="verilog.html" class="py-2 hover:text-chipBlue">Verilog教程</a>
                 <a href="tech.html" class="py-2 hover:text-chipBlue">技术矩阵</a>
-                <a href="about.html" class="py-2 hover:text-chipBlue">关于我</a>
+                <a href="about.html" class="py-2 text-chipBlue">关于我</a>
+            </div>
+        </nav>
+
+    <!-- 页面主体：缩小、高通透二维码卡片 -->
+    <main class="flex-grow flex items-center justify-center px-4">
+        <!-- 修改：max-w-xs缩小尺寸、bg-black/15大幅透明、边框chipBlue/15淡化、p-6缩小内边距 -->
+        <div class="bg-black/15 backdrop-blur-md border border-chipBlue/15 rounded-xl p-6 max-w-xs w-full text-center">
+            <h2 class="text-xl font-tech text-chipBlue text-glow mb-5">联系二维码</h2>
+            <img src="./assets/qrcode.jpg" alt="微信联系二维码" class="w-4/5 mx-auto rounded-lg mb-5">
+            <p class="text-gray-300 text-shadow text-sm">FPGA开发交流</p>
+            <div class="mt-5 pt-5 border-t border-darkBorder/20 text-left text-gray-300 space-y-2 text-sm text-shadow">
+                <p><i class="fa-solid fa-envelope text-chipBlue mr-2"></i>984962560@qq.com</p>
+                <p><i class="fa-solid fa-weixin text-neonCyan mr-2"></i>iFPGAer_2025</p>
+                <p><i class="fa-brands fa-github text-neonPurple mr-2"></i>github.com/iFPGAer</p>
             </div>
         </div>
-    </nav>
+    </main>
 
-    <!-- 中间完全空白，无任何元素遮挡背景 -->
-    <main class="flex-grow"></main>
-
-    <!-- 超紧凑小型页脚（篇幅极小） -->
+    <!-- 页 和首页完全一致 -->
     <footer class="border-t border-chipBlue/20 bg-black/10 py-3">
         <div class="container mx-auto px-4 text-center text-xs text-gray-300 text-shadow">
             <div class="flex flex-wrap justify-center gap-x-5 gap-y-1 mb-2">
-                <span>联系：984962560@qq.com</span>
-                <span>微信：iFPGAer_2025</span>
-                <a href="https://github.com/iFPGAer" target="_blank" class="hover:text-chipBlue">Github</a>
-                <!-- <a href="resources.html" class="hover:text-chipBlue">资源</a> -->
-                <!-- <a href="verilog.html" class="hover:text-chipBlue">Verilog教程</a> -->
-                <!-- <a href="tech.html" class="hover:text-chipBlue">技术栈</a> -->
-                <!-- <a href="about.html" class="hover:text-chipBlue">关于</a> -->
+                <span>邮箱：984962560@qq.com</span>
+                <!-- <span>微信：iFPGAer_2025</span> -->
+                <!-- <a href="https://github.com/iFPGAer" target="_blank" class="hover:text-chipBlue">Github</a> -->
             </div>
             <p>© 2026 iFPGAer 仅用于学习交流</p>
         </div>
     </footer>
 
     <script>
+        // 移动端菜单逻辑 和首页通用
         const menuBtn = document.getElementById('menuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
         menuBtn.addEventListener('click', () => {
