@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>资源下载库 - FPGA DEV</title>
+    <title>FPGA DEV - 首页门户</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
@@ -49,159 +49,146 @@
     </script>
     <style type="text/tailwindcss">
         @layer utilities {
+            .content-auto { content-visibility: auto; }
             .glass-card {
                 @apply bg-glass backdrop-blur-md border border-darkBorder rounded-xl transition-all duration-500;
             }
             .glass-card:hover {
                 @apply border-chipBlue shadow-[0_0_24px_rgba(0,163,255,0.3)] -translate-y-2;
             }
-            .tech-btn {
-                @apply relative overflow-hidden px-5 py-3 rounded-lg text-white font-medium tracking-wide;
-                background: linear-gradient(90deg, #00A3FF, #7B2FFD, #00F0C8, #00A3FF);
-                background-size: 300% 100%;
-                animation: scanLight 3s ease infinite;
+            .text-glow {
+                text-shadow: 0 0 10px #00A3FF, 0 0 20px rgba(0,163,255,0.5);
             }
-            .text-glow { text-shadow: 0 0 10px #00A3FF, 0 0 20px rgba(0,163,255,0.5); }
         }
-        body { background: #070A12; color: #F6F8FF; }
-        #particles-js { position: fixed; width:100%; height:100%; z-index:0; pointer-events:none; }
+        * { scroll-behavior: smooth; }
+        body { background-color: #070A12; color: #F6F8FF; }
+        #particles-js { position: fixed; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
-<body class="relative overflow-x-hidden">
+<body class="relative overflow-x-hidden font-sans">
+    <!-- 星空粒子背景 -->
     <div id="particles-js"></div>
-    <div class="relative z-10">
-        <!-- 导航 -->
+    <div class="relative z-10 min-h-screen flex flex-col justify-between">
+        <!-- 全局导航栏 -->
         <nav class="sticky top-0 bg-glass/80 backdrop-blur-xl border-b border-darkBorder z-50">
             <div class="container mx-auto px-4 py-4 flex justify-between items-center">
                 <a href="index.html" class="text-2xl font-tech font-bold text-chipBlue flex items-center gap-3 text-glow">
-                    <i class="fa-solid fa-microchip text-3xl"></i>
+                    <i class="fa-solid fa-microchip text-3xl animate-float-up"></i>
                     <span>FPGA DEV</span>
                 </a>
                 <div class="hidden md:flex gap-8 font-tech tracking-wide">
-                    <a href="index.html" class="hover:text-chipBlue">首页</a>
-                    <a href="resources.html" class="text-chipBlue border-b border-chipBlue pb-1">资源库</a>
-                    <a href="tech.html" class="hover:text-chipBlue">技术栈</a>
-                    <a href="about.html" class="hover:text-chipBlue">关于我</a>
+                    <a href="index.html" class="text-chipBlue border-b border-chipBlue pb-1">首页</a>
+                    <a href="resources.html" class="hover:text-chipBlue transition-colors">资源库</a>
+                    <a href="verilog.html" class="hover:text-chipBlue transition-colors">Verilog教程</a>
+                    <a href="tech.html" class="hover:text-chipBlue transition-colors">技术矩阵</a>
+                    <a href="about.html" class="hover:text-chipBlue transition-colors">关于我</a>
                 </div>
+                <!-- 移动端菜单按钮 -->
                 <button class="md:hidden text-white text-2xl" id="menuBtn">
                     <i class="fa-solid fa-bars"></i>
                 </button>
             </div>
+            <!-- 移动端侧边菜单 -->
             <div class="md:hidden hidden bg-glass/95 backdrop-blur-lg border-b border-darkBorder absolute w-full" id="mobileMenu">
                 <div class="container mx-auto px-4 py-4 flex flex-col gap-4 font-tech text-lg">
-                    <a href="index.html" class="py-2 hover:text-chipBlue">首页</a>
-                    <a href="resources.html" class="py-2 text-chipBlue">资源库</a>
-                    <a href="tech.html" class="py-2 hover:text-chipBlue">技术栈</a>
+                    <a href="index.html" class="py-2 text-chipBlue">首页</a>
+                    <a href="resources.html" class="py-2 hover:text-chipBlue">资源库</a>
+                    <a href="verilog.html" class="py-2 hover:text-chipBlue">Verilog教程</a>
+                    <a href="tech.html" class="py-2 hover:text-chipBlue">技术矩阵</a>
                     <a href="about.html" class="py-2 hover:text-chipBlue">关于我</a>
                 </div>
             </div>
         </nav>
 
-        <section class="py-20">
-            <div class="container mx-auto px-4">
-                <h2 class="text-3xl md:text-4xl font-tech font-bold text-center mb-16">
-                    <i class="fa-solid fa-folder-open text-neonCyan mr-3 text-glow"></i>
-                    FPGA 全套资源库
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="glass-card p-8">
-                        <h3 class="text-xl font-tech font-semibold mb-4 text-chipBlue">FPGA入门教程（Verilog）</h3>
-                        <p class="text-gray-400 mb-6">Verilog语法、组合/时序逻辑、Testbench仿真零基础教学</p>
-                        <div class="mb-6 flex items-center gap-2 text-neonCyan">
-                            <i class="fa-solid fa-key"></i>
-                            <span>提取码：????</span>
-                        </div>
-                        <a href="https://pan.baidu.com/s/1xxxxxxxxxxxxxx" target="_blank" class="tech-btn block text-center">
-                            <i class="fa-solid fa-cloud-download mr-2"></i> 网盘下载
-                        </a>
-                    </div>
-                    <div class="glass-card p-8">
-                        <h3 class="text-xl font-tech font-semibold mb-4 text-chipBlue">Zynq7020开发板例程</h3>
-                        <p class="text-gray-400 mb-6">LED、UART、SPI、I2C、DMA裸机工程，适配XC7Z020</p>
-                        <div class="mb-6 flex items-center gap-2 text-neonCyan">
-                            <i class="fa-solid fa-key"></i>
-                            <span>提取码：????</span>
-                        </div>
-                        <a href="https://pan.baidu.com/s/2yyyyyyyyyyyyyy" target="_blank" class="tech-btn block text-center">
-                            <i class="fa-solid fa-cloud-download mr-2"></i> 网盘下载
-                        </a>
-                    </div>
-                    <div class="glass-card p-8">
-                        <h3 class="text-xl font-tech font-semibold mb-4 text-chipBlue">Vivado工程模板</h3>
-                        <p class="text-gray-400 mb-6">多芯片通用框架，内置仿真、综合、时序约束脚本</p>
-                        <div class="mb-6 flex items-center gap-2 text-neonCyan">
-                            <i class="fa-solid fa-key"></i>
-                            <span>提取码：????</span>
-                        </div>
-                        <a href="https://pan.baidu.com/s/3zzzzzzzzzzzzzz" target="_blank" class="tech-btn block text-center">
-                            <i class="fa-solid fa-cloud-download mr-2"></i> 网盘下载
-                        </a>
-                    </div>
-                    <div class="glass-card p-8">
-                        <h3 class="text-xl font-tech font-semibold mb-4 text-chipBlue">FPGA图像算法项目</h3>
-                        <p class="text-gray-400 mb-6">实时滤波、边缘检测、灰度化硬件加速完整可综合代码</p>
-                        <div class="mb-6 flex items-center gap-2 text-neonCyan">
-                            <i class="fa-solid fa-key"></i>
-                            <span>提取码：????</span>
-                        </div>
-                        <a href="https://pan.baidu.com/s/4aaaaaaaaaaaaaa" target="_blank" class="tech-btn block text-center">
-                            <i class="fa-solid fa-cloud-download mr-2"></i> 网盘下载
-                        </a>
-                    </div>
-                    <div class="glass-card p-8">
-                        <h3 class="text-xl font-tech font-semibold mb-4 text-chipBlue">FPGA工程师面试合集</h3>
-                        <p class="text-gray-400 mb-6">数字电路、时序分析、Verilog大厂笔面试考点整理</p>
-                        <div class="mb-6 flex items-center gap-2 text-neonCyan">
-                            <i class="fa-solid fa-key"></i>
-                            <span>提取码：????</span>
-                        </div>
-                        <a href="https://pan.baidu.com/s/5bbbbbbbbbbbbbb" target="_blank" class="tech-btn block text-center">
-                            <i class="fa-solid fa-cloud-download mr-2"></i> 网盘下载
-                        </a>
-                    </div>
-                    <div class="glass-card p-8">
-                        <h3 class="text-xl font-tech font-semibold mb-4 text-chipBlue">FPGA工具安装包</h3>
-                        <p class="text-gray-400 mb-6">Vivado、Modelsim、ISE全套安装包与环境部署教程</p>
-                        <div class="mb-6 flex items-center gap-2 text-neonCyan">
-                            <i class="fa-solid fa-key"></i>
-                            <span>提取码：????</span>
-                        </div>
-                        <a href="https://pan.baidu.com/s/1-hCaM6dOMGeWlBwgw23mEA" target="_blank" class="tech-btn block text-center">
-                            <i class="fa-solid fa-cloud-download mr-2"></i> 网盘下载
-                        </a>
-                    </div>
+        <!-- 首页主体：仅板块入口，无任何资源列表/详情 -->
+        <main class="py-24 flex-grow">
+            <div class="container mx-auto px-4 max-w-5xl">
+                <!-- 头部品牌介绍 -->
+                <div class="text-center mb-20">
+                    <h1 class="text-4xl md:text-6xl font-tech font-bold mb-6">
+                        <span class="text-chipBlue text-glow">FPGA</span> 硬件设计资源门户
+                    </h1>
+                    <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+                        专注数字电路、Verilog、Zynq开发，分类整理教程、工程源码、开发工具与面试资料
+                    </p>
                 </div>
-                <div class="mt-14 glass-card p-8 border-neonCyan/30">
-                    <h4 class="font-tech text-xl mb-4 text-neonCyan">下载须知</h4>
-                    <ul class="list-disc pl-5 space-y-2 text-gray-300">
-                        <li>全部资源仅用于个人硬件学习交流，严禁商业二次售卖</li>
-                        <li>网盘链接失效可前往「关于我」板块联系更新资源</li>
-                        <li>超大工程分卷压缩，请下载全部分包再统一解压</li>
-                    </ul>
+
+                <!-- 四大板块跳转卡片（仅板块简介，无下载、无代码） -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <!-- 板块1：资源下载库 -->
+                    <a href="resources.html" class="glass-card p-12 text-center block group">
+                        <i class="fa-solid fa-folder-open text-6xl text-neonCyan group-hover:scale-110 transition-transform duration-300 mb-6"></i>
+                        <h3 class="text-2xl font-tech font-semibold mb-3">资源下载库</h3>
+                        <p class="text-gray-400">包含全套教程源码、开发板例程、工具安装包、面试题库，点击进入查看完整资源列表</p>
+                    </a>
+
+                    <!-- 板块2：Verilog教程专区 -->
+                    <a href="verilog.html" class="glass-card p-12 text-center block group">
+                        <i class="fa-solid fa-code text-6xl text-chipBlue group-hover:scale-110 transition-transform duration-300 mb-6"></i>
+                        <h3 class="text-2xl font-tech font-semibold mb-3">Verilog 完整教程</h3>
+                        <p class="text-gray-400">硬件描述语言语法详解、时序/组合逻辑、可综合实战工程，完整教学文档</p>
+                    </a>
+
+                    <!-- 板块3：硬件技术矩阵 -->
+                    <a href="tech.html" class="glass-card p-12 text-center block group">
+                        <i class="fa-solid fa-microchip text-6xl text-neonPink group-hover:scale-110 transition-transform duration-300 mb-6"></i>
+                        <h3 class="text-2xl font-tech font-semibold mb-3">硬件技术矩阵</h3>
+                        <p class="text-gray-400">Verilog/VHDL/Vivado/Zynq/AXI等开发技术完整介绍与学习路线</p>
+                    </a>
+
+                    <!-- 板块4：开发者信息 -->
+                    <a href="about.html" class="glass-card p-12 text-center block group">
+                        <i class="fa-solid fa-user-astronaut text-6xl text-neonPurple group-hover:scale-110 transition-transform duration-300 mb-6"></i>
+                        <h3 class="text-2xl font-tech font-semibold mb-3">关于开发者</h3>
+                        <p class="text-gray-400">个人开发经历、联系方式、资源失效反馈渠道</p>
+                    </a>
                 </div>
             </div>
-        </section>
+        </main>
 
-        <footer class="border-t border-darkBorder py-8 mt-10 bg-glass/30">
+        <!-- 页脚 -->
+        <footer class="border-t border-darkBorder py-8 bg-glass/30 backdrop-blur-sm">
             <div class="container mx-auto px-4 text-center font-tech text-gray-500">
-                <p>© 2026 FPGA DEV 硬件资源站</p>
+                <p>© 2026 FPGA DEV 硬件资源站 | 所有内容仅供硬件学习交流</p>
             </div>
         </footer>
     </div>
+
+    <!-- 全局交互JS -->
     <script>
+        // 粒子背景初始化
         particlesJS("particles-js", {
-            particles:{number:{value:60},color:{value:"#00A3FF"},opacity:{value:0.3},line_linked:{opacity:0.1},move:{speed:0.6}},
-            interactivity:{modes:{grab:{distance:120}}},retina_detect:true
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#00A3FF" },
+                shape: { type: "circle" },
+                opacity: { value: 0.4, random: true },
+                size: { value: 2, random: true },
+                line_linked: { enable: true, distance: 120, color: "#00A3FF", opacity: 0.15, width: 1 },
+                move: { enable: true, speed: 0.8, direction: "none", random: true, straight: false, out_mode: "out" }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" }, resize: true },
+                modes: { grab: { distance: 140, line_linked: { opacity: 0.4 } } }
+            },
+            retina_detect: true
         });
+
+        // 移动端菜单切换
         const menuBtn = document.getElementById('menuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
-        menuBtn.onclick = () => {
+        menuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
-            const i = menuBtn.querySelector('i');
-            i.classList.toggle('fa-bars'); i.classList.toggle('fa-xmark');
-        }
-        document.querySelectorAll('#mobileMenu a').forEach(a=>a.onclick=()=>mobileMenu.classList.add('hidden'));
+            const icon = menuBtn.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-xmark');
+        });
+        // 点击链接自动收起移动端菜单
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.onclick = () => mobileMenu.classList.add('hidden');
+        });
     </script>
 </body>
 </html>
