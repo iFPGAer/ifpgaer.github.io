@@ -44,7 +44,7 @@
         }
         * { scroll-behavior: smooth; }
         body { color: #F6F8FF; overflow-x: hidden; }
-        /* 高清亮背景，无多余压暗遮罩 */
+        /* 高清亮背景 */
         .bg-img-layer {
             position: fixed;
             inset: 0;
@@ -57,7 +57,7 @@
             transform: none;
             animation: none;
         }
-        /* 仅极淡渐变，不盖住背景细节 */
+        /* 极淡渐变遮罩 */
         .bg-mask-layer {
             position: fixed;
             inset: 0;
@@ -72,18 +72,15 @@
     <div class="bg-img-layer"></div>
     <div class="bg-mask-layer"></div>
 
-    <!-- 顶部导航栏（完整FPGA分类菜单） -->
+    <!-- 顶部导航栏（带下拉细分菜单） -->
     <nav class="sticky top-0 bg-white/5 backdrop-blur-none border-b border-chipBlue/20 z-50">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <!-- 站点Logo -->
             <a href="index.html" class="text-2xl font-tech font-bold text-chipBlue flex items-center gap-3 text-glow">
                 <i class="fa-solid fa-microchip text-3xl animate-float-up"></i>
                 <span>FPGA DEV</span>
             </a>
-            <!-- PC端完整导航菜单 -->
             <div class="hidden lg:flex gap-8 font-tech tracking-wide text-shadow">
                 <a href="index.html" class="text-chipBlue border-b border-chipBlue pb-1">首页</a>
-                <!-- 资源分类 -->
                 <div class="relative group">
                     <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
                         资源库 <i class="fa-solid fa-chevron-down text-xs"></i>
@@ -95,7 +92,6 @@
                         <a href="#" class="block py-2 hover:text-chipBlue">工具安装包</a>
                     </div>
                 </div>
-                <!-- 教程分类 -->
                 <div class="relative group">
                     <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
                         学习教程 <i class="fa-solid fa-chevron-down text-xs"></i>
@@ -110,12 +106,10 @@
                 <a href="tech.html" class="hover:text-chipBlue">技术矩阵</a>
                 <a href="about.html" class="hover:text-chipBlue">关于我</a>
             </div>
-            <!-- 移动端汉堡按钮 -->
             <button class="lg:hidden text-white text-2xl text-shadow" id="menuBtn">
                 <i class="fa-solid fa-bars"></i>
             </button>
         </div>
-        <!-- 移动端下拉菜单 -->
         <div class="lg:hidden hidden bg-black/60 backdrop-blur-md border-b border-chipBlue/20 absolute w-full" id="mobileMenu">
             <div class="container mx-auto px-4 py-4 flex flex-col gap-3 font-tech text-lg text-shadow">
                 <a href="index.html" class="py-2 text-chipBlue">首页</a>
@@ -127,46 +121,26 @@
         </div>
     </nav>
 
-    <!-- 中间区域：完全空白，无任何卡片、文字，完整展示背景图 -->
+    <!-- 中间完全空白，无任何元素遮挡背景 -->
     <main class="flex-grow"></main>
 
-    <!-- 页面最底部：联系信息页脚 -->
-    <footer class="border-t border-chipBlue/20 bg-black/20 backdrop-blur-sm py-10">
-        <div class="container mx-auto px-4">
-            <div class="grid md:grid-cols-3 gap-8 text-shadow">
-                <!-- 站点简介 -->
-                <div>
-                    <h3 class="text-xl font-tech text-chipBlue mb-4 text-glow">FPGA DEV</h3>
-                    <p class="text-gray-300">专注FPGA数字电路、Verilog、Zynq开发分享，提供开源工程、全套学习资料。</p>
-                </div>
-                <!-- 联系方式 -->
-                <div>
-                    <h3 class="text-xl font-tech text-neonCyan mb-4">联系渠道</h3>
-                    <ul class="space-3 text-gray-300">
-                        <li class="flex items-center gap-3"><i class="fa-solid fa-envelope text-chipBlue"></i>iFPGAer@example.com</li>
-                        <li class="flex items-center gap-3"><i class="fa-solid fa-wechat text-chipBlue"></i>iFPGAer_2025</li>
-                        <li class="flex items-center gap-3"><i class="fa-brands fa-github text-chipBlue"></i><a href="https://github.com/iFPGAer" target="_blank" class="hover:text-chipBlue">github.com/iFPGAer</a></li>
-                    </ul>
-                </div>
-                <!-- 快速跳转 -->
-                <div>
-                    <h3 class="text-xl font-tech text-neonPink mb-4">快速访问</h3>
-                    <ul class="space-2 text-gray-300">
-                        <li><a href="resources.html" class="hover:text-chipBlue">全部资源</a></li>
-                        <li><a href="verilog.html" class="hover:text-chipBlue">Verilog教程</a></li>
-                        <li><a href="tech.html" class="hover:text-chipBlue">硬件技术栈</a></li>
-                        <li><a href="about.html" class="hover:text-chipBlue">开发者信息</a></li>
-                    </ul>
-                </div>
+    <!-- 超紧凑小型页脚（篇幅极小） -->
+    <footer class="border-t border-chipBlue/20 bg-black/10 py-3">
+        <div class="container mx-auto px-4 text-center text-xs text-gray-300 text-shadow">
+            <div class="flex flex-wrap justify-center gap-x-5 gap-y-1 mb-2">
+                <span>联系：iFPGAer@example.com</span>
+                <span>微信：iFPGAer_2025</span>
+                <a href="https://github.com/iFPGAer" target="_blank" class="hover:text-chipBlue">Github</a>
+                <a href="resources.html" class="hover:text-chipBlue">资源</a>
+                <a href="verilog.html" class="hover:text-chipBlue">Verilog教程</a>
+                <a href="tech.html" class="hover:text-chipBlue">技术栈</a>
+                <a href="about.html" class="hover:text-chipBlue">关于</a>
             </div>
-            <div class="mt-8 pt-6 border-t border-gray-700 text-center text-gray-400 text-sm">
-                © 2026 FPGA DEV 硬件资源站 | 所有内容仅用于学习交流，禁止商用
-            </div>
+            <p>© 2026 FPGA DEV 仅用于学习交流</p>
         </div>
     </footer>
 
     <script>
-        // 移动端菜单切换逻辑
         const menuBtn = document.getElementById('menuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
         menuBtn.addEventListener('click', () => {
