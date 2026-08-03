@@ -116,17 +116,16 @@
                 <a href="tech.html" class="py-2 hover:text-chipBlue">技术矩阵</a>
                 <a href="about.html" class="py-2 text-chipBlue">关于我</a>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <!-- 页面主体：垂直居中展示二维码卡片 -->
+    <!-- 页面主体：缩小、高通透二维码卡片 -->
     <main class="flex-grow flex items-center justify-center px-4">
-        <div class="bg-black/30 backdrop-blur-md border border-chipBlue/30 rounded-xl p-8 max-w-sm w-full text-center">
-            <h2 class="text-2xl font-tech text-chipBlue text-glow mb-6">联系二维码</h2>
-            <!-- 二维码图片，放在assets/qrcode.jpg -->
-            <img src="./assets/qrcode.jpg" alt="微信联系二维码" class="w-4/5 mx-auto rounded-lg mb-6">
-            <p class="text-gray-300 text-shadow">扫码交流FPGA开发相关问题</p>
-            <div class="mt-6 pt-6 border-t border-darkBorder text-left text-gray-300 space-y-2 text-shadow">
+        <!-- 修改：max-w-xs缩小尺寸、bg-black/15大幅透明、边框chipBlue/15淡化、p-6缩小内边距 -->
+        <div class="bg-black/15 backdrop-blur-md border border-chipBlue/15 rounded-xl p-6 max-w-xs w-full text-center">
+            <h2 class="text-xl font-tech text-chipBlue text-glow mb-5">联系二维码</h2>
+            <img src="./assets/qrcode.jpg" alt="微信联系二维码" class="w-4/5 mx-auto rounded-lg mb-5">
+            <p class="text-gray-300 text-shadow text-sm">FPGA开发交流</p>
+            <div class="mt-5 pt-5 border-t border-darkBorder/20 text-left text-gray-300 space-y-2 text-sm text-shadow">
                 <p><i class="fa-solid fa-envelope text-chipBlue mr-2"></i>984962560@qq.com</p>
                 <p><i class="fa-solid fa-weixin text-neonCyan mr-2"></i>iFPGAer_2025</p>
                 <p><i class="fa-brands fa-github text-neonPurple mr-2"></i>github.com/iFPGAer</p>
@@ -134,7 +133,7 @@
         </div>
     </main>
 
-    <!-- 页脚 和首页完全一致 -->
+    <!-- 页 和首页完全一致 -->
     <footer class="border-t border-chipBlue/20 bg-black/10 py-3">
         <div class="container mx-auto px-4 text-center text-xs text-gray-300 text-shadow">
             <div class="flex flex-wrap justify-center gap-x-5 gap-y-1 mb-2">
