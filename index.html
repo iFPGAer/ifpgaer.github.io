@@ -13,7 +13,7 @@
                 extend: {
                     colors: {
                         space: '#070A12',
-                        glass: 'rgba(12, 18, 32, 0.35)', /* 大幅提升通透，降低不透明度 */
+                        glass: 'rgba(12, 18, 32, 0.18)',
                         chipBlue: '#00A3FF',
                         neonCyan: '#00F0C8',
                         neonPurple: '#7B2FFD',
@@ -27,8 +27,7 @@
                     animation: {
                         'glow-flow': 'glowFlow 4s linear infinite',
                         'float-up': 'floatUp 6s ease-in-out infinite',
-                        'scan-light': 'scanLight 3s ease infinite',
-                        'bg-parallax': 'bgParallax 20s ease-in-out infinite alternate'
+                        'scan-light': 'scanLight 3s ease infinite'
                     },
                     keyframes: {
                         glowFlow: {
@@ -42,11 +41,6 @@
                         scanLight: {
                             '0%': { backgroundPosition: '-200% 0' },
                             '100%': { backgroundPosition: '200% 0' }
-                        },
-                        /* 背景缓慢放大视差动画，增加空间感 */
-                        bgParallax: {
-                            '0%': { transform: 'scale(1.05)' },
-                            '100%': { transform: 'scale(1.12)' }
                         }
                     }
                 }
@@ -56,21 +50,23 @@
     <style type="text/tailwindcss">
         @layer utilities {
             .content-auto { content-visibility: auto; }
-            /* 通透玻璃卡片，大幅降低遮挡 */
             .glass-card {
-                @apply bg-glass backdrop-blur-lg border border-darkBorder rounded-xl transition-all duration-500;
+                @apply bg-glass backdrop-blur-sm border border-chipBlue/20 rounded-xl transition-all duration-500;
             }
             .glass-card:hover {
-                @apply border-chipBlue shadow-[0_0_24px_rgba(0,163,255,0.3)] -translate-y-2 bg-glass/45;
+                @apply border-chipBlue/40 shadow-[0_0_18px_rgba(0,163,255,0.15)] -translate-y-1 bg-glass/30;
             }
             .text-glow {
                 text-shadow: 0 0 10px #00A3FF, 0 0 20px rgba(0,163,255,0.5);
+            }
+            .text-soft-shadow {
+                text-shadow: 0 0 8px rgba(0, 0, 0, 0.8), 0 0 16px rgba(0, 0, 0, 0.6);
             }
         }
         * { scroll-behavior: smooth; }
         body { color: #F6F8FF; overflow-x: hidden; }
 
-        /* 底层自定义背景图：关闭模糊，增加缓慢缩放动画 */
+        /* 背景图：无模糊、无动画、原图完整清晰展示 */
         .bg-img-layer {
             position: fixed;
             inset: 0;
@@ -79,17 +75,18 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            animation: bg-parallax 20s ease-in-out infinite alternate;
-            filter: none; /* 彻底关闭模糊，图片清晰显示 */
+            filter: none;
+            transform: none;
+            animation: none;
         }
-        /* 弱化遮罩，不再把画面压暗 */
+        /* 极低透明度遮罩，最大程度保留原图细节 */
         .bg-mask-layer {
             position: fixed;
             inset: 0;
             z-index: -2;
-            background-color: rgba(7, 10, 18, 0.55); /* 从0.82降到0.55，背景清晰透出 */
+            background-color: rgba(7, 10, 18, 0.22);
         }
-        /* 弱化粒子，不覆盖背景细节 */
+        /* 弱化粒子，不遮挡背景画面 */
         #particles-js {
             position: fixed;
             width: 100%;
@@ -101,107 +98,126 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body class="relative overflow-x-hidden font-sans">
-    <!-- 清晰背景图层 -->
+    <!-- 高清背景图层 -->
     <div class="bg-img-layer"></div>
-    <!-- 轻度暗化遮罩 -->
+    <!-- 轻微暗化遮罩 -->
     <div class="bg-mask-layer"></div>
-    <!-- 低透明度粒子层 -->
+    <!-- 极简点缀粒子 -->
     <div id="particles-js"></div>
 
     <!-- 页面主体内容 -->
     <div class="relative z-10 min-h-screen flex flex-col justify-between">
-        <!-- 全局导航栏（同样降低不透明度，透出背景） -->
-        <nav class="sticky top-0 bg-glass/25 backdrop-blur-xl border-b border-darkBorder z-50">
+        <!-- 导航栏低遮挡 -->
+        <nav class="sticky top-0 bg-glass/20 backdrop-blur-sm border border-darkBorder z-50">
             <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-                <a href="index.html" class="text-2xl font-tech font-bold text-chipBlue flex items-center gap-3 text-glow">
+                <a href="index.html" class="text-2xl font-tech font-bold text-chipBlue flex items-center gap-3 text-glow text-soft-shadow">
                     <i class="fa-solid fa-microchip text-3xl animate-float-up"></i>
                     <span>FPGA DEV</span>
                 </a>
                 <div class="hidden md:flex gap-8 font-tech tracking-wide">
-                    <a href="index.html" class="text-chipBlue border-b border-chipBlue pb-1">首页</a>
-                    <a href="resources.html" class="hover:text-chipBlue transition-colors">资源库</a>
-                    <a href="verilog.html" class="hover:text-chipBlue transition-colors">Verilog教程</a>
-                    <a href="tech.html" class="hover:text-chipBlue transition-colors">技术矩阵</a>
-                    <a href="about.html" class="hover:text-chipBlue transition-colors">关于我</a>
+                    <a href="index.html" class="text-chipBlue border-b border-chipBlue pb-1 text-soft-shadow">首页</a>
+                    <a href="resources.html" class="hover:text-chipBlue transition-colors text-soft-shadow">资源库</a>
+                    <a href="verilog.html" class="hover:text-chipBlue transition-colors text-soft-shadow">Verilog教程</a>
+                    <a href="tech.html" class="hover:text-chipBlue transition-colors text-soft-shadow">技术矩阵</a>
+                    <a href="about.html" class="hover:text-chipBlue transition-colors text-soft-shadow">关于我</a>
                 </div>
                 <!-- 移动端菜单按钮 -->
                 <button class="md:hidden text-white text-2xl" id="menuBtn">
-                    <i class="fa-solid fa-bars"></i>
+                    <i class="fa-solid fa-bars text-soft-shadow"></i>
                 </button>
             </div>
             <!-- 移动端侧边菜单 -->
-            <div class="md:hidden hidden bg-glass/40 backdrop-blur-lg border-b border-darkBorder absolute w-full" id="mobileMenu">
+            <div class="md:hidden hidden bg-glass/25 backdrop-blur-sm border border-darkBorder absolute w-full" id="mobileMenu">
                 <div class="container mx-auto px-4 py-4 flex flex-col gap-4 font-tech text-lg">
-                    <a href="index.html" class="py-2 text-chipBlue">首页</a>
-                    <a href="resources.html" class="py-2 hover:text-chipBlue">资源库</a>
-                    <a href="verilog.html" class="py-2 hover:text-chipBlue">Verilog教程</a>
-                    <a href="tech.html" class="py-2 hover:text-chipBlue">技术矩阵</a>
-                    <a href="about.html" class="py-2 hover:text-chipBlue">关于我</a>
+                    <a href="index.html" class="py-2 text-chipBlue text-soft-shadow">首页</a>
+                    <a href="resources.html" class="py-2 hover:text-chipBlue text-soft-shadow">资源库</a>
+                    <a href="verilog.html" class="py-2 hover:text-chipBlue text-soft-shadow">Verilog教程</a>
+                    <a href="tech.html" class="py-2 hover:text-chipBlue text-soft-shadow">技术矩阵</a>
+                    <a href="about.html" class="py-2 hover:text-chipBlue text-soft-shadow">关于我</a>
                 </div>
             </div>
         </nav>
 
-        <!-- 首页主体：卡片缩小内边距、增加页面上下留白，减少遮挡面积 -->
+        <!-- 主内容区，大量留白露出背景 -->
         <main class="py-32 flex-grow">
             <div class="container mx-auto px-6 max-w-5xl">
                 <div class="text-center mb-24">
-                    <h1 class="text-4xl md:text-6xl font-tech font-bold mb-6">
+                    <h1 class="text-4xl md:text-6xl font-tech font-bold mb-6 text-soft-shadow">
                         <span class="text-chipBlue text-glow">FPGA</span> 硬件设计资源门户
                     </h1>
-                    <p class="text-gray-300 text-lg max-w-2xl mx-auto">
+                    <p class="text-gray-200 text-lg max-w-2xl mx-auto text-soft-shadow">
                         专注数字电路、Verilog、Zynq开发，分类整理教程、工程源码、开发工具与面试资料
                     </p>
                 </div>
 
-                <!-- 卡片缩小内边距，留白加大，露出更多背景 -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <a href="resources.html" class="glass-card p-8 text-center block group">
                         <i class="fa-solid fa-folder-open text-5xl text-neonCyan group-hover:scale-110 transition-transform duration-300 mb-5"></i>
-                        <h3 class="text-xl font-tech font-semibold mb-2">资源下载库</h3>
-                        <p class="text-gray-300 text-sm">全套教程源码、开发板例程、工具包、面试题库</p>
+                        <h3 class="text-xl font-tech font-semibold mb-2 text-soft-shadow">资源下载库</h3>
+                        <p class="text-gray-200 text-sm text-soft-shadow">全套教程源码、开发板例程、工具包、面试题库</p>
                     </a>
                     <a href="verilog.html" class="glass-card p-8 text-center block group">
                         <i class="fa-solid fa-code text-5xl text-chipBlue group-hover:scale-110 transition-transform duration-300 mb-5"></i>
-                        <h3 class="text-xl font-tech font-semibold mb-2">Verilog 完整教程</h3>
-                        <p class="text-gray-300 text-sm">语法详解、时序/组合逻辑、可综合实战工程</p>
+                        <h3 class="text-xl font-tech font-semibold mb-2 text-soft-shadow">Verilog 完整教程</h3>
+                        <p class="text-gray-200 text-sm text-soft-shadow">语法详解、时序/组合逻辑、可综合实战工程</p>
                     </a>
                     <a href="tech.html" class="glass-card p-8 text-center block group">
                         <i class="fa-solid fa-microchip text-5xl text-neonPink group-hover:scale-110 transition-transform duration-300 mb-5"></i>
-                        <h3 class="text-xl font-tech font-semibold mb-2">硬件技术矩阵</h3>
-                        <p class="text-gray-300 text-sm">Verilog/VHDL/Vivado/Zynq/AXI 完整学习路线</p>
+                        <h3 class="text-xl font-tech font-semibold mb-2 text-soft-shadow">硬件技术矩阵</h3>
+                        <p class="text-gray-200 text-sm text-soft-shadow">Verilog/VHDL/Vivado/Zynq/AXI 完整学习路线</p>
                     </a>
                     <a href="about.html" class="glass-card p-8 text-center block group">
                         <i class="fa-solid fa-user-astronaut text-5xl text-neonPurple group-hover:scale-110 transition-transform duration-300 mb-5"></i>
-                        <h3 class="text-xl font-tech font-semibold mb-2">关于开发者</h3>
-                        <p class="text-gray-300 text-sm">开发经历、联系方式、资源失效反馈渠道</p>
+                        <h3 class="text-xl font-tech font-semibold mb-2 text-soft-shadow">关于开发者</h3>
+                        <p class="text-gray-200 text-sm text-soft-shadow">开发经历、联系方式、资源失效反馈渠道</p>
                     </a>
                 </div>
             </div>
         </main>
 
-        <!-- 页脚降低遮挡 -->
-        <footer class="border-t border-darkBorder py-6 bg-glass/20 backdrop-blur-sm">
-            <div class="container mx-auto px-4 text-center font-tech text-gray-400">
+        <!-- 页脚极低遮挡 -->
+        <footer class="border-t border-darkBorder py-6 bg-glass/15 backdrop-blur-sm">
+            <div class="container mx-auto px-4 text-center font-tech text-gray-300 text-soft-shadow">
                 <p>© 2026 FPGA DEV 硬件资源站 | 所有内容仅供硬件学习交流</p>
             </div>
         </footer>
     </div>
 
     <script>
+        // 极少、极淡粒子，仅微弱点缀，不遮挡背景
         particlesJS("particles-js", {
             particles: {
-                number: { value: 45, density: { enable: true, value_area: 800 } }, /* 减少粒子数量 */
+                number: { value: 18, density: { enable: true, value_area: 800 } },
                 color: { value: "#00A3FF" },
                 shape: { type: "circle" },
-                opacity: { value: 0.22, random: true }, /* 大幅降低粒子透明度，不盖住背景 */
-                size: { value: 1.2, random: true },
-                line_linked: { enable: true, distance: 120, color: "#00A3FF", opacity: 0.08, width: 0.8 },
-                move: { enable: true, speed: 0.6, direction: "none", random: true, straight: false, out_mode: "out" }
+                opacity: { value: 0.12, random: true },
+                size: { value: 1, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 120,
+                    color: "#00A3FF",
+                    opacity: 0.04,
+                    width: 0.5
+                },
+                move: {
+                    enable: true,
+                    speed: 0.4,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out"
+                }
             },
             interactivity: {
                 detect_on: "canvas",
-                events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" }, resize: true },
-                modes: { grab: { distance: 140, line_linked: { opacity: 0.3 } } }
+                events: {
+                    onhover: { enable: true, mode: "grab" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                },
+                modes: {
+                    grab: { distance: 140, line_linked: { opacity: 0.15 } }
+                }
             },
             retina_detect: true
         });
