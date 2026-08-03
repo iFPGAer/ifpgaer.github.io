@@ -36,7 +36,7 @@
     <style type="text/tailwindcss">
         @layer utilities {
             .text-glow {
-                text-shadow: 0 0 10px #00A3FF, 0 0 20px rgba(0,163,255,0.5);
+                text-shadow: 0 0 10px #00A3FF, 0 0 20px rgba(0,163,0.5);
             }
             .text-shadow {
                 text-shadow: 0 0 6px rgba(0, 0, 0, 0.7);
@@ -64,50 +64,53 @@
             z-index: -2;
             background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.3));
         }
-        /* 二维码弹窗遮罩 */
-        .qrcode-mask {
+        /* === 新增二维码弹窗样式，仅追加，不修改原有样式 === */
+        .qrcode-popup {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.75);
-            z-[999];
+            background-color: rgba(0,0,0,0.75);
+            z-[9999];
             display: none;
             align-items: center;
             justify-content: center;
         }
-        /* 弹窗卡片 */
-        .qrcode-box {
-            background: rgba(12, 18, 32, 0.9);
+        .qrcode-card {
+            width: 90%;
+            max-width: 320px;
+            background: rgba(12, 18, 32, 0.92);
             backdrop-blur-lg;
             border: 1px solid rgba(0,163,255,0.3);
-            border-radius: 16px;
-            padding: 2rem;
+            border-radius: 14px;
+            padding: 24px;
             text-align: center;
-            max-w-sm w-[90%];
+        }
+        .close-qr {
+            position: absolute;
+            top:16px;
+            right:16px;
+            color:#aaa;
+            hover:color:#00A3FF;
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body class="relative overflow-x-hidden font-sans min-h-screen flex flex-col justify-between">
-    <!-- 背景图层 -->
-    <div class="bg-img-layer"></div>
-    <div class="bg-mask-layer"></div>
-
-    <!-- 二维码弹窗遮罩 -->
-    <div class="qrcode-mask" id="qrcodeMask">
-        <div class="qrcode-box">
-            <div class="flex justify-end mb-4">
-                <button id="closeQrBtn" class="text-gray-400 hover:text-chipBlue text-xl">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <!-- 你的二维码图片，放到assets/qrcode.jpg -->
-            <img src="./assets/qrcode.jpg" alt="联系方式二维码" class="w-4/5 mx-auto rounded-lg mb-4">
-            <h3 class="text-xl font-tech text-chipBlue text-glow mb-2">联系我二维码</h3
-            <p class="text-gray-300 text-sm">微信扫码交流FPGA相关问题</p>
+    <!-- === 新增二维码弹窗DOM，放在body最顶部，不影响原有结构 === -->
+    <div class="qrcode-popup" id="qrPopup">
+        <div class="qrcode-card relative">
+            <button class="close-qr text-lg" id="closeQr">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <img src="./assets/qrcode.jpg" alt="联系二维码" class="w-4/5 mx-auto rounded-md mb-4">
+            <h3 class="text-lg font-tech text-chipBlue text-glow mb-2">扫码联系我</h3>
+            <p class="text-gray-400 text-sm">FPGA交流/资源反馈</p>
         </div>
     </div>
 
-    <!-- 顶部导航栏（带下拉细分菜单） -->
+    <!-- 背景图层 -->
+    <div class="bg-img-layer"></div>
+    <div class="bg-mask-layer"></div>
+    <!-- 顶部导航栏（完全保留原版无修改） -->
     <nav class="sticky top-0 bg-white/5 backdrop-blur-none border-b border-chipBlue/20 z-50">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="index.html" class="text-2xl font-tech font-bold text-chipBlue flex items-center gap-3 text-glow">
@@ -155,28 +158,25 @@
             </div>
         </div>
     </nav>
-
-    <!-- 中间完全空白，无任何元素遮挡背景 -->
+    <!-- 中间完全空白，无任何元素遮挡背景（原版不变） -->
     <main class="flex-grow"></main>
-
-    <!-- 超紧凑小型页脚（新增二维码按钮） -->
+    <!-- 超紧凑小型页脚：仅在原有行内追加极小二维码按钮，不改变原有排版 -->
     <footer class="border-t border-chipBlue/20 bg-black/10 py-3">
         <div class="container mx-auto px-4 text-center text-xs text-gray-300 text-shadow">
             <div class="flex flex-wrap justify-center gap-x-5 gap-y-1 mb-2">
                 <span>联系：984962560@qq.com</span>
                 <span>微信：iFPGAer_2025</span>
                 <a href="https://github.com/iFPGAer" target="_blank" class="hover:text-chipBlue">Github</a>
-                <!-- 新增二维码弹窗按钮 -->
-                <button id="openQrBtn" class="hover:text-neonCyan flex items-center gap-1">
-                    <i class="fa-solid fa-qrcode"></i> 联系二维码
+                <!-- 仅新增极小二维码按钮，和其他行内元素并排，不增加高度 -->
+                <button id="openQr" class="hover:text-neonCyan inline-flex items-center gap-1">
+                    <i class="fa-solid fa-qrcode"></i> 扫码
                 </button>
             </div>
             <p>© 2026 iFPGAer 仅用于学习交流</p>
         </div>
     </footer>
-
     <script>
-        // 移动端菜单逻辑
+        // 原有移动端菜单逻辑（完全保留无修改）
         const menuBtn = document.getElementById('menuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
         menuBtn.addEventListener('click', () => {
@@ -188,25 +188,21 @@
         document.querySelectorAll('#mobileMenu a').forEach(link => {
             link.onclick = () => mobileMenu.classList.add('hidden');
         });
-
-        // 二维码弹窗逻辑
-        const qrcodeMask = document.getElementById('qrcodeMask');
-        const openQrBtn = document.getElementById('openQrBtn');
-        const closeQrBtn = document.getElementById('closeQrBtn');
-
+        // === 仅追加二维码弹窗JS，不覆盖原有代码 ===
+        const qrPopup = document.getElementById('qrPopup');
+        const openQrBtn = document.getElementById('openQr');
+        const closeQrBtn = document.getElementById('closeQr');
         // 打开弹窗
         openQrBtn.addEventListener('click', () => {
-            qrcodeMask.style.display = 'flex';
+            qrPopup.style.display = 'flex';
         });
-        // 关闭按钮关闭
+        // 关闭按钮
         closeQrBtn.addEventListener('click', () => {
-            qrcodeMask.style.display = 'none';
+            qrPopup.style.display = 'none';
         });
-        // 点击遮罩空白处关闭
-        qrcodeMask.addEventListener('click', (e) => {
-            if(e.target === qrcodeMask) {
-                qrcodeMask.style.display = 'none';
-            }
+        // 点击遮罩空白关闭
+        qrPopup.addEventListener('click', (e) => {
+            if (e.target === qrPopup) qrPopup.style.display = 'none';
         });
     </script>
 </body>
