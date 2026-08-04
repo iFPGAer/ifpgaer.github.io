@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通信处理 | iFPGAer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        chipBlue: '#00A3FF',
+                        neonCyan: '#00F0C8',
+                        neonPurple: '#7B2FFD',
+                        darkBorder: 'rgba(0, 163, 255, 0.35)'
+                    },
+                    fontFamily: {
+                        tech: ['Orbitron', 'Rajdhani', 'system-ui', 'sans-serif'],
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'float-up': 'floatUp 6s ease-in-out infinite'
+                    },
+                    keyframes: {
+                        floatUp: {
+                            '0%,100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-8px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-glow {
+                text-shadow: 0 0 10px #00A3FF, 0 0 20px rgba(0,163,255,0.5);
+            }
+            .text-shadow {
+                text-shadow: 0 0 6px rgba(0, 0, 0, 0.7);
+            }
+        }
+        * { scroll-behavior: smooth; }
+        body { color: #F6F8FF; overflow-x: hidden; }
+        .bg-img-layer {
+            position: fixed;
+            inset: 0;
+            z-index: -3;
+            background-image: url('./assets/bg-fpga.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: brightness(1.05) contrast(1.08);
+        }
+        .bg-mask-layer {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.3));
+        }
+        #particles-js {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="relative overflow-x-hidden font-sans min-h-screen flex flex-col justify-between">
+    <div class="bg-img-layer"></div>
+    <div id="particles-js"></div>
+    <div class="bg-mask-layer"></div>
+
+    <nav class="sticky top-0 bg-white/5 backdrop-blur-none border-b border-chipBlue/20 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-tech font-bold text-chipBlue flex items-center gap-3 text-glow">
+                <i class="fa-solid fa-microchip text-3xl animate-float-up"></i>
+                <span>iFPGAer</span>
+            </a>
+            <div class="hidden lg:flex gap-8 font-tech tracking-wide text-shadow">
+                <a href="index.html" class="hover:text-chipBlue">首页</a>
+                <div class="relative group">
+                    <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
+                        资源库 <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </span>
+                    <div class="absolute hidden group-hover:block top-full left-0 mt-2 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44">
+                        <a href="resources.html" class="block py-2 hover:text-chipBlue">全部资源汇总</a>
+                        <a href="devtool.html" class="block py-2 hover:text-chipBlue">开发工具</a>
+                        <a href="codelib.html" class="block py-2 hover:text-chipBlue">代码库</a>
+                        <a href="projectlib.html" class="block py-2 hover:text-chipBlue">工程库</a>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
+                        学习教程 <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </span>
+                    <div class="absolute hidden group-hover:block top-full left-0 mt-2 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44">
+                        <a href="verilog.html" class="block py-2 hover:text-chipBlue">Verilog完整指南</a>
+                        <a href="grammar.html" class="block py-2 hover:text-chipBlue">基本语法</a>
+                        <a href="toolusage.html" class="block py-2 hover:text-chipBlue">工具使用</a>
+                        <a href="timing.html" class="block py-2 hover:text-chipBlue">时序约束</a>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <span class="text-chipBlue border-b border-chipBlue pb-1 hover:text-chipBlue cursor-pointer flex items-center gap-1">
+                        技术矩阵 <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </span>
+                    <div class="absolute hidden group-hover:block top-full left-0 mt-2 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44">
+                        <a href="tech.html" class="block py-2 hover:text-chipBlue">技术矩阵总览</a>
+                        <a href="comm.html" class="block py-2 text-chipBlue">通信处理</a>
+                        <a href="imageproc.html" class="block py-2 hover:text-chipBlue">图像处理</a>
+                        <a href="highspeedip.html" class="block py-2 hover:text-chipBlue">高速ip</a>
+                    </div>
+                </div>
+                <a href="about.html" class="hover:text-chipBlue">关于我</a>
+            </div>
+            <button class="lg:hidden text-white text-2xl text-shadow" id="menuBtn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+        <div class="lg:hidden hidden bg-black/60 backdrop-blur-md border-b border-chipBlue/20 absolute w-full" id="mobileMenu">
+            <div class="container mx-auto px-4 py-4 flex flex-col gap-3 font-tech text-lg text-shadow">
+                <a href="index.html" class="py-2 hover:text-chipBlue">首页</a>
+                <a href="resources.html" class="py-2 hover:text-chipBlue">资源库</a>
+                <a href="devtool.html" class="py-2 hover:text-chipBlue">→开发工具</a>
+                <a href="codelib.html" class="py-2 hover:text-chipBlue">→代码库</a>
+                <a href="projectlib.html" class="py-2 hover:text-chipBlue">→工程库</a>
+                <a href="verilog.html" class="py-2 hover:text-chipBlue">Verilog教程</a>
+                <a href="grammar.html" class="py-2 hover:text-chipBlue">→基本语法</a>
+                <a href="toolusage.html" class="py-2 hover:text-chipBlue">→工具使用</a>
+                <a href="timing.html" class="py-2 hover:text-chipBlue">→时序约束</a>
+                <a href="tech.html" class="py-2 hover:text-chipBlue">技术矩阵</a>
+                <a href="comm.html" class="py-2 text-chipBlue">→通信处理</a>
+                <a href="imageproc.html" class="py-2 hover:text-chipBlue">→图像处理</a>
+                <a href="highspeedip.html" class="py-2 hover:text-chipBlue">→高速ip</a>
+                <a href="about.html" class="py-2 hover:text-chipBlue">关于我</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow container mx-auto px-4 py-10">
+        <div class="bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20">
+            <h1 class="text-2xl md:text-3xl font-tech text-chipBlue text-glow mb-4">通信处理</h1>
+            <p class="text-gray-200 mb-6">各类串行、并行通信接口逻辑实现，包含低速外设与高速通信模块。</p>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="p-4 bg-white/5 rounded-lg border border-chipBlue/20">
+                    <h3 class="font-tech text-lg text-chipBlue mb-2">低速外设通信</h3>
+                    <p class="text-sm text-gray-300">UART、SPI、I2C、RS422、CAN控制器逻辑与帧解析</p>
+                </div>
+                <div class="p-4 bg-white/5 rounded-lg border border-chipBlue/20">
+                    <h3 class="font-tech text-lg text-chipBlue mb-2">高速通信接口</h3>
+                    <p class="text-sm text-gray-300">以太网、AXI总线、FIFO数据缓存、跨时钟域数据交互</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-chipBlue/20 bg-black/10 py-3">
+        <div class="container mx-auto px-4 text-center text-xs text-gray-300 text-shadow">
+            <div class="flex flex-wrap justify-center gap-x-5 gap-y-1 mb-2">
+                <span>Email:984962560@qq.com</span>
+            </div>
+            <p>© 2026 iFPGAer 仅用于学习交流</p>
+        </div>
+    </footer>
+
+    <script>
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            const icon = menuBtn.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-xmark');
+        });
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.onclick = () => mobileMenu.classList.add('hidden');
+        });
+
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 30, density: { enable: true, value_area: 900 } },
+                color: { value: "#00A3FF" },
+                shape: { type: "circle" },
+                opacity: { value: 0.15, random: true },
+                size: { value: 1.2, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 100,
+                    color: "#00A3FF",
+                    opacity: 0.06,
+                    width: 0.4
+                },
+                move: {
+                    enable: true,
+                    speed: 0.4,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out"
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "grab" },
+                    onclick: { enable: false },
+                    resize: true
+                },
+                modes: { grab: { distance: 120, line_linked: { opacity: 0.2 } } }
+            },
+            retina_detect: true
+        });
+    </script>
+</body>
+</html>

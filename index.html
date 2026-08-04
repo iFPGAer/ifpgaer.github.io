@@ -83,7 +83,7 @@
     <div id="particles-js"></div>
     <div class="bg-mask-layer"></div>
 
-    <!-- 顶部导航栏（带下拉细分菜单） -->
+    <!-- 顶部导航栏（修复下拉hover空隙问题） -->
     <nav class="sticky top-0 bg-white/5 backdrop-blur-none border-b border-chipBlue/20 z-50">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="index.html" class="text-2xl font-tech font-bold text-chipBlue flex items-center gap-3 text-glow">
@@ -92,41 +92,62 @@
             </a>
             <div class="hidden lg:flex gap-8 font-tech tracking-wide text-shadow">
                 <a href="index.html" class="text-chipBlue border-b border-chipBlue pb-1">首页</a>
-                <div class="relative group">
+
+                <!-- ==========资源库下拉：增加pb‑2消除hover空隙========== -->
+                <div class="relative group pb-2">
                     <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
                         资源库 <i class="fa-solid fa-chevron-down text-xs"></i>
                     </span>
-                    <div class="absolute hidden group-hover:block top-full left-0 mt-2 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44">
-                        <a href="resources.html" class="block py-2 hover:text-chipBlue">全部资源汇总</a>
-                        <a href="#" class="block py-2 hover:text-chipBlue">Verilog源码</a>
-                        <a href="#" class="block py-2 hover:text-chipBlue">开发板例程</a>
-                        <a href="#" class="block py-2 hover:text-chipBlue">工具安装包</a>
+                    <div class="absolute hidden group-hover:block top-full left-0 mt‑0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44 pointer-events-auto">
+                        <a href="devtool.html" class="block py-2 hover:text-chipBlue">开发工具库</a>
+                        <a href="codelib.html" class="block py-2 hover:text-chipBlue">模块库</a>
+                        <a href="projectlib.html" class="block py-2 hover:text-chipBlue">工程库</a>
                     </div>
                 </div>
-                <div class="relative group">
+
+                <!-- ==========学习教程下拉========== -->
+                <div class="relative group pb-2">
                     <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
                         学习教程 <i class="fa-solid fa-chevron-down text-xs"></i>
                     </span>
-                    <div class="absolute hidden group-hover:block top-full left-0 mt-2 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44">
-                        <a href="verilog.html" class="block py-2 hover:text-chipBlue">Verilog完整指南</a>
-                        <a href="#" class="block py-2 hover:text-chipBlue">VHDL入门</a>
-                        <a href="#" class="block py-2 hover:text-chipBlue">Zynq软硬件协同</a>
-                        <a href="#" class="block py-2 hover:text-chipBlue">时序分析实战</a>
+                    <div class="absolute hidden group-hover:block top-full left-0 mt‑0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44 pointer-events-auto">
+                        <a href="grammar.html" class="block py-2 hover:text-chipBlue">基本语法</a>
+                        <a href="toolusage.html" class="block py-2 hover:text-chipBlue">工具使用</a>
+                        <a href="timing.html" class="block py-2 hover:text-chipBlue">时序约束</a>
                     </div>
                 </div>
-                <a href="tech.html" class="hover:text-chipBlue">技术矩阵</a>
+
+                <!-- ==========技术矩阵下拉========== -->
+                <div class="relative group pb-2">
+                    <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
+                        技术矩阵 <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </span>
+                    <div class="absolute hidden group-hover:block top-full left-0 mt‑0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44 pointer-events-auto">
+                        <a href="comm.html" class="block py-2 hover:text-chipBlue">通信处理</a>
+                        <a href="imageproc.html" class="block py-2 hover:text-chipBlue">图像处理</a>
+                        <a href="highspeedip.html" class="block py-2 hover:text-chipBlue">高速ip</a>
+                    </div>
+                </div>
+
                 <a href="about.html" class="hover:text-chipBlue">关于我</a>
             </div>
             <button class="lg:hidden text-white text-2xl text-shadow" id="menuBtn">
                 <i class="fa-solid fa-bars"></i>
             </button>
         </div>
+        <!-- 移动端菜单，同步更新为真实页面链接 -->
         <div class="lg:hidden hidden bg-black/60 backdrop-blur-md border-b border-chipBlue/20 absolute w-full" id="mobileMenu">
             <div class="container mx-auto px-4 py-4 flex flex-col gap-3 font-tech text-lg text-shadow">
                 <a href="index.html" class="py-2 text-chipBlue">首页</a>
-                <a href="resources.html" class="py-2 hover:text-chipBlue">资源库</a>
-                <a href="verilog.html" class="py-2 hover:text-chipBlue">Verilog教程</a>
-                <a href="tech.html" class="py-2 hover:text-chipBlue">技术矩阵</a>
+                <a href="devtool.html" class="py-2 hover:text-chipBlue">开发工具库</a>
+                <a href="codelib.html" class="py-2 hover:text-chipBlue">模块库</a>
+                <a href="projectlib.html" class="py-2 hover:text-chipBlue">工程库</a>
+                <a href="grammar.html" class="py-2 hover:text-chipBlue">基本语法</a>
+                <a href="toolusage.html" class="py-2 hover:text-chipBlue">工具使用</a>
+                <a href="timing.html" class="py-2 hover:text-chipBlue">时序约束</a>
+                <a href="comm.html" class="py-2 hover:text-chipBlue">通信处理</a>
+                <a href="imageproc.html" class="py-2 hover:text-chipBlue">图像处理</a>
+                <a href="highspeedip.html" class="py-2 hover:text-chipBlue">高速ip</a>
                 <a href="about.html" class="py-2 hover:text-chipBlue">关于我</a>
             </div>
         </div>
@@ -140,12 +161,6 @@
         <div class="container mx-auto px-4 text-center text-xs text-gray-300 text-shadow">
             <div class="flex flex-wrap justify-center gap-x-5 gap-y-1 mb-2">
                 <span>Email:984962560@qq.com</span>
-                <!-- <span>微信：iFPGAer_2025</span> -->
-                <!-- <a href="https://github.com/iFPGAer" target="_blank" class="hover:text-chipBlue">Github</a> -->
-                <!-- <a href="resources.html" class="hover:text-chipBlue">资源</a> -->
-                <!-- <a href="verilog.html" class="hover:text-chipBlue">Verilog教程</a> -->
-                <!-- <a href="tech.html" class="hover:text-chipBlue">技术栈</a> -->
-                <!-- <a href="about.html" class="hover:text-chipBlue">关于</a> -->
             </div>
             <p>© 2026 iFPGAer 仅用于学习交流</p>
         </div>
