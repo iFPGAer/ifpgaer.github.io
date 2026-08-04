@@ -6,6 +6,8 @@
     <title> Welcome iFPGAer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 引入粒子光点库 -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -64,12 +66,21 @@
             z-index: -2;
             background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.3));
         }
+        /* 粒子光点层 */
+        #particles-js {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body class="relative overflow-x-hidden font-sans min-h-screen flex flex-col justify-between">
     <!-- 背景图层 -->
     <div class="bg-img-layer"></div>
+    <!-- 粒子光点层 -->
+    <div id="particles-js"></div>
     <div class="bg-mask-layer"></div>
 
     <!-- 顶部导航栏（带下拉细分菜单） -->
@@ -141,6 +152,7 @@
     </footer>
 
     <script>
+        // 原有移动端菜单逻辑
         const menuBtn = document.getElementById('menuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
         menuBtn.addEventListener('click', () => {
@@ -151,6 +163,42 @@
         });
         document.querySelectorAll('#mobileMenu a').forEach(link => {
             link.onclick = () => mobileMenu.classList.add('hidden');
+        });
+
+        // 新增微弱科技光点粒子配置（淡蓝色、数量少、不遮挡背景）
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 30, density: { enable: true, value_area: 900 } },
+                color: { value: "#00A3FF" },
+                shape: { type: "circle" },
+                opacity: { value: 0.15, random: true },
+                size: { value: 1.2, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 100,
+                    color: "#00A3FF",
+                    opacity: 0.06,
+                    width: 0.4
+                },
+                move: {
+                    enable: true,
+                    speed: 0.4,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out"
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "grab" },
+                    onclick: { enable: false },
+                    resize: true
+                },
+                modes: { grab: { distance: 120, line_linked: { opacity: 0.2 } } }
+            },
+            retina_detect: true
         });
     </script>
 </body>
