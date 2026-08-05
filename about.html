@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>关于我 - iFPGAer.com</title>
+    <title>关于我 - iFPGAer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 粒子光点库 和首页统一 -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -18,6 +20,7 @@
                     },
                     fontFamily: {
                         tech: ['Orbitron', 'Rajdhani', 'system-ui', 'sans-serif'],
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
                     },
                     animation: {
                         'float-up': 'floatUp 6s ease-in-out infinite'
@@ -43,7 +46,7 @@
         }
         * { scroll-behavior: smooth; }
         body { color: #F6F8FF; overflow-x: hidden; }
-        /* 和首页完全一致背景 */
+        /* 背景路径适配根目录引用 */
         .bg-img-layer {
             position: fixed;
             inset: 0;
@@ -62,15 +65,22 @@
             z-index: -2;
             background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.3));
         }
+        /* 粒子层样式和首页完全一致 */
+        #particles-js {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body class="relative overflow-x-hidden font-sans min-h-screen flex flex-col justify-between">
-    <!-- 背景和首页一模一样 -->
+    <!-- 三层背景 与首页完全统一 -->
     <div class="bg-img-layer"></div>
+    <div id="particles-js"></div>
     <div class="bg-mask-layer"></div>
 
-    <!-- 顶部导航 完全复用首页结构 -->
     <nav class="sticky top-0 bg-white/5 backdrop-blur-none border-b border-chipBlue/20 z-50">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="index.html" class="text-2xl font-tech font-bold text-chipBlue flex items-center gap-3 text-glow">
@@ -79,30 +89,43 @@
             </a>
             <div class="hidden lg:flex gap-8 font-tech tracking-wide text-shadow">
                 <a href="index.html" class="hover:text-chipBlue">首页</a>
-                <div class="relative group">
-                    <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
+                <!-- ========== 资源库下拉 修改重点 pt-2 移除mt-2 ========== -->
+                <div class="relative group pt-2">
+                    <span class="text-chipBlue border-b border-chipBlue pb-1 hover:text-chipBlue cursor-pointer flex items-center gap-1">
                         资源库 <i class="fa-solid fa-chevron-down text-xs"></i>
                     </span>
-                    <div class="absolute hidden group-hover:block top-full left-0 mt-2 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44">
-                        <a href="resources.html" class="block py-2 hover:text-chipBlue">全部资源汇总</a>
-                        <a href="#" class="block py-2 hover:text-chipBlue">Verilog源码</a>
-                        <a href="#" class="block py-2 hover:text-chipBlue">开发板例程</a>
-                        <a href="#" class="block py-2 hover:text-chipBlue">工具安装包</a>
+                    <div class="absolute hidden group-hover:block top-full left-0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44 pt-2">
+                        <!-- <a href="resources.html" class="block py-2 hover:text-chipBlue">全部资源汇总</a> -->
+                        <a href="devtool.html" class="block py-2 text-chipBlue">开发工具</a>
+                        <a href="codelib.html" class="block py-2 hover:text-chipBlue">代码库</a>
+                        <a href="projectlib.html" class="block py-2 hover:text-chipBlue">工程库</a>
                     </div>
                 </div>
-                <div class="relative group">
+                <!-- ========== 学习教程下拉 修改重点 pt-2 移除mt-2 ========== -->
+                <div class="relative group pt-2">
                     <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
                         学习教程 <i class="fa-solid fa-chevron-down text-xs"></i>
                     </span>
-                    <div class="absolute hidden group-hover:block top-full left-0 mt-2 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44">
-                        <a href="verilog.html" class="block py-2 hover:text-chipBlue">Verilog完整指南</a>
-                        <a href="#" class="block py-2 hover:text-chipBlue">VHDL入门</a>
-                        <a href="#" class="block py-2 hover:text-chipBlue">Zynq软硬件协同</a>
-                        <a href="#" class="block py-2 hover:text-chipBlue">时序分析实战</a>
+                    <div class="absolute hidden group-hover:block top-full left-0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44 pt-2">
+                        <!-- <a href="verilog.html" class="block py-2 hover:text-chipBlue">Verilog完整指南</a> -->
+                        <a href="grammar.html" class="block py-2 hover:text-chipBlue">基本语法</a>
+                        <a href="toolusage.html" class="block py-2 hover:text-chipBlue">工具使用</a>
+                        <a href="timing.html" class="block py-2 hover:text-chipBlue">时序约束</a>
                     </div>
                 </div>
-                <a href="tech.html" class="hover:text-chipBlue">技术矩阵</a>
-                <a href="about.html" class="text-chipBlue border-b border-chipBlue pb-1">关于我</a>
+                <!-- ========== 技术矩阵下拉 修改重点 pt-2 移除mt-2 ========== -->
+                <div class="relative group pt-2">
+                    <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
+                        技术矩阵 <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </span>
+                    <div class="absolute hidden group-hover:block top-full left-0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44 pt-2">
+                        <!-- <a href="tech.html" class="block py-2 hover:text-chipBlue">技术矩阵总览</a> -->
+                        <a href="comm.html" class="block py-2 hover:text-chipBlue">通信处理</a>
+                        <a href="imageproc.html" class="block py-2 hover:text-chipBlue">图像处理</a>
+                        <a href="highspeedip.html" class="block py-2 hover:text-chipBlue">高速ip</a>
+                    </div>
+                </div>
+                <a href="about.html" class="hover:text-chipBlue">关于我</a>
             </div>
             <button class="lg:hidden text-white text-2xl text-shadow" id="menuBtn">
                 <i class="fa-solid fa-bars"></i>
@@ -112,28 +135,31 @@
             <div class="container mx-auto px-4 py-4 flex flex-col gap-3 font-tech text-lg text-shadow">
                 <a href="index.html" class="py-2 hover:text-chipBlue">首页</a>
                 <a href="resources.html" class="py-2 hover:text-chipBlue">资源库</a>
+                <a href="devtool.html" class="py-2 text-chipBlue">→开发工具</a>
+                <a href="codelib.html" class="py-2 hover:text-chipBlue">→代码库</a>
+                <a href="projectlib.html" class="py-2 hover:text-chipBlue">→工程库</a>
                 <a href="verilog.html" class="py-2 hover:text-chipBlue">Verilog教程</a>
+                <a href="grammar.html" class="py-2 hover:text-chipBlue">→基本语法</a>
+                <a href="toolusage.html" class="py-2 hover:text-chipBlue">→工具使用</a>
+                <a href="timing.html" class="py-2 hover:text-chipBlue">→时序约束</a>
                 <a href="tech.html" class="py-2 hover:text-chipBlue">技术矩阵</a>
-                <a href="about.html" class="py-2 text-chipBlue">关于我</a>
+                <a href="comm.html" class="py-2 hover:text-chipBlue">→通信处理</a>
+                <a href="imageproc.html" class="py-2 hover:text-chipBlue">→图像处理</a>
+                <a href="highspeedip.html" class="py-2 hover:text-chipBlue">→高速ip</a>
+                <a href="about.html" class="py-2 hover:text-chipBlue">关于我</a>
             </div>
-        </nav>
+        </div>
+    </nav>
 
-    <!-- 页面主体：缩小、高通透二维码卡片 -->
+    <!-- 页面主体：保持你原来缩小、高透明二维码卡片，无改动 -->
     <main class="flex-grow flex items-center justify-center px-4">
-        <!-- 修改：max-w-xs缩小尺寸、bg-black/15大幅透明、边框chipBlue/15淡化、p-6缩小内边距 -->
         <div class="bg-black/15 backdrop-blur-md border border-chipBlue/15 rounded-xl p-6 max-w-xs w-full text-center">
             <h2 class="text-xl font-tech text-chipBlue text-glow mb-5">联系二维码</h2>
             <img src="./assets/qrcode.jpg" alt="微信联系二维码" class="w-4/5 mx-auto rounded-lg mb-5">
-            <!-- <p class="text-gray-300 text-shadow text-sm">FPGA开发交流</p> -->
-            <!-- <div class="mt-5 pt-5 border-t border-darkBorder/20 text-left text-gray-300 space-y-2 text-sm text-shadow"> -->
-                <!-- <p><i class="fa-solid fa-envelope text-chipBlue mr-2"></i>984962560@qq.com</p> -->
-                <!-- <p><i class="fa-solid fa-weixin text-neonCyan mr-2"></i>iFPGAer_2025</p> -->
-                <!-- <p><i class="fa-brands fa-github text-neonPurple mr-2"></i>github.com/iFPGAer</p> -->
-            <!-- </div> -->
         </div>
     </main>
 
-    <!-- 页 和首页完全一致 -->
+    <!-- 页脚和首页完全统一 -->
     <footer class="border-t border-chipBlue/20 bg-black/10 py-3">
         <div class="container mx-auto px-4 text-center text-xs text-gray-300 text-shadow">
             <div class="flex flex-wrap justify-center gap-x-5 gap-y-1 mb-2">
@@ -144,7 +170,7 @@
     </footer>
 
     <script>
-        // 移动端菜单逻辑 和首页通用
+        // 移动端菜单逻辑 与首页一致
         const menuBtn = document.getElementById('menuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
         menuBtn.addEventListener('click', () => {
@@ -155,6 +181,42 @@
         });
         document.querySelectorAll('#mobileMenu a').forEach(link => {
             link.onclick = () => mobileMenu.classList.add('hidden');
+        });
+
+        // 粒子光点配置完全复用首页参数，视觉统一
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 30, density: { enable: true, value_area: 900 } },
+                color: { value: "#00A3FF" },
+                shape: { type: "circle" },
+                opacity: { value: 0.15, random: true },
+                size: { value: 1.2, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 100,
+                    color: "#00A3FF",
+                    opacity: 0.06,
+                    width: 0.4
+                },
+                move: {
+                    enable: true,
+                    speed: 0.4,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out"
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "grab" },
+                    onclick: { enable: false },
+                    resize: true
+                },
+                modes: { grab: { distance: 120, line_linked: { opacity: 0.2 } } }
+            },
+            retina_detect: true
         });
     </script>
 </body>
