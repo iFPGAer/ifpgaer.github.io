@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>代码库 | iFPGAer</title>
+    <title>UART串口模块 | iFPGAer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -42,13 +43,50 @@
             .text-shadow {
                 text-shadow: 0 0 6px rgba(0, 0, 0, 0.7);
             }
-            .card-hover {
-                transition: all 0.25s ease;
+            .toc-item-active{
+                color:#00A3FF;
+                border-left-color:#00A3FF;
             }
-            .card-hover:hover {
-                border-color:#00A3FF;
-                background-color:rgba(0,163,255,0.10);
-                transform: translateY(-2px);
+            .md-content h1 { font-size:1.4rem; font-weight:bold; margin:1.0rem 0 0.5rem; color:#00A3FF; border-bottom:1px solid rgba(0,163,255,0.2); padding-bottom:0.3rem; }
+            .md-content h2 { font-size:1.2rem; font-weight:bold; margin:0.9rem 0 0.4rem; color:#00A3FF; }
+            .md-content h3 { font-size:1.05rem; font-weight:bold; margin:0.7rem 0 0.35rem; color:#82d4ff; }
+            .md-content p { margin:0.5rem 0; line-height:1.6; color:#e2e8f0; font-size:0.95rem; }
+
+            .md-content pre {
+                background:#f6f8fa !important;
+                padding:1rem;
+                border-radius:0.5rem;
+                overflow-x:auto;
+                margin:0.7rem 0;
+                border:1px solid rgba(0,163,255,0.25);
+                position: relative;
+            }
+            .md-content code { font-family:Consolas,Monaco,monospace; }
+            .md-content pre code { color:#1e293b; font-size:13px; line-height:1.0; }
+
+            .md-content :not(pre)>code { background:rgba(0,163,255,0.15); padding:0.12rem 0.35rem; border-radius:0.25rem; color:#7dd3fc; font-size:0.9rem; }
+            .md-content ul, .md-content ol { padding-left:1.4rem; margin:0.5rem 0; }
+            .md-content li { margin:0.25rem 0; color:#e2e8f0; font-size:0.95rem; }
+            .md-content blockquote { border-left:3px solid #00A3FF; padding-left:1rem; opacity:0.85; margin:0.7rem 0; font-size:0.95rem; }
+            .md-content table { width:100%; border-collapse:collapse; margin:0.9rem 0; font-size:0.9rem; }
+            .md-content th,.md-content td { border:1px solid rgba(0,163,255,0.25); padding:0.4rem 0.6rem; }
+            .md-content th { background:rgba(0,163,255,0.15); }
+
+            .copy-btn{
+                position:absolute;
+                top:8px;
+                right:8px;
+                z-index:10;
+                background:rgba(0,163,255,0.2);
+                border:1px solid rgba(0,163,255,0.4);
+                color:#00A3FF;
+                border-radius:4px;
+                padding:3px 8px;
+                font-size:12px;
+                cursor:pointer;
+            }
+            .copy-btn:hover{
+                background:rgba(0,163,255,0.4);
             }
         }
         * { scroll-behavior: smooth; }
@@ -91,7 +129,6 @@
             </a>
             <div class="hidden lg:flex gap-8 font-tech tracking-wide text-shadow">
                 <a href="index.html" class="hover:text-chipBlue">首页</a>
-                <!-- 资源库下拉 -->
                 <div class="relative group">
                     <span class="border-b border-chipBlue pb-1 hover:text-chipBlue cursor-pointer flex items-center gap-1">
                         资源库 <i class="fa-solid fa-chevron-down text-xs"></i>
@@ -102,7 +139,6 @@
                         <a href="projectlib.html" class="block py-2 hover:text-chipBlue">工程库</a>
                     </div>
                 </div>
-                <!-- 学习教程下拉 -->
                 <div class="relative group">
                     <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
                         学习教程 <i class="fa-solid fa-chevron-down text-xs"></i>
@@ -113,7 +149,6 @@
                         <a href="timing.html" class="block py-2 hover:text-chipBlue">时序约束</a>
                     </div>
                 </div>
-                <!-- 技术矩阵下拉 -->
                 <div class="relative group">
                     <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
                         技术矩阵 <i class="fa-solid fa-chevron-down text-xs"></i>
@@ -130,7 +165,6 @@
                 <i class="fa-solid fa-bars"></i>
             </button>
         </div>
-        <!-- 移动端菜单，同步更新为真实页面链接 -->
         <div class="lg:hidden hidden bg-black/60 backdrop-blur-md border-b border-chipBlue/20 absolute w-full" id="mobileMenu">
             <div class="container mx-auto px-4 py-4 flex flex-col gap-3 font-tech text-lg text-shadow">
                 <a href="index.html" class="py-2 text-chipBlue">首页</a>
@@ -148,35 +182,24 @@
         </div>
     </nav>
 
-
     <main class="flex-grow container mx-auto px-4 py-10">
-        <div class="bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20">
-            <h1 class="text-2xl md:text-3xl font-tech text-chipBlue text-glow mb-4">代码库</h1>
-            <p class="text-gray-200 mb-6">可复用Verilog模块、IP封装、通用驱动、算法模块源码片段。点击卡片查看模块详情。</p>
-
-            <!-- 模块条目列表，新增模块直接复制一份下面a卡片即可 -->
-            <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
-                <!-- UART模块 条目 -->
-                <a href="mod_uart.html" class="card-hover block p-4 bg-white/5 rounded-lg border border-chipBlue/20">
-                    <h3 class="font-tech text-lg text-chipBlue mb-2"><i class="fa-solid fa-microchip mr-2"></i>UART串口模块</h3>
-                    <p class="text-sm text-gray-300">可配置波特率，支持收发，成熟Verilog驱动</p>
-                </a>
-                <!-- SPI模块 条目 -->
-                <a href="mod_spi.html" class="card-hover block p-4 bg-white/5 rounded-lg border border-chipBlue/20">
-                    <h3 class="font-tech text-lg text-chipBlue mb-2"><i class="fa-solid fa-microchip mr-2"></i>SPI Master模块</h3>
-                    <p class="text-sm text-gray-300">标准SPI主机，可配置时钟极性相位</p>
-                </a>
-                <!-- I2C模块 条目 -->
-                <a href="mod_i2c.html" class="card-hover block p-4 bg-white/5 rounded-lg border border-chipBlue/20">
-                    <h3 class="font-tech text-lg text-chipBlue mb-2"><i class="fa-solid fa-microchip mr-2"></i>I2C控制器模块</h3>
-                    <p class="text-sm text-gray-300">I2C读写控制器，支持标准速度模式</p>
-                </a>
-                <!-- ==========后续新增模块，复制上面a标签，修改href、标题、描述即可========== -->
+        <div class="mb-4">
+            <a href="codelib.html" class="text-cyan-300 hover:underline"><i class="fa-solid fa-arrow-left mr-1"></i>返回代码库列表</a>
+        </div>
+        <div class="flex gap-6">
+            <aside id="tocWrap" class="hidden xl:block w-56 shrink-0">
+                <div class="sticky top-24 bg-black/40 backdrop-blur-md rounded-lg p-4 border border-chipBlue/20 max-h-[75vh] overflow-y-auto">
+                    <h4 class="text-chipBlue font-bold mb-3 text-sm"><i class="fa-solid fa-list-ul mr-1"></i>目录</h4>
+                    <nav id="tocBox" class="text-xs space-y-1.5 text-gray-300"></nav>
+                </div>
+            </aside>
+            <div id="md-wrap" class="flex-1 bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20 w-full">
+                <div id="md-content" class="md-content"></div>
             </div>
         </div>
     </main>
 
-    <footer class="border-t border-chipBlue/20 bg-black/10 py-3">
+    <footer class="border-t border-chipBlue/20 bg-black/10 py-3 mt-auto">
         <div class="container mx-auto px-4 text-center text-xs text-gray-300 text-shadow">
             <div class="flex flex-wrap justify-center gap-x-5 gap-y-1 mb-2">
                 <span>Email:984962560@qq.com</span>
@@ -232,6 +255,102 @@
             },
             retina_detect: true
         });
+
+        const FIX_MD_FILE = "uart_module.md";
+        const mdContentDom = document.getElementById('md-content');
+        const tocBox = document.getElementById('tocBox');
+        const tocWrap = document.getElementById('tocWrap');
+        const mdUrl = `./docs/${FIX_MD_FILE}`;
+        console.log("尝试加载md地址：", mdUrl);
+
+        if(typeof marked === 'undefined'){
+            mdContentDom.innerHTML = `<div class="text-red-400">marked解析库加载失败，请刷新重试</div>`;
+        }else{
+            fetch(mdUrl)
+                .then(resp=>{
+                    if(!resp.ok) throw new Error(`HTTP ${resp.status}，找不到文件：${mdUrl}`);
+                    return resp.text();
+                })
+                .then(mdText=>{
+                    if(!mdText.trim()){
+                        mdContentDom.innerHTML = `<div class="text-yellow-400">md文件读取成功，但是文件内容为空</div>`;
+                        return;
+                    }
+                    const html = marked.parse(mdText);
+                    mdContentDom.innerHTML = html;
+
+                    const headings = mdContentDom.querySelectorAll("h1,h2,h3");
+                    console.log("识别到标题数量：", headings.length);
+                    const tocData = [];
+                    headings.forEach((h, idx)=>{
+                        const id = `heading-${idx}`;
+                        h.id = id;
+                        tocData.push({
+                            id:id,
+                            text:h.innerText.trim(),
+                            level:Number(h.tagName.replace("H",""))
+                        })
+                    });
+
+                    // 没有标题，隐藏整个目录侧边栏
+                    if(tocData.length === 0){
+                        tocWrap.classList.add('hidden');
+                    }else{
+                        tocWrap.classList.remove('hidden');
+                        tocBox.innerHTML = "";
+                        tocData.forEach(item=>{
+                            const a = document.createElement('a');
+                            a.href=`#${item.id}`;
+                            a.dataset.targetId = item.id;
+                            a.className = "block py-1 pl-1 border-l-2 border-transparent hover:text-chipBlue toc-item";
+                            a.style.paddingLeft = ((item.level-1)*12)+"px";
+                            a.innerText = item.text;
+                            tocBox.appendChild(a);
+                        })
+                    }
+
+                    const preList = mdContentDom.querySelectorAll('pre');
+                    preList.forEach(pre=>{
+                        const codeText = pre.querySelector('code').innerText;
+                        const copyBtn = document.createElement('button');
+                        copyBtn.className = 'copy-btn';
+                        copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i> 复制';
+                        copyBtn.addEventListener('click',async ()=>{
+                            try{
+                                await navigator.clipboard.writeText(codeText);
+                                copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> 已复制';
+                                setTimeout(()=>{
+                                    copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i> 复制';
+                                },1200);
+                            }catch(e){
+                                alert("复制失败，请手动复制代码");
+                            }
+                        })
+                        pre.appendChild(copyBtn);
+                    })
+
+                    const tocItems = tocBox.querySelectorAll('.toc-item');
+                    window.addEventListener('scroll',()=>{
+                        let currentId = null;
+                        headings.forEach(h=>{
+                            const rect = h.getBoundingClientRect();
+                            if(rect.top <= 120){
+                                currentId = h.id;
+                            }
+                        })
+                        tocItems.forEach(it=>{
+                            if(it.dataset.targetId === currentId){
+                                it.classList.add('toc-item-active');
+                            }else{
+                                it.classList.remove('toc-item-active');
+                            }
+                        })
+                    })
+                })
+                .catch(err=>{
+                    mdContentDom.innerHTML = `<div class="text-red-400">加载Markdown文档失败：${err.message}<br>请确认仓库根目录docs文件夹，存在文件：${FIX_MD_FILE}</div>`;
+                })
+        }
     </script>
 </body>
 </html>
