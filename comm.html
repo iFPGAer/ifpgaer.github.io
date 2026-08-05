@@ -88,7 +88,7 @@
                     <span class="border-b border-chipBlue pb-1 hover:text-chipBlue cursor-pointer flex items-center gap-1">
                         资源库 <i class="fa-solid fa-chevron-down text-xs"></i>
                     </span>
-                    <div class="absolute hidden group-hover:block -top-1 left-0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44">
+                    <div class="absolute hidden group-hover:block top-full pt-1 left-0left-0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44">
                         <a href="devtool.html" class="block py-2 hover:text-chipBlue">开发工具</a>
                         <a href="codelib.html" class="block py-2 hover:text-chipBlue">代码库</a>
                         <a href="projectlib.html" class="block py-2 hover:text-chipBlue">工程库</a>
@@ -99,7 +99,7 @@
                     <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
                         学习教程 <i class="fa-solid fa-chevron-down text-xs"></i>
                     </span>
-                    <div class="absolute hidden group-hover:block -top-1 left-0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44">
+                    <div class="absolute hidden group-hover:block top-full pt-1 left-0 left-0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44">
                         <a href="grammar.html" class="block py-2 hover:text-chipBlue">基本语法</a>
                         <a href="toolusage.html" class="block py-2 hover:text-chipBlue">工具使用</a>
                         <a href="timing.html" class="block py-2 hover:text-chipBlue">时序约束</a>
@@ -110,7 +110,7 @@
                     <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
                         技术矩阵 <i class="fa-solid fa-chevron-down text-xs"></i>
                     </span>
-                    <div class="absolute hidden group-hover:block -top-1 left-0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44">
+                    <div class="absolute hidden group-hover:block top-full pt-1 left-0 left-0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44">
                         <a href="comm.html" class="block py-2 hover:text-chipBlue">通信处理</a>
                         <a href="imageproc.html" class="block py-2 hover:text-chipBlue">图像处理</a>
                         <a href="highspeedip.html" class="block py-2 hover:text-chipBlue">高速ip</a>
@@ -122,42 +122,40 @@
                 <i class="fa-solid fa-bars"></i>
             </button>
         </div>
+        <!-- 移动端菜单，同步更新为真实页面链接 -->
         <div class="lg:hidden hidden bg-black/60 backdrop-blur-md border-b border-chipBlue/20 absolute w-full" id="mobileMenu">
             <div class="container mx-auto px-4 py-4 flex flex-col gap-3 font-tech text-lg text-shadow">
-                <a href="index.html" class="py-2 hover:text-chipBlue">首页</a>
-                <a href="resources.html" class="py-2 hover:text-chipBlue">资源库</a>
-                <a href="devtool.html" class="py-2 text-chipBlue">→开发工具</a>
-                <a href="codelib.html" class="py-2 hover:text-chipBlue">→代码库</a>
-                <a href="projectlib.html" class="py-2 hover:text-chipBlue">→工程库</a>
-                <a href="verilog.html" class="py-2 hover:text-chipBlue">Verilog教程</a>
-                <a href="grammar.html" class="py-2 hover:text-chipBlue">→基本语法</a>
-                <a href="toolusage.html" class="py-2 hover:text-chipBlue">→工具使用</a>
-                <a href="timing.html" class="py-2 hover:text-chipBlue">→时序约束</a>
-                <a href="tech.html" class="py-2 hover:text-chipBlue">技术矩阵</a>
-                <a href="comm.html" class="py-2 hover:text-chipBlue">→通信处理</a>
-                <a href="imageproc.html" class="py-2 hover:text-chipBlue">→图像处理</a>
-                <a href="highspeedip.html" class="py-2 hover:text-chipBlue">→高速ip</a>
+                <a href="index.html" class="py-2 text-chipBlue">首页</a>
+                <a href="devtool.html" class="py-2 hover:text-chipBlue">开发工具库</a>
+                <a href="codelib.html" class="py-2 hover:text-chipBlue">模块库</a>
+                <a href="projectlib.html" class="py-2 hover:text-chipBlue">工程库</a>
+                <a href="grammar.html" class="py-2 hover:text-chipBlue">基本语法</a>
+                <a href="toolusage.html" class="py-2 hover:text-chipBlue">工具使用</a>
+                <a href="timing.html" class="py-2 hover:text-chipBlue">时序约束</a>
+                <a href="comm.html" class="py-2 hover:text-chipBlue">通信处理</a>
+                <a href="imageproc.html" class="py-2 hover:text-chipBlue">图像处理</a>
+                <a href="highspeedip.html" class="py-2 hover:text-chipBlue">高速ip</a>
                 <a href="about.html" class="py-2 hover:text-chipBlue">关于我</a>
             </div>
         </div>
     </nav>
 
-    <main class="flex-grow container mx-auto px-4 py-10">
+    <!-- <main class="flex-grow container mx-auto px-4 py-10">
         <div class="bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20">
-            <h1 class="text-2xl md:text-3xl font-tech text-chipBlue text-glow mb-4">通信处理</h1>
-            <p class="text-gray-200 mb-6">各类串行、并行通信接口逻辑实现，包含低速外设与高速通信模块。</p>
+            <h1 class="text-2xl md:text-3xl font-tech text-chipBlue text-glow mb-4">开发工具</h1>
+            <p class="text-gray-200 mb-6">FPGA开发相关工具集合，包括IDE、仿真工具、辅助脚本、环境配置。</p>
             <div class="grid md:grid-cols-2 gap-4">
                 <div class="p-4 bg-white/5 rounded-lg border border-chipBlue/20">
-                    <h3 class="font-tech text-lg text-chipBlue mb-2">低速外设通信</h3>
-                    <p class="text-sm text-gray-300">UART、SPI、I2C、RS422、CAN控制器逻辑与帧解析</p>
+                    <h3 class="font-tech text-lg text-chipBlue mb-2">综合仿真工具</h3>
+                    <p class="text-sm text-gray-300">Vivado、Quartus、Modelsim、VCS相关安装与配置笔记</p>
                 </div>
                 <div class="p-4 bg-white/5 rounded-lg border border-chipBlue/20">
-                    <h3 class="font-tech text-lg text-chipBlue mb-2">高速通信接口</h3>
-                    <p class="text-sm text-gray-300">以太网、AXI总线、FIFO数据缓存、跨时钟域数据交互</p>
+                    <h3 class="font-tech text-lg text-chipBlue mb-2">辅助工具</h3>
+                    <p class="text-sm text-gray-300">波形查看、比特流处理、串口调试、脚本工具</p>
                 </div>
             </div>
         </div>
-    </main>
+    </main> -->
 
     <footer class="border-t border-chipBlue/20 bg-black/10 py-3">
         <div class="container mx-auto px-4 text-center text-xs text-gray-300 text-shadow">
