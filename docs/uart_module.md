@@ -264,4 +264,4 @@ endmodule
 - [仿真 TB 代码 uart_tb.v](https://pan.baidu.com/s/xxx2)
 - [全套工程压缩包(uart.v + uart_tb.v)](https://pan.baidu.com/s/xxx3)
 
-> 说明：将上面括号内的链接替换为真实百度网盘分享地址，VSCode / Typora 预览下文字可点击跳转下载。
+> 说明：点击文字跳转下载。
