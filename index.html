@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Welcome iFPGAer</title>
+    <title>Welcome iFPGAer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- 引入粒子光点库 -->
@@ -93,15 +93,15 @@
             <div class="hidden lg:flex gap-8 font-tech tracking-wide text-shadow">
                 <a href="index.html" class="text-chipBlue border-b border-chipBlue pb-1">首页</a>
 
-                <!-- ==========资源库下拉：增加pb‑2消除hover空隙========== -->
+                <!-- ==========资源库下拉========== -->
                 <div class="relative group pb-2">
                     <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
                         资源库 <i class="fa-solid fa-chevron-down text-xs"></i>
                     </span>
-                    <div class="absolute hidden group-hover:block top-full left-0 mt‑0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44 pointer-events-auto">
-                        <a href="devtool.html" class="block py-2 hover:text-chipBlue">开发工具库</a>
-                        <a href="codelib.html" class="block py-2 hover:text-chipBlue">代码库</a>
-                        <a href="projectlib.html" class="block py-2 hover:text-chipBlue">工程库</a>
+                    <div class="absolute hidden group-hover:block top-full left-0 mt-0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44 pointer-events-auto">
+                        <a href="page-base.html?cat=devtool" class="block py-2 hover:text-chipBlue">开发工具库</a>
+                        <a href="page-base.html?cat=codelib" class="block py-2 hover:text-chipBlue">代码库</a>
+                        <a href="page-base.html?cat=projectlib" class="block py-2 hover:text-chipBlue">工程库</a>
                     </div>
                 </div>
 
@@ -110,10 +110,10 @@
                     <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
                         学习教程 <i class="fa-solid fa-chevron-down text-xs"></i>
                     </span>
-                    <div class="absolute hidden group-hover:block top-full left-0 mt‑0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44 pointer-events-auto">
-                        <a href="grammar.html" class="block py-2 hover:text-chipBlue">基本语法</a>
-                        <a href="toolusage.html" class="block py-2 hover:text-chipBlue">工具使用</a>
-                        <a href="timing.html" class="block py-2 hover:text-chipBlue">时序约束</a>
+                    <div class="absolute hidden group-hover:block top-full left-0 mt-0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44 pointer-events-auto">
+                        <a href="page-base.html?cat=grammar" class="block py-2 hover:text-chipBlue">基本语法</a>
+                        <a href="page-base.html?cat=toolusage" class="block py-2 hover:text-chipBlue">工具使用</a>
+                        <a href="page-base.html?cat=timing" class="block py-2 hover:text-chipBlue">时序约束</a>
                     </div>
                 </div>
 
@@ -122,10 +122,10 @@
                     <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
                         技术矩阵 <i class="fa-solid fa-chevron-down text-xs"></i>
                     </span>
-                    <div class="absolute hidden group-hover:block top-full left-0 mt‑0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44 pointer-events-auto">
-                        <a href="comm.html" class="block py-2 hover:text-chipBlue">通信处理</a>
-                        <a href="imageproc.html" class="block py-2 hover:text-chipBlue">图像处理</a>
-                        <a href="highspeedip.html" class="block py-2 hover:text-chipBlue">高速ip</a>
+                    <div class="absolute hidden group-hover:block top-full left-0 mt-0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44 pointer-events-auto">
+                        <a href="page-base.html?cat=comm" class="block py-2 hover:text-chipBlue">通信处理</a>
+                        <a href="page-base.html?cat=imageproc" class="block py-2 hover:text-chipBlue">图像处理</a>
+                        <a href="page-base.html?cat=highspeedip" class="block py-2 hover:text-chipBlue">高速ip</a>
                     </div>
                 </div>
 
@@ -135,19 +135,19 @@
                 <i class="fa-solid fa-bars"></i>
             </button>
         </div>
-        <!-- 移动端菜单，同步更新为真实页面链接 -->
+        <!-- 移动端菜单，同步更新链接 -->
         <div class="lg:hidden hidden bg-black/60 backdrop-blur-md border-b border-chipBlue/20 absolute w-full" id="mobileMenu">
             <div class="container mx-auto px-4 py-4 flex flex-col gap-3 font-tech text-lg text-shadow">
                 <a href="index.html" class="py-2 text-chipBlue">首页</a>
-                <a href="devtool.html" class="py-2 hover:text-chipBlue">开发工具库</a>
-                <a href="codelib.html" class="py-2 hover:text-chipBlue">代码库</a>
-                <a href="projectlib.html" class="py-2 hover:text-chipBlue">工程库</a>
-                <a href="grammar.html" class="py-2 hover:text-chipBlue">基本语法</a>
-                <a href="toolusage.html" class="py-2 hover:text-chipBlue">工具使用</a>
-                <a href="timing.html" class="py-2 hover:text-chipBlue">时序约束</a>
-                <a href="comm.html" class="py-2 hover:text-chipBlue">通信处理</a>
-                <a href="imageproc.html" class="py-2 hover:text-chipBlue">图像处理</a>
-                <a href="highspeedip.html" class="py-2 hover:text-chipBlue">高速ip</a>
+                <a href="page-base.html?cat=devtool" class="py-2 hover:text-chipBlue">开发工具库</a>
+                <a href="page-base.html?cat=codelib" class="py-2 hover:text-chipBlue">代码库</a>
+                <a href="page-base.html?cat=projectlib" class="py-2 hover:text-chipBlue">工程库</a>
+                <a href="page-base.html?cat=grammar" class="py-2 hover:text-chipBlue">基本语法</a>
+                <a href="page-base.html?cat=toolusage" class="py-2 hover:text-chipBlue">工具使用</a>
+                <a href="page-base.html?cat=timing" class="py-2 hover:text-chipBlue">时序约束</a>
+                <a href="page-base.html?cat=comm" class="py-2 hover:text-chipBlue">通信处理</a>
+                <a href="page-base.html?cat=imageproc" class="py-2 hover:text-chipBlue">图像处理</a>
+                <a href="page-base.html?cat=highspeedip" class="py-2 hover:text-chipBlue">高速ip</a>
                 <a href="about.html" class="py-2 hover:text-chipBlue">关于我</a>
             </div>
         </div>

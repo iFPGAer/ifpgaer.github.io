@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>详情页 | iFPGAer</title>
+    <title id="pageTitle">加载中 | iFPGAer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
@@ -43,50 +43,13 @@
             .text-shadow {
                 text-shadow: 0 0 6px rgba(0, 0, 0, 0.7);
             }
-            .toc-item-active{
-                color:#00A3FF;
-                border-left-color:#00A3FF;
+            .card-hover {
+                transition: all 0.25s ease;
             }
-            .md-content h1 { font-size:1.4rem; font-weight:bold; margin:1.0rem 0 0.5rem; color:#00A3FF; border-bottom:1px solid rgba(0,163,255,0.2); padding-bottom:0.3rem; }
-            .md-content h2 { font-size:1.2rem; font-weight:bold; margin:0.9rem 0 0.4rem; color:#00A3FF; }
-            .md-content h3 { font-size:1.05rem; font-weight:bold; margin:0.7rem 0 0.35rem; color:#82d4ff; }
-            .md-content p { margin:0.5rem 0; line-height:1.6; color:#e2e8f0; font-size:0.95rem; }
-
-            .md-content pre {
-                background:#f6f8fa !important;
-                padding:1rem;
-                border-radius:0.5rem;
-                overflow-x:auto;
-                margin:0.7rem 0;
-                border:1px solid rgba(0,163,255,0.25);
-                position: relative;
-            }
-            .md-content code { font-family:Consolas,Monaco,monospace; }
-            .md-content pre code { color:#1e293b; font-size:13px; line-height:1.0; }
-
-            .md-content :not(pre)>code { background:rgba(0,163,0.15); padding:0.12rem 0.35rem; border-radius:0.25rem; color:#7dd3fc; font-size:0.9rem; }
-            .md-content ul, .md-content ol { padding-left:1.4rem; margin:0.5rem 0; }
-            .md-content li { margin:0.25rem 0; color:#e2e8f0; font-size:0.95rem; }
-            .md-content blockquote { border-left:3px solid #00A3FF; padding-left:1rem; opacity:0.85; margin:0.7rem 0; font-size:0.95rem; }
-            .md-content table { width:100%; border-collapse:collapse; margin:0.9rem 0; font-size:0.9rem; }
-            .md-content th,.md-content td { border:1px solid rgba(0,163,255,0.25); padding:0.4rem 0.6rem; }
-            .md-content th { background:rgba(0,163,255,0.15); }
-
-            .copy-btn{
-                position:absolute;
-                top:8px;
-                right:8px;
-                z-index:10;
-                background:rgba(0,163,255,0.2);
-                border:1px solid rgba(0,163,255,0.4);
-                color:#00A3FF;
-                border-radius:4px;
-                padding:3px 8px;
-                font-size:12px;
-                cursor:pointer;
-            }
-            .copy-btn:hover{
-                background:rgba(0,163,255,0.4);
+            .card-hover:hover {
+                border-color:#00A3FF;
+                background-color:rgba(0,163,255,0.10);
+                transform: translateY(-2px);
             }
         }
         * { scroll-behavior: smooth; }
@@ -100,6 +63,8 @@
             background-position: center;
             background-repeat: no-repeat;
             filter: brightness(1.05) contrast(1.08);
+            transform: none;
+            animation: none;
         }
         .bg-mask-layer {
             position: fixed;
@@ -121,6 +86,7 @@
     <div id="particles-js"></div>
     <div class="bg-mask-layer"></div>
 
+    <!-- 导航栏完全采用你提供的参考结构 -->
     <nav class="sticky top-0 bg-white/5 backdrop-blur-none border-b border-chipBlue/20 z-50">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="index.html" class="text-2xl font-tech font-bold text-chipBlue flex items-center gap-3 text-glow">
@@ -128,19 +94,21 @@
                 <span>iFPGAer</span>
             </a>
             <div class="hidden lg:flex gap-8 font-tech tracking-wide text-shadow">
-                <a href="index.html" class="hover:text-chipBlue">首页</a>
-                <!-- 资源库下拉 全部替换page-base链接 -->
+                <a href="index.html" class="text-chipBlue border-b border-chipBlue pb-1">首页</a>
+
+                <!-- ==========资源库下拉========== -->
                 <div class="relative group pb-2">
-                    <span class="border-b border-chipBlue pb-1 hover:text-chipBlue cursor-pointer flex items-center gap-1">
+                    <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
                         资源库 <i class="fa-solid fa-chevron-down text-xs"></i>
                     </span>
                     <div class="absolute hidden group-hover:block top-full left-0 mt-0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44 pointer-events-auto">
-                        <a href="page-base.html?cat=devtool" class="block py-2 hover:text-chipBlue">开发工具</a>
+                        <a href="page-base.html?cat=devtool" class="block py-2 hover:text-chipBlue">开发工具库</a>
                         <a href="page-base.html?cat=codelib" class="block py-2 hover:text-chipBlue">代码库</a>
                         <a href="page-base.html?cat=projectlib" class="block py-2 hover:text-chipBlue">工程库</a>
                     </div>
                 </div>
-                <!-- 学习教程下拉 -->
+
+                <!-- ==========学习教程下拉========== -->
                 <div class="relative group pb-2">
                     <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
                         学习教程 <i class="fa-solid fa-chevron-down text-xs"></i>
@@ -151,7 +119,8 @@
                         <a href="page-base.html?cat=timing" class="block py-2 hover:text-chipBlue">时序约束</a>
                     </div>
                 </div>
-                <!-- 技术矩阵下拉 -->
+
+                <!-- ==========技术矩阵下拉========== -->
                 <div class="relative group pb-2">
                     <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
                         技术矩阵 <i class="fa-solid fa-chevron-down text-xs"></i>
@@ -162,13 +131,14 @@
                         <a href="page-base.html?cat=highspeedip" class="block py-2 hover:text-chipBlue">高速ip</a>
                     </div>
                 </div>
+
                 <a href="about.html" class="hover:text-chipBlue">关于我</a>
             </div>
             <button class="lg:hidden text-white text-2xl text-shadow" id="menuBtn">
                 <i class="fa-solid fa-bars"></i>
             </button>
         </div>
-        <!-- 移动端菜单 全部替换page链接 -->
+        <!-- 移动端菜单，同步更新链接 -->
         <div class="lg:hidden hidden bg-black/60 backdrop-blur-md border-b border-chipBlue/20 absolute w-full" id="mobileMenu">
             <div class="container mx-auto px-4 py-4 flex flex-col gap-3 font-tech text-lg text-shadow">
                 <a href="index.html" class="py-2 text-chipBlue">首页</a>
@@ -181,25 +151,17 @@
                 <a href="page-base.html?cat=comm" class="py-2 hover:text-chipBlue">通信处理</a>
                 <a href="page-base.html?cat=imageproc" class="py-2 hover:text-chipBlue">图像处理</a>
                 <a href="page-base.html?cat=highspeedip" class="py-2 hover:text-chipBlue">高速ip</a>
-                <a href="about.html" class="py-2 hover:text-chipBlue">关于我
+                <a href="about.html" class="py-2 hover:text-chipBlue">关于我</a>
             </div>
         </div>
     </nav>
 
     <main class="flex-grow container mx-auto px-4 py-10">
-        <div class="mb-4">
-            <!-- JS动态读取分类，不写死codelib -->
-            <a id="backLink" class="text-cyan-300 hover:underline"><i class="fa-solid fa-arrow-left mr-1"></i>返回列表</a>
-        </div>
-        <div class="flex gap-6">
-            <aside id="tocWrap" class="hidden xl:block w-56 shrink-0">
-                <div class="sticky top-24 bg-black/40 backdrop-blur-md rounded-lg p-4 border border-chipBlue/20 max-h-[75vh] overflow-y-auto">
-                    <h4 class="text-chipBlue font-bold mb-3 text-sm"><i class="fa-solid fa-list-ul mr-1"></i>目录</h4>
-                    <nav id="tocBox" class="text-xs space-y-1.5 text-gray-300"></nav>
-                </div>
-            </aside>
-            <div id="md-wrap" class="flex-1 bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20 w-full">
-                <div id="md-content" class="md-content">加载中...</div>
+        <div class="bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20">
+            <h1 id="mainTitle" class="text-2xl md:text-3xl font-tech text-chipBlue text-glow mb-4">加载中...</h1>
+            <p id="pageDesc" class="text-gray-200 mb-6"></p>
+            <div id="moduleListWrap" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+                <div class="text-gray-400">模块加载中...</div>
             </div>
         </div>
     </main>
@@ -214,6 +176,7 @@
     </footer>
 
     <script>
+        // 移动端菜单逻辑
         const menuBtn = document.getElementById('menuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
         menuBtn.addEventListener('click', () => {
@@ -226,6 +189,7 @@
             link.onclick = () => mobileMenu.classList.add('hidden');
         });
 
+        // 粒子背景
         particlesJS("particles-js", {
             particles: {
                 number: { value: 30, density: { enable: true, value_area: 900 } },
@@ -261,97 +225,61 @@
             retina_detect: true
         });
 
-        // ========= 核心：读取URL参数 自动生成返回链接 =========
+        // 栏目渲染核心（带数组安全校验，杜绝forEach报错）
         const urlParams = new URLSearchParams(window.location.search);
-        const mdFileName = urlParams.get('md');
-        const catName = urlParams.get('cat') || 'codelib'; // 无参数默认代码库
-        const backLink = document.getElementById('backLink');
-        backLink.href = `page-base.html?cat=${catName}`;
+        const catKey = urlParams.get('cat');
+        const titleDom = document.getElementById('pageTitle');
+        const mainTitleDom = document.getElementById('mainTitle');
+        const descDom = document.getElementById('pageDesc');
+        const listWrap = document.getElementById('moduleListWrap');
 
-        const mdContentDom = document.getElementById('md-content');
-        const tocBox = document.getElementById('tocBox');
-        const tocWrap = document.getElementById('tocWrap');
-
-        if(!mdFileName){
-            mdContentDom.innerHTML = `<div class="text-red-400">参数缺失，请从代码库列表点击模块跳转</div>`;
-        }else if(typeof marked === 'undefined'){
-            mdContentDom.innerHTML = `<div class="text-red-400">marked解析库加载失败，请刷新重试</div>`;
-        }else{
-            const mdUrl = `./docs/${mdFileName}`;
-            console.log("加载文档：", mdUrl);
-            fetch(mdUrl)
-                .then(resp=>{
-                    if(!resp.ok) throw new Error(`文件不存在 ${mdFileName}`);
-                    return resp.text();
-                })
-                .then(mdText=>{
-                    if(!mdText.trim()){
-                        mdContentDom.innerHTML = `<div class="text-yellow-400">MD文件为空</div>`;
+        if (!catKey) {
+            listWrap.innerHTML = '<div class="text-red-400 col-span-full">栏目参数错误，请从导航菜单进入页面</div>';
+        } else {
+            fetch('./assets/category.json')
+                .then(res => res.json())
+                .then(catList => {
+                    const currCat = catList.find(item => item.catKey === catKey);
+                    if (!currCat) {
+                        listWrap.innerHTML = '<div class="text-red-400 col-span-full">不存在该分类栏目</div>';
                         return;
                     }
-                    const html = marked.parse(mdText);
-                    mdContentDom.innerHTML = html;
+                    titleDom.innerText = currCat.pageTitle;
+                    mainTitleDom.innerText = currCat.mainTitle;
+                    descDom.innerText = currCat.desc;
 
-                    // 提取标题生成侧边目录
-                    const headings = mdContentDom.querySelectorAll("h1,h2,h3");
-                    const tocData = [];
-                    headings.forEach((h, idx)=>{
-                        const id = `heading-${idx}`;
-                        h.id = id;
-                        tocData.push({id, text:h.innerText.trim(), level:Number(h.tagName.replace("H",""))})
-                    });
-
-                    // 存在标题才显示侧边目录
-                    if(tocData.length === 0){
-                        tocWrap.classList.add('hidden');
-                    }else{
-                        tocWrap.classList.remove('hidden');
-                        tocBox.innerHTML = "";
-                        tocData.forEach(item=>{
-                            const a = document.createElement('a');
-                            a.href=`#${item.id}`;
-                            a.dataset.targetId = item.id;
-                            a.className = "block py-1 pl-1 border-l-2 border-transparent hover:text-chipBlue toc-item";
-                            a.style.paddingLeft = ((item.level-1)*12)+"px";
-                            a.innerText = item.text;
-                            tocBox.appendChild(a);
-                        })
-                    }
-
-                    // 代码块复制按钮
-                    const preList = mdContentDom.querySelectorAll('pre');
-                    preList.forEach(pre=>{
-                        const codeText = pre.querySelector('code').innerText;
-                        const copyBtn = document.createElement('button');
-                        copyBtn.className = 'copy-btn';
-                        copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i> 复制';
-                        copyBtn.addEventListener('click',async ()=>{
-                            try{
-                                await navigator.clipboard.writeText(codeText);
-                                copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> 已复制';
-                                setTimeout(()=>copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i>',1200);
-                            }catch(e){
-                                alert("复制失败，请手动复制代码");
+                    fetch('./assets/modules.json')
+                        .then(res => res.json())
+                        .then(allModules => {
+                            const moduleArr = allModules[catKey];
+                            if (!Array.isArray(moduleArr)) {
+                                listWrap.innerHTML = '<div class="text-gray-400 col-span-full">该分类暂无模块配置</div>';
+                                return;
                             }
+                            if (moduleArr.length === 0) {
+                                listWrap.innerHTML = '<div class="text-gray-400 col-span-full">该分类下暂无文档模块</div>';
+                                return;
+                            }
+                            listWrap.innerHTML = '';
+                            moduleArr.forEach(item => {
+                                const a = document.createElement('a');
+                                a.className = "card-hover block p-4 bg-white/5 rounded-lg border border-chipBlue/20";
+                                a.href = `detail.html?md=${item.mdFile}&cat=${catKey}`;
+                                a.innerHTML = `
+                                    <h3 class="font-tech text-lg text-chipBlue mb-2">
+                                        <i class="fa-solid ${item.icon} mr-2"></i>${item.title}
+                                    </h3>
+                                    <p class="text-sm text-gray-300">${item.desc}</p>
+                                `;
+                                listWrap.appendChild(a);
+                            })
                         })
-                        pre.appendChild(copyBtn);
-                    })
-
-                    // 滚动高亮当前目录项
-                    const tocItems = tocBox.querySelectorAll('.toc-item');
-                    window.addEventListener('scroll',()=>{
-                        let currentId = null;
-                        headings.forEach(h=>{
-                            const rect = h.getBoundingClientRect();
-                            if(rect.top <= 120) currentId = h.id;
+                        .catch(err => {
+                            listWrap.innerHTML = `<div class="text-red-400 col-span-full">模块配置加载失败：${err.message}</div>`;
                         })
-                        tocItems.forEach(it=>{
-                            it.classList.toggle('toc-item-active', it.dataset.targetId === currentId);
-                        })
-                    })
                 })
-                .catch(err=>{
-                    mdContentDom.innerHTML = `<div class="text-red-400">加载失败：${err.message}<br>确认docs目录存在 ${mdFileName}</div>`;
+                .catch(err => {
+                    listWrap.innerHTML = `<div class="text-red-400 col-span-full">栏目配置加载失败：${err.message}</div>`;
                 })
         }
     </script>

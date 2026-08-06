@@ -1,0 +1,56 @@
+[
+  {
+    "catKey": "codelib",
+    "pageTitle": "代码库 | iFPGAer",
+    "mainTitle": "代码库",
+    "desc": "可复用Verilog模块、IP封装、通用驱动、算法模块源码片段。点击卡片查看模块详情。"
+  },
+  {
+    "catKey": "devtool",
+    "pageTitle": "开发工具 | iFPGAer",
+    "mainTitle": "开发工具",
+    "desc": "FPGA综合、仿真、调试工具安装教程、脚本、环境配置文档。"
+  },
+  {
+    "catKey": "projectlib",
+    "pageTitle": "工程库 | iFPGAer",
+    "mainTitle": "工程库",
+    "desc": "完整可直接编译FPGA工程模板，包含顶层、约束、仿真文件全套工程。"
+  },
+  {
+    "catKey": "grammar",
+    "pageTitle": "基本语法 | iFPGAer",
+    "mainTitle": "基本语法",
+    "desc": "Verilog/SystemVerilog基础语法、数据类型、时序逻辑、组合逻辑讲解。"
+  },
+  {
+    "catKey": "toolusage",
+    "pageTitle": "工具使用 | iFPGAer",
+    "mainTitle": "工具使用",
+    "desc": "Vivado/Quartus/Modelsim操作流程、批量脚本、工程管理技巧。"
+  },
+  {
+    "catKey": "timing",
+    "pageTitle": "时序约束 | iFPGAer",
+    "mainTitle": "时序约束",
+    "desc": "时钟约束、IO约束、多周期、虚假路径、时序分析完整案例。"
+  },
+  {
+    "catKey": "comm",
+    "pageTitle": "通信处理 | iFPGAer",
+    "mainTitle": "通信处理",
+    "desc": "UART/SPI/I2C/以太网等各类串行并行通信Verilog模块。"
+  },
+  {
+    "catKey": "imageproc",
+    "pageTitle": "图像处理 | iFPGAer",
+    "mainTitle": "图像处理",
+    "desc": "图像滤波、缩放、插值、灰度处理、图像缓存FPGA并行模块。"
+  },
+  {
+    "catKey": "highspeedip",
+    "pageTitle": "高速IP | iFPGAer",
+    "mainTitle": "高速IP",
+    "desc": "DDR、PCIe、SerDes、高速收发器等高速接口IP工程与说明文档。"
+  }
+]
