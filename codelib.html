@@ -148,33 +148,48 @@
         </div>
     </nav>
 
-
     <main class="flex-grow container mx-auto px-4 py-10">
         <div class="bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20">
             <h1 class="text-2xl md:text-3xl font-tech text-chipBlue text-glow mb-4">代码库</h1>
             <p class="text-gray-200 mb-6">可复用Verilog模块、IP封装、通用驱动、算法模块源码片段。点击卡片查看模块详情。</p>
 
-            <!-- 模块条目列表，新增模块直接复制一份下面a卡片即可 -->
-            <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
-                <!-- UART模块 条目 -->
-                <a href="detail.html?md=uart_module.md" class="card-hover block p-4 bg-white/5 rounded-lg border border-chipBlue/20">
-                    <h3 class="font-tech text-lg text-chipBlue mb-2"><i class="fa-solid fa-microchip mr-2"></i>UART串口模块</h3>
-                    <p class="text-sm text-gray-300">可配置波特率，支持收发，成熟Verilog驱动</p>
-                </a>
-                <!-- SPI模块 条目 -->
-                <a href="detail.html?md=spi_module.md" class="card-hover block p-4 bg-white/5 rounded-lg border border-chipBlue/20">
-                    <h3 class="font-tech text-lg text-chipBlue mb-2"><i class="fa-solid fa-microchip mr-2"></i>SPI驱动模块</h3>
-                    <p class="text-sm text-gray-300">支持主从模式，可配置时钟相位，Verilog实现</p>
-                </a>
-                <!-- I2C模块 条目 -->
-                <a href="detail.html?md=i2c_module.md" class="card-hover block p-4 bg-white/5 rounded-lg border border-chipBlue/20">
-                    <h3 class="font-tech text-lg text-chipBlue mb-2"><i class="fa-solid fa-microchip mr-2"></i>I2C控制器</h3>
-                    <p class="text-sm text-gray-300">I2C主机读写，支持多设备，带应答检测</p>
-                </a>
-                <!-- ==========后续新增模块，复制上面a标签，修改href、标题、描述即可========== -->
+            <!-- JS动态渲染卡片的容器 -->
+            <div id="moduleListWrap" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+                <!-- 卡片由js填充，不要手写a标签 -->
+                <div class="text-gray-400">加载模块列表...</div>
             </div>
         </div>
     </main>
+
+    <!-- 在codelib.html页面底部，</body>之前增加脚本 -->
+    <script>
+    const listWrap = document.getElementById('moduleListWrap');
+
+    fetch('./assets/modules.json')
+    .then(resp=>{
+        if(!resp.ok) throw new Error("modules.json读取失败");
+        return resp.json();
+    })
+    .then(moduleList=>{
+        listWrap.innerHTML = '';
+        moduleList.forEach(item=>{
+            const a = document.createElement('a');
+            a.className = "card-hover block p-4 bg-white/5 rounded-lg border border-chipBlue/20";
+            a.href = `detail.html?md=${item.mdFile}`;
+            a.innerHTML = `
+                <h3 class="font-tech text-lg text-chipBlue mb-2">
+                    <i class="fa-solid ${item.icon} mr-2"></i>${item.title}
+                </h3>
+                <p class="text-sm text-gray-300">${item.desc}</p>
+            `;
+            listWrap.appendChild(a);
+        })
+    })
+    .catch(err=>{
+        listWrap.innerHTML = `<div class="text-red-400 col-span-full">模块列表加载异常：${err.message}</div>`;
+        console.error(err);
+    })
+    </script>
 
     <footer class="border-t border-chipBlue/20 bg-black/10 py-3">
         <div class="container mx-auto px-4 text-center text-xs text-gray-300 text-shadow">

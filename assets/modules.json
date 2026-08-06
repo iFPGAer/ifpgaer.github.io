@@ -1,0 +1,26 @@
+[
+  {
+    "mdFile": "uart_module.md",
+    "title": "UART串口模块",
+    "desc": "可配置波特率，支持收发，成熟Verilog驱动",
+    "icon": "fa-microchip"
+  },
+  {
+    "mdFile": "spi_module.md",
+    "title": "SPI驱动模块",
+    "desc": "支持主从模式，可配置时钟相位，Verilog实现",
+    "icon": "fa-microchip"
+  },
+  {
+    "mdFile": "i2c_module.md",
+    "title": "I2C控制器",
+    "desc": "I2C主机读写，支持多设备，带应答检测",
+    "icon": "fa-microchip"
+  },
+{
+    "mdFile": "cnt_simple.md",
+    "title": "计数器模块",
+    "desc": "简单的计数器实现，支持多种计数模式",
+    "icon": "fa-microchip"
+  }
+]
