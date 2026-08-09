@@ -51,6 +51,19 @@
                 background-color:rgba(0,163,255,0.10);
                 transform: translateY(-2px);
             }
+            .search-input {
+                background: rgba(255,255,255,0.08);
+                border: 1px solid rgba(0,163,255,0.3);
+                color: #fff;
+            }
+            .search-input:focus {
+                outline: none;
+                border-color:#00A3FF;
+                box-shadow: 0 0 8px rgba(0,163,255,0.3);
+            }
+            .search-input::placeholder {
+                color: #aaa;
+            }
         }
         * { scroll-behavior: smooth; }
         body { color: #F6F8FF; overflow-x: hidden; }
@@ -79,7 +92,7 @@
             pointer-events: none;
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body class="relative overflow-x-hidden font-sans min-h-screen flex flex-col justify-between">
     <div class="bg-img-layer"></div>
@@ -159,10 +172,19 @@
     <main class="flex-grow container mx-auto px-4 py-10">
         <div class="bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20">
             <h1 id="mainTitle" class="text-2xl md:text-3xl font-tech text-chipBlue text-glow mb-4">加载中...</h1>
-            <p id="pageDesc" class="text-gray-200 mb-6"></p>
-            <div id="moduleListWrap" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
-                <div class="text-gray-400">模块加载中...</div>
+            <p id="pageDesc" class="text-gray-200 mb-4"></p>
+
+            <!-- 新增搜索框 -->
+            <div class="relative mb-6 max-w-xl">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <input id="searchInput" class="search-input w-full pl-10 pr-4 py-2 rounded-lg" placeholder="输入搜索内容...">
             </div>
+
+            <div id="moduleListWrap" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+                <div class="text-gray-400">内容加载中...</div>
+            </div>
+            <!-- 无搜索结果提示 -->
+            <div id="emptyTip" class="hidden mt-8 text-center text-gray-400 text-lg">未匹配到相关内容</div>
         </div>
     </main>
 
@@ -176,9 +198,13 @@
     </footer>
 
     <script>
+        // 全局缓存当前分类全部模块，用于搜索过滤
+        let globalModuleList = [];
         // 移动端菜单逻辑
         const menuBtn = document.getElementById('menuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
+        const searchInput = document.getElementById('searchInput');
+        const emptyTip = document.getElementById('empty');
         menuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
             const icon = menuBtn.querySelector('i');
@@ -225,7 +251,48 @@
             retina_detect: true
         });
 
-        // 栏目渲染核心（带数组安全校验，杜绝forEach报错）
+        // 渲染卡片函数（抽离，搜索复用）
+        function renderCards(list) {
+            const listWrap = document.getElementById('moduleListWrap');
+            const emptyTip = document.getElementById('emptyTip');
+            listWrap.innerHTML = '';
+            emptyTip.classList.add('hidden');
+            if (list.length === 0) {
+                emptyTip.classList.remove('hidden');
+                return;
+            }
+            list.forEach(item => {
+                const a = document.createElement('a');
+                a.className = "card-hover block p-4 bg-white/5 rounded-lg border border-chipBlue/20";
+                a.href = `detail.html?md=${item.mdFile}&cat=${catKey}`;
+                a.innerHTML = `
+                    <h3 class="font-tech text-lg text-chipBlue mb-2">
+                        <i class="fa-solid ${item.icon} mr-2"></i>${item.title}
+                    </h3>
+                    <p class="text-sm text-gray-300">${item.desc}</p>
+                `;
+                listWrap.appendChild(a);
+            })
+        }
+
+        // 搜索过滤逻辑
+        function handleSearch() {
+            const keyword = searchInput.value.trim().toLowerCase();
+            if (!keyword) {
+                renderCards(globalModuleList);
+                return;
+            }
+            const filterList = globalModuleList.filter(item => {
+                const title = item.title.toLowerCase();
+                const desc = item.desc.toLowerCase();
+                return title.includes(keyword) || desc.includes(keyword);
+            })
+            renderCards(filterList);
+        }
+        // 实时输入监听
+        searchInput.addEventListener('input', handleSearch);
+
+        // 栏目渲染核心（带数组安全校验，缓存模块用于搜索）
         const urlParams = new URLSearchParams(window.location.search);
         const catKey = urlParams.get('cat');
         const titleDom = document.getElementById('pageTitle');
@@ -260,19 +327,9 @@
                                 listWrap.innerHTML = '<div class="text-gray-400 col-span-full">该分类下暂无文档模块</div>';
                                 return;
                             }
-                            listWrap.innerHTML = '';
-                            moduleArr.forEach(item => {
-                                const a = document.createElement('a');
-                                a.className = "card-hover block p-4 bg-white/5 rounded-lg border border-chipBlue/20";
-                                a.href = `detail.html?md=${item.mdFile}&cat=${catKey}`;
-                                a.innerHTML = `
-                                    <h3 class="font-tech text-lg text-chipBlue mb-2">
-                                        <i class="fa-solid ${item.icon} mr-2"></i>${item.title}
-                                    </h3>
-                                    <p class="text-sm text-gray-300">${item.desc}</p>
-                                `;
-                                listWrap.appendChild(a);
-                            })
+                            // 存入全局变量供搜索调用
+                            globalModuleList = moduleArr;
+                            renderCards(moduleArr);
                         })
                         .catch(err => {
                             listWrap.innerHTML = `<div class="text-red-400 col-span-full">模块配置加载失败：${err.message}</div>`;
