@@ -9,7 +9,7 @@
     "name": "资源库",
     "isDrop": true,
     "child": [
-      {"name": "开发工具库", "link": "page-base.html?cat=devtool"},
+      {"name": "工具库", "link": "page-base.html?cat=devtool"},
       {"name": "代码库", "link": "page-base.html?cat=codelib"},
       {"name": "工程库", "link": "page-base.html?cat=projectlib"}
     ]
