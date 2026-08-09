@@ -1,0 +1,41 @@
+[
+  {
+    "name": "首页",
+    "link": "index.html",
+    "isDrop": false,
+    "child": []
+  },
+  {
+    "name": "资源库",
+    "isDrop": true,
+    "child": [
+      {"name": "开发工具库", "link": "page-base.html?cat=devtool"},
+      {"name": "代码库", "link": "page-base.html?cat=codelib"},
+      {"name": "工程库", "link": "page-base.html?cat=projectlib"}
+    ]
+  },
+  {
+    "name": "学习教程",
+    "isDrop": true,
+    "child": [
+      {"name": "基本语法", "link": "page-base.html?cat=grammar"},
+      {"name": "工具使用", "link": "page-base.html?cat=toolusage"},
+      {"name": "时序约束", "link": "page-base.html?cat=timing"}
+    ]
+  },
+  {
+    "name": "技术矩阵",
+    "isDrop": true,
+    "child": [
+      {"name": "通信处理", "link": "page-base.html?cat=comm"},
+      {"name": "图像处理", "link": "page-base.html?cat=imageproc"},
+      {"name": "高速ip", "link": "page-base.html?cat=highspeedip"}
+    ]
+  },
+  {
+    "name": "关于",
+    "link": "about.html",
+    "isDrop": false,
+    "child": []
+  }
+]

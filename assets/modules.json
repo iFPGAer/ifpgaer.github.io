@@ -19,7 +19,26 @@
       "icon": "fa-microchip"
     }
   ],
-  "devtool": [],
+  "devtool": [
+        {
+      "mdFile": "matlab.md",
+      "title": "MATLAB",
+      "desc": "信号处理计算工具",
+      "icon": "fa-microchip"
+    },
+    {
+      "mdFile": "modelsim.md",
+      "title": "MODELSIM",
+      "desc": "FPGA仿真工具",
+      "icon": "fa-microchip"
+    },
+    {
+      "mdFile": "vivado.md",
+      "title": "VIVADO",
+      "desc": "Xilinx FPGA开发工具",
+      "icon": "fa-microchip"
+    }
+  ],
   "projectlib": [],
   "grammar": [],
   "toolusage": [],
