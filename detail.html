@@ -155,6 +155,14 @@
                 <div id="md-content" class="md-content">加载中...</div>
             </div>
         </div>
+
+        <!-- ========== Giscus模块留言区 ========== -->
+        <div class="mt-10 bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20">
+            <h3 class="text-chipBlue font-bold mb-4 text-lg"><i class="fa-solid fa-comments mr-2"></i>模块留言区</h3>
+            <div id="giscus-container"></div>
+        </div>
+        <!-- ========== 留言区结束 ========== -->
+
     </main>
 
     <footer class="border-t border-chipBlue/20 bg-black/10 py-3 mt-auto">
@@ -163,7 +171,7 @@
                 <span>Email:984962560@qq.com</span>
             </div>
             <p>© 2026 iFPGAer 仅用于学习交流</p>
-        </footer>
+        </div>
     </footer>
 
     <script>
@@ -379,10 +387,43 @@
                             it.classList.toggle('toc-item-active', it.dataset.targetId === currentId);
                         })
                     })
+
+                    loadGiscus();
                 })
                 .catch(err=>{
                     mdContentDom.innerHTML = `<div class="text-red-400">加载失败：${err.message}<br>确认docs目录存在 ${mdFileName}</div>`;
                 })
+        }
+
+        // ========= Giscus 动态加载留言板 =========
+        function loadGiscus(){
+            const giscusContainer = document.getElementById('giscus-container');
+            if(!mdFileName){
+                giscusContainer.innerHTML = `<div class="text-gray-300 text-sm">无模块文档，暂不加载留言</div>`;
+                return;
+            }
+            const pageTerm = mdFileName;
+
+            const script = document.createElement('script');
+            script.src = 'https://giscus.app/client.js';
+            script.crossOrigin = "anonymous";
+            script.async = true;
+
+            script.dataset.repo = "iFPGAer/ifpgaer.github.io";
+            script.dataset.repoId = "R_kgDOQmsdOg";
+            script.dataset.category = "Announcements";
+            script.dataset.categoryId = "DIC_kwDOQmsdOs4DDIB3";
+            script.dataset.mapping = "specific";
+            script.dataset.term = pageTerm;
+            script.dataset.strict = "1";
+            script.dataset.reactionsEnabled = "1";
+            script.dataset.emitMetadata = "0";
+            script.dataset.inputPosition = "bottom";
+            script.dataset.theme = "dark_dimmed";
+            script.dataset.lang = "zh-CN";
+
+            giscusContainer.innerHTML = "";
+            giscusContainer.appendChild(script);
         }
     </script>
 </body>
