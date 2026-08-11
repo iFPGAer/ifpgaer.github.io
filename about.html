@@ -83,21 +83,73 @@
     <div id="particles-js"></div>
     <div class="bg-mask-layer"></div>
 
-    <nav class="sticky top-0 bg-white/5 backdrop-blur-none border-b border-chipBlue z-50">
+    <!-- 顶部导航栏（修复下拉hover空隙问题） -->
+    <nav class="sticky top-0 bg-white/5 backdrop-blur-none border-b border-chipBlue/20 z-50">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-tech font-bold text-glow text-chipBlue flex items-center gap-3">
+            <a href="index.html" class="text-2xl font-tech font-bold text-chipBlue flex items-center gap-3 text-glow">
                 <i class="fa-solid fa-microchip text-3xl animate-float-up"></i>
                 <span>iFPGAer</span>
             </a>
-            <!-- PC导航自动渲染容器 -->
-            <div class="hidden lg:flex gap-8 font-tech tracking-wide text-shadow" id="pcNavWrap"></div>
+            <div class="hidden lg:flex gap-8 font-tech tracking-wide text-shadow">
+                <a href="index.html" class="text-chipBlue border-b border-chipBlue pb-1">首页</a>
+
+                <!-- ==========资源库下拉========== -->
+                <div class="relative group pb-2">
+                    <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
+                        资源库 <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </span>
+                    <div class="absolute hidden group-hover:block top-full left-0 mt-0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44 pointer-events-auto">
+                        <a href="page-base.html?cat=devtool" class="block py-2 hover:text-chipBlue">开发工具库</a>
+                        <a href="page-base.html?cat=codelib" class="block py-2 hover:text-chipBlue">代码库</a>
+                        <a href="page-base.html?cat=projectlib" class="block py-2 hover:text-chipBlue">工程库</a>
+                    </div>
+                </div>
+
+                <!-- ==========学习教程下拉========== -->
+                <div class="relative group pb-2">
+                    <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
+                        学习教程 <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </span>
+                    <div class="absolute hidden group-hover:block top-full left-0 mt-0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44 pointer-events-auto">
+                        <a href="page-base.html?cat=grammar" class="block py-2 hover:text-chipBlue">基本语法</a>
+                        <a href="page-base.html?cat=toolusage" class="block py-2 hover:text-chipBlue">工具使用</a>
+                        <a href="page-base.html?cat=timing" class="block py-2 hover:text-chipBlue">时序约束</a>
+                    </div>
+                </div>
+
+                <!-- ==========技术矩阵下拉========== -->
+                <div class="relative group pb-2">
+                    <span class="hover:text-chipBlue cursor-pointer flex items-center gap-1">
+                        技术矩阵 <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </span>
+                    <div class="absolute hidden group-hover:block top-full left-0 mt-0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44 pointer-events-auto">
+                        <a href="page-base.html?cat=comm" class="block py-2 hover:text-chipBlue">通信处理</a>
+                        <a href="page-base.html?cat=imageproc" class="block py-2 hover:text-chipBlue">图像处理</a>
+                        <a href="page-base.html?cat=highspeedip" class="block py-2 hover:text-chipBlue">高速ip</a>
+                    </div>
+                </div>
+
+                <a href="about.html" class="hover:text-chipBlue">关于我</a>
+            </div>
             <button class="lg:hidden text-white text-2xl text-shadow" id="menuBtn">
                 <i class="fa-solid fa-bars"></i>
             </button>
         </div>
-        <!-- 移动端菜单容器 -->
-        <div class="lg:hidden hidden bg-black/60 backdrop-blur-md border-b border-chipBlue absolute w-full" id="mobileMenu">
-            <div class="container mx-auto px-4 py-4 flex flex-col gap-3 font-tech text-lg text-shadow" id="mobileNavWrap"></div>
+        <!-- 移动端菜单，同步更新链接 -->
+        <div class="lg:hidden hidden bg-black/60 backdrop-blur-md border-b border-chipBlue/20 absolute w-full" id="mobileMenu">
+            <div class="container mx-auto px-4 py-4 flex flex-col gap-3 font-tech text-lg text-shadow">
+                <a href="index.html" class="py-2 text-chipBlue">首页</a>
+                <a href="page-base.html?cat=devtool" class="py-2 hover:text-chipBlue">开发工具库</a>
+                <a href="page-base.html?cat=codelib" class="py-2 hover:text-chipBlue">代码库</a>
+                <a href="page-base.html?cat=projectlib" class="py-2 hover:text-chipBlue">工程库</a>
+                <a href="page-base.html?cat=grammar" class="py-2 hover:text-chipBlue">基本语法</a>
+                <a href="page-base.html?cat=toolusage" class="py-2 hover:text-chipBlue">工具使用</a>
+                <a href="page-base.html?cat=timing" class="py-2 hover:text-chipBlue">时序约束</a>
+                <a href="page-base.html?cat=comm" class="py-2 hover:text-chipBlue">通信处理</a>
+                <a href="page-base.html?cat=imageproc" class="py-2 hover:text-chipBlue">图像处理</a>
+                <a href="page-base.html?cat=highspeedip" class="py-2 hover:text-chipBlue">高速ip</a>
+                <a href="about.html" class="py-2 hover:text-chipBlue">关于我</a>
+            </div>
         </div>
     </nav>
 
@@ -119,85 +171,7 @@
     </footer>
 
     <script>
-        async function renderNav() {
-            try {
-                const res = await fetch('./assets/nav.json');
-                const navData = await res.json();
-                const pcWrap = document.getElementById('pcNavWrap');
-                const mobileWrap = document.getElementById('mobileNavWrap');
-                pcWrap.innerHTML = '';
-                mobileWrap.innerHTML = '';
-
-                // 获取当前文件名，剥离url查询参数
-                function getCurrentFile(){
-                    const path = window.location.pathname;
-                    return path.split('/').pop() || 'index.html';
-                }
-                const currentFile = getCurrentFile();
-
-                navData.forEach(item => {
-                    // ========= 移动端菜单 =========
-                    if (item.isDrop) {
-                        item.child.forEach(sub => {
-                            const a = document.createElement('a');
-                            a.className = "py-2 hover:text-chipBlue";
-                            a.href = sub.link;
-                            a.innerText = sub.name;
-                            mobileWrap.appendChild(a);
-                        })
-                    } else {
-                        const a = document.createElement('a');
-                        a.className = "py-2 hover:text-chipBlue";
-                        const navFile = item.link.split('?')[0];
-                        if(navFile === currentFile){
-                            a.classList.add('text-chipBlue', 'border-b', 'border-chipBlue', 'pb-1');
-                        }
-                        a.href = item.link;
-                        a.innerText = item.name;
-                        mobileWrap.appendChild(a);
-                    }
-
-                    // ========= PC端导航 =========
-                    if (!item.isDrop) {
-                        const a = document.createElement('a');
-                        a.className = "hover:text-chipBlue";
-                        const navFile = item.link.split('?')[0];
-                        if(navFile === currentFile){
-                            a.classList.add('text-chipBlue', 'border-b', 'border-chipBlue', 'pb-1');
-                        }
-                        a.href = item.link;
-                        a.innerText = item.name;
-                        pcWrap.appendChild(a);
-                    } else {
-                        const groupDiv = document.createElement('div');
-                        groupDiv.className = "relative group pb-2";
-                        const span = document.createElement('span');
-                        span.className = "hover:text-chipBlue cursor-pointer flex items-center gap-1";
-                        span.innerHTML = `${item.name} <i class="fa-solid fa-chevron-down text-xs"></i>`;
-
-                        const dropBox = document.createElement('div');
-                        dropBox.className = "absolute hidden group-hover:block top-full left-0 mt-0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44 pointer-events-auto";
-                        item.child.forEach(sub => {
-                            const subA = document.createElement('a');
-                            subA.className = "block py-2 hover:text-chipBlue";
-                            subA.href = sub.link;
-                            subA.innerText = sub.name;
-                            dropBox.appendChild(subA);
-                        })
-                        groupDiv.appendChild(span);
-                        groupDiv.appendChild(dropBox);
-                        pcWrap.appendChild(groupDiv);
-                    }
-                })
-            } catch (err) {
-                console.error('导航加载失败：', err);
-                const pcWrap = document.getElementById('pcNavWrap');
-                pcWrap.innerHTML = '<span class="text-red-400">导航配置读取失败，请检查assets/nav.json</span>';
-            }
-        }
-        renderNav();
-
-        // 移动端菜单展开/收起逻辑
+        // 原有移动端菜单逻辑
         const menuBtn = document.getElementById('menuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
         menuBtn.addEventListener('click', () => {
@@ -210,7 +184,7 @@
             link.onclick = () => mobileMenu.classList.add('hidden');
         });
 
-        // 粒子背景
+        // 新增微弱科技光点粒子配置（淡蓝色、数量少、不遮挡背景）
         particlesJS("particles-js", {
             particles: {
                 number: { value: 30, density: { enable: true, value_area: 900 } },
