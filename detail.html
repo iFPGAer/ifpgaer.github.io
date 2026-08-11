@@ -140,8 +140,7 @@
     </nav>
 
     <main class="flex-grow container mx-auto px-4 py-10">
-        <div class="mb-4">
-            <!-- JS动态读取分类，不写死codelib -->
+        <div class="mb-4" id="backBtnWrap">
             <a id="backLink" class="text-cyan-300 hover:underline"><i class="fa-solid fa-arrow-left mr-1"></i>返回列表</a>
         </div>
         <div class="flex gap-6">
@@ -163,7 +162,7 @@
         </div>
 
         <!-- ========== Giscus模块留言区 ========== -->
-        <div class="mt-10 bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20">
+        <div id="commentWrap" class="mt-10 bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20">
             <h3 class="text-chipBlue font-bold mb-4 text-lg"><i class="fa-solid fa-comments mr-2"></i>模块留言区</h3>
             <div id="giscus-container"></div>
         </div>
@@ -308,8 +307,12 @@
         // ========= 核心：读取URL参数 自动生成返回链接 =========
         const urlParams = new URLSearchParams(window.location.search);
         const mdFileName = urlParams.get('md');
-        const catName = urlParams.get('cat') || 'codelib'; // 无参数默认代码库
+        const catName = urlParams.get('cat') || 'codelib';
         const backLink = document.getElementById('backLink');
+        const backBtnWrap = document.getElementById('backBtnWrap');
+        const commentWrap = document.getElementById('commentWrap');
+        const giscusContainer = document.getElementById('giscus-container');
+
         backLink.href = `page-base.html?cat=${catName}`;
 
         const mdContentDom = document.getElementById('md-content');
@@ -333,7 +336,35 @@
                         mdContentDom.innerHTML = `<div class="text-yellow-400">MD文件为空</div>`;
                         return;
                     }
-                    const html = marked.parse(mdText);
+
+                    // ========== 解析YAML frontmatter元数据 ==========
+                    let meta = {
+                        title: "模块详情 | iFPGAer",
+                        showBack: true,
+                        showToc: true,
+                        showComment: true
+                    };
+                    const fmReg = /^---\r?\n([\s\S]*?)\r?\n---\r?\n/;
+                    const fmMatch = mdText.match(fmReg);
+                    let realMdText = mdText;
+                    if(fmMatch){
+                        realMdText = mdText.slice(fmMatch[0].length);
+                        const fmStr = fmMatch[1];
+                        fmStr.split('\n').forEach(line=>{
+                            const kv = line.split(':');
+                            if(kv.length>=2){
+                                const k = kv[0].trim();
+                                const v = kv.slice(1).join(':').trim();
+                                if(v === 'true') meta[k] = true;
+                                else if(v === 'false') meta[k] = false;
+                                else meta[k] = v;
+                            }
+                        })
+                    }
+                    document.title = meta.title;
+                    backBtnWrap.style.display = meta.showBack ? 'block' : 'none';
+
+                    const html = marked.parse(realMdText);
                     mdContentDom.innerHTML = html;
 
                     // 提取标题生成侧边目录
@@ -345,8 +376,8 @@
                         tocData.push({id, text:h.innerText.trim(), level:Number(h.tagName.replace("H",""))})
                     });
 
-                    // 存在标题才显示侧边目录
-                    if(tocData.length === 0){
+                    // 根据元数据控制侧边目录
+                    if(!meta.showToc || tocData.length === 0){
                         tocWrap.classList.add('hidden');
                     }else{
                         tocWrap.classList.remove('hidden');
@@ -397,7 +428,6 @@
                     // ========== 目录收起展开功能【默认初始折叠】 ==========
                     const tocToggleBtn = document.getElementById('tocToggleBtn');
                     let tocIsShow = false;
-
                     tocToggleBtn.addEventListener('click', ()=>{
                         tocIsShow = !tocIsShow;
                         if(tocIsShow){
@@ -413,7 +443,13 @@
                         }
                     })
 
-                    loadGiscus();
+                    // 控制评论区显示隐藏
+                    if(meta.showComment){
+                        loadGiscus();
+                        commentWrap.style.display = 'block';
+                    }else{
+                        commentWrap.style.display = 'none';
+                    }
                 })
                 .catch(err=>{
                     mdContentDom.innerHTML = `<div class="text-red-400">加载失败：${err.message}<br>确认docs目录存在 ${mdFileName}</div>`;
@@ -422,13 +458,7 @@
 
         // ========= Giscus 动态加载留言板 =========
         function loadGiscus(){
-            const giscusContainer = document.getElementById('giscus-container');
-            if(!mdFileName){
-                giscusContainer.innerHTML = `<div class="text-gray-300 text-sm">无模块文档，暂不加载留言</div>`;
-                return;
-            }
             const pageTerm = mdFileName;
-
             const script = document.createElement('script');
             script.src = 'https://giscus.app/client.js';
             script.crossOrigin = "anonymous";
