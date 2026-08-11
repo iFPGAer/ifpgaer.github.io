@@ -1,3 +1,9 @@
+---
+title: UART串口模块
+showBack: true
+showToc: true
+showComment: true
+---
 # UART收发模块设计文档
 
 ## 第一章 模块代码 uart.v
