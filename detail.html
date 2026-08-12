@@ -376,6 +376,16 @@
                         tocData.push({id, text:h.innerText.trim(), level:Number(h.tagName.replace("H",""))})
                     });
 
+                    // 追加评论区目录项，仅当评论开启
+                    if(meta.showComment){
+                        commentWrap.id = "giscus-comment-section";
+                        tocData.push({
+                            id:"giscus-comment-section",
+                            text:"💬 评论区",
+                            level:1
+                        })
+                    }
+
                     // 根据元数据控制侧边目录
                     if(!meta.showToc || tocData.length === 0){
                         tocWrap.classList.add('hidden');
@@ -412,7 +422,7 @@
                         pre.appendChild(copyBtn);
                     })
 
-                    // 滚动高亮当前目录项
+                    // 滚动高亮当前目录项（兼容评论区锚点）
                     const tocItems = tocBox.querySelectorAll('.toc-item');
                     window.addEventListener('scroll',()=>{
                         let currentId = null;
@@ -420,6 +430,11 @@
                             const rect = h.getBoundingClientRect();
                             if(rect.top <= 120) currentId = h.id;
                         })
+                        // 判断评论区位置
+                        if(meta.showComment){
+                            const comRect = commentWrap.getBoundingClientRect();
+                            if(comRect.top <=120) currentId = "giscus-comment-section";
+                        }
                         tocItems.forEach(it=>{
                             it.classList.toggle('toc-item-active', it.dataset.targetId === currentId);
                         })
