@@ -113,10 +113,11 @@
             z-index: -1;
             pointer-events: none;
         }
-        /* 修复giscus头像裁切 */
+        /* giscus防裁切强制样式 */
         #giscus-container iframe {
             overflow: visible !important;
             clip: auto !important;
+            clip-path: none !important;
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -146,6 +147,7 @@
         <div class="mb-4" id="backBtnWrap">
             <a id="backLink" class="text-cyan-300 hover:underline"><i class="fa-solid fa-arrow-left mr-1"></i>返回列表</a>
         </div>
+        <!-- flex只用于侧边目录 + md主体 -->
         <div class="flex gap-6 flex-nowrap items-start">
             <aside id="tocWrap" class="hidden xl:block w-12 shrink-0 transition-all duration-300">
                 <div class="sticky top-24 bg-black/40 backdrop-blur-md rounded-lg p-4 border border-chipBlue/20 max-h-[75vh]">
@@ -162,8 +164,7 @@
                 <div id="md-content" class="md-content">加载中...</div>
             </div>
         </div>
-
-        <!-- 已修复：移除min‑w‑0，两层开启overflow‑visible，解决头像裁切 -->
+        <!-- ⭐重点：评论区放到flex盒子外面，脱离flex收缩上下文，不再受min‑w‑0裁切 -->
         <div id="commentWrap" class="mt-10 bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20 w-full overflow-visible">
             <h3 class="text-chipBlue font-bold mb-4 text-lg"><i class="fa-solid fa-comments mr-2"></i>模块留言区</h3>
             <div id="giscus-container" class="w-full min-w-[340px] overflow-visible"></div>
@@ -436,7 +437,7 @@ ${item.children.map(ch=>`<a href="${ch.href}" class="block py-1.5 text-gray-200 
                 })
         }
 
-        //Giscus加载修复，防止头像裁切
+        //Giscus加载
         function loadGiscus(){
             const pageTerm = mdFileName;
             const script = document.createElement('script');
@@ -466,6 +467,7 @@ ${item.children.map(ch=>`<a href="${ch.href}" class="block py-1.5 text-gray-200 
                         iframe.style.width = "100%";
                         iframe.style.minWidth = "340px";
                         iframe.style.overflow = "visible";
+                        iframe.style.clipPath = "none";
                         iframe.style.border = "none";
                         clearInterval(timer);
                     }
