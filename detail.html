@@ -89,42 +89,86 @@
                 background:rgba(0,163,255,0.4);
             }
 
-            /* ========== 最终修复方案：直接用 padding 撑开容器 ========== */
-            /* 关键：giscus 的头像使用了 margin-left: -8px，我们不用负边距抵消，而是给容器左侧增加 padding */
-            #giscus-container {
-                width: 100% !important;
-                min-width: 340px !important;
-                padding-left: 28px !important;  /* 给头像留出显示空间 */
-                padding-right: 8px !important;
-                box-sizing: border-box !important;
+            /* ========== 终极修复方案：用 Padding + Overflow 双保险 ========== */
+            
+            /* 1. 确保外层容器完全不裁剪任何内容 */
+            .giscus-outer-wrapper {
                 overflow: visible !important;
+                position: relative !important;
+                z-index: 10 !important;
             }
             
-            /* 让 iframe 也完整显示 */
+            /* 2. giscus 容器：增加左侧内边距 + 允许溢出 */
+            #giscus-container {
+                overflow: visible !important;
+                width: 100% !important;
+                min-width: 340px !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                /* 关键：允许子元素溢出容器边界 */
+                contain: none !important;
+            }
+            
+            /* 3. iframe 本身：完全可见，不裁剪 */
             #giscus-container iframe {
                 width: 100% !important;
                 min-width: 340px !important;
                 border: none !important;
                 overflow: visible !important;
+                display: block !important;
+                /* 关键：不限制任何方向的溢出 */
+                clip: auto !important;
+                clip-path: none !important;
+                /* 让 iframe 可以超出父容器 */
+                position: relative !important;
+                z-index: 10 !important;
             }
             
-            /* 修复 giscus 内部的头像显示问题 - 通过 CSS 覆盖 */
-            .giscus-frame {
+            /* 4. 使用 transform 平移整个 giscus 内容，让头像显示完整 */
+            /* 这个方法比 margin-left 更可靠 */
+            @media (min-width: 769px) {
+                #giscus-container {
+                    transform: translateX(16px) !important;
+                    width: calc(100% - 16px) !important;
+                }
+                
+                #giscus-container iframe {
+                    transform: translateX(-16px) !important;
+                    width: calc(100% + 16px) !important;
+                }
+            }
+            
+            /* 5. 额外保险：确保 body 和 main 不裁剪任何内容 */
+            body, main, .container {
+                overflow-x: visible !important;
+            }
+            
+            /* 6. 直接覆盖 giscus 内部头像样式（通过属性选择器） */
+            [data-giscus], 
+            .giscus, 
+            .giscus-frame,
+            [class*="giscus"] {
                 overflow: visible !important;
             }
             
-            /* 强制让头像容器使用 margin-left: 0，不使用负边距 */
-            .giscus .avatar, 
+            /* 7. 关键：覆盖头像的负边距 */
+            .giscus .avatar,
             .giscus .avatar-container,
             .giscus .comment-header .avatar,
-            .giscus .comment-header-left .avatar {
+            .giscus .comment-header-left .avatar,
+            .giscus [class*="avatar"] {
                 margin-left: 0 !important;
+                margin-right: 8px !important;
                 flex-shrink: 0 !important;
                 overflow: visible !important;
+                display: inline-block !important;
+                vertical-align: middle !important;
+                position: relative !important;
+                z-index: 20 !important;
             }
             
-            /* 确保头像图片完整显示 */
-            .giscus .avatar img {
+            .giscus .avatar img,
+            .giscus [class*="avatar"] img {
                 display: block !important;
                 width: 32px !important;
                 height: 32px !important;
@@ -132,24 +176,28 @@
                 min-height: 32px !important;
                 border-radius: 50% !important;
                 object-fit: cover !important;
+                position: relative !important;
+                z-index: 20 !important;
             }
             
-            /* 评论头部使用 flex 布局，不重叠 */
             .giscus .comment-header,
             .giscus .comment-header-left {
                 display: flex !important;
                 align-items: center !important;
                 gap: 8px !important;
                 overflow: visible !important;
-                flex-wrap: wrap !important;
+                flex-wrap: nowrap !important;
             }
             
-            /* 所有评论项都不裁剪 */
             .giscus .comment,
             .giscus .comment-list,
             .giscus .comment-item {
                 overflow: visible !important;
             }
+            
+            /* 8. 调试边框（可删除） */
+            /* #giscus-container { border: 2px solid red !important; } */
+            /* #giscus-container iframe { border: 2px solid blue !important; } */
         }
         * { scroll-behavior: smooth; }
         body { color: #F6F8FF; overflow-x: hidden; }
@@ -178,7 +226,7 @@
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
-<body class="relative overflow-x-hidden font-sans min-h-screen flex flex-col">
+<body class="relative overflow-x-visible font-sans min-h-screen flex flex-col">
     <div class="bg-img-layer"></div>
     <div id="particles-js"></div>
     <div class="bg-mask-layer"></div>
@@ -199,11 +247,11 @@
         </div>
     </nav>
 
-    <main class="flex-grow container mx-auto px-4 py-10">
+    <main class="flex-grow container mx-auto px-4 py-10 overflow-visible">
         <div class="mb-4" id="backBtnWrap">
             <a id="backLink" class="text-cyan-300 hover:underline"><i class="fa-solid fa-arrow-left mr-1"></i>返回列表</a>
         </div>
-        <div class="flex gap-6 flex-nowrap items-start">
+        <div class="flex gap-6 flex-nowrap items-start overflow-visible">
             <aside id="tocWrap" class="hidden xl:block w-12 shrink-0 transition-all duration-300">
                 <div class="sticky top-24 bg-black/40 backdrop-blur-md rounded-lg p-4 border border-chipBlue/20 max-h-[75vh]">
                     <div class="flex justify-between items-center mb-3">
@@ -215,15 +263,17 @@
                     <nav id="tocBox" class="hidden text-xs space-y-1.5 text-gray-300 overflow-y-auto max-h-[65vh] transition-all duration-300"></nav>
                 </div>
             </aside>
-            <div id="md-wrap" class="flex-1 min-w-0 bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20 w-full">
+            <div id="md-wrap" class="flex-1 min-w-0 bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20 w-full overflow-visible">
                 <div id="md-content" class="md-content">加载中...</div>
             </div>
         </div>
 
-        <!-- 留言区：使用 padding 方式修复头像显示 -->
-        <div class="mt-10 bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20 overflow-visible">
-            <h3 class="text-chipBlue font-bold mb-4 text-lg"><i class="fa-solid fa-comments mr-2"></i>模块留言区</h3>
-            <div id="giscus-container" class="w-full min-w-[340px]"></div>
+        <!-- 留言区：使用外包装 + transform 平移 -->
+        <div class="mt-10 giscus-outer-wrapper">
+            <div class="bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20 overflow-visible">
+                <h3 class="text-chipBlue font-bold mb-4 text-lg"><i class="fa-solid fa-comments mr-2"></i>模块留言区</h3>
+                <div id="giscus-container" class="w-full min-w-[340px] overflow-visible"></div>
+            </div>
         </div>
     </main>
 
@@ -491,7 +541,7 @@ ${item.children.map(ch=>`<a href="${ch.href}" class="block py-1.5 text-gray-200 
                 })
         }
 
-        // ========== Giscus加载 - 使用最简单的修复方式 ==========
+        // ========== Giscus加载 ==========
         function loadGiscus(){
             const pageTerm = mdFileName;
             
@@ -518,9 +568,8 @@ ${item.children.map(ch=>`<a href="${ch.href}" class="block py-1.5 text-gray-200 
 
             giscusContainer.appendChild(script);
 
-            // 等待 giscus 渲染完成后修复样式
+            // 等待 giscus 渲染完成
             script.onload = function() {
-                // 使用 setInterval 等待 giscus 完全加载
                 let checkCount = 0;
                 const checkInterval = setInterval(() => {
                     checkCount++;
@@ -531,21 +580,23 @@ ${item.children.map(ch=>`<a href="${ch.href}" class="block py-1.5 text-gray-200 
                         iframe.style.minWidth = '340px';
                         iframe.style.border = 'none';
                         iframe.style.overflow = 'visible';
+                        iframe.style.maxWidth = 'none';
+                        iframe.style.position = 'relative';
+                        iframe.style.zIndex = '10';
                         
-                        // 成功找到 iframe，清除检查
                         clearInterval(checkInterval);
                         
-                        // 额外修复：尝试给 iframe 内部的元素添加样式
+                        // 尝试修复 iframe 内部样式
                         try {
-                            // 因为跨域限制，这个操作可能会失败，但不影响整体功能
                             const doc = iframe.contentDocument || iframe.contentWindow?.document;
                             if (doc) {
-                                // 在 iframe 内部添加样式，直接覆盖头像的 margin-left
                                 const styleElem = doc.createElement('style');
                                 styleElem.textContent = `
                                     .avatar, .avatar-container {
                                         margin-left: 0 !important;
+                                        margin-right: 8px !important;
                                         flex-shrink: 0 !important;
+                                        overflow: visible !important;
                                     }
                                     .comment-header, .comment-header-left {
                                         display: flex !important;
@@ -556,35 +607,25 @@ ${item.children.map(ch=>`<a href="${ch.href}" class="block py-1.5 text-gray-200 
                                     .comment {
                                         overflow: visible !important;
                                     }
+                                    .comment-header .avatar img {
+                                        width: 32px !important;
+                                        height: 32px !important;
+                                        min-width: 32px !important;
+                                    }
                                 `;
                                 doc.head.appendChild(styleElem);
                                 console.log('已注入 giscus 内部样式修复');
                             }
                         } catch (e) {
-                            // 跨域限制，无法修改 iframe 内部
                             console.log('跨域限制，使用外部样式控制');
                         }
                     }
                     
-                    // 如果检查超过 20 次（约 10 秒），停止检查
                     if (checkCount > 20) {
                         clearInterval(checkInterval);
-                        // 即使没有找到 iframe，也尝试强制修复
-                        const tryIframe = giscusContainer.querySelector('iframe');
-                        if (tryIframe) {
-                            tryIframe.style.width = '100%';
-                            tryIframe.style.minWidth = '340px';
-                            tryIframe.style.border = 'none';
-                            tryIframe.style.overflow = 'visible';
-                        }
-                        console.log('giscus 加载检查超时，应用默认样式');
+                        console.log('giscus 加载检查超时');
                     }
                 }, 500);
-            };
-            
-            // 如果脚本加载失败
-            script.onerror = function() {
-                console.warn('giscus 加载失败');
             };
         }
     </script>
