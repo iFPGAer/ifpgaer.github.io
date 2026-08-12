@@ -64,7 +64,7 @@
             .md-content code { font-family:Consolas,Monaco,monospace; }
             .md-content pre code { color:#1e293b; font-size:13px; line-height:1.0; }
 
-            .md-content :not(pre)>code { background:rgba(0,163,0.15); padding:0.12rem 0.35rem; border-radius:0.25rem; color:#7dd3fc; font-size:0.9rem; }
+            .md-content :not(pre)>code { background:rgba(0,163,0,0.15); padding:0.12rem 0.35rem; border-radius:0.25rem; color:#7dd3fc; font-size:0.9rem; }
             .md-content ul, .md-content ol { padding-left:1.4rem; margin:0.5rem 0; }
             .md-content li { margin:0.25rem 0; color:#e2e8f0; font-size:0.95rem; }
             .md-content blockquote { border-left:3px solid #00A3FF; padding-left:1rem; opacity:0.85; margin:0.7rem 0; font-size:0.95rem; }
@@ -116,7 +116,7 @@
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
-<body class="relative overflow-x-hidden font-sans min-h-screen flex flex-col justify-between">
+<body class="relative overflow-x-hidden font-sans min-h-screen flex flex-col">
     <div class="bg-img-layer"></div>
     <div id="particles-js"></div>
     <div class="bg-mask-layer"></div>
@@ -127,13 +127,11 @@
                 <i class="fa-solid fa-microchip text-3xl animate-float-up"></i>
                 <span>iFPGAer</span>
             </a>
-            <!-- PC导航渲染容器 -->
             <div class="hidden lg:flex gap-8 font-tech tracking-wide text-shadow" id="pcNavWrap"></div>
             <button class="lg:hidden text-white text-2xl text-shadow" id="menuBtn">
                 <i class="fa-solid fa-bars"></i>
             </button>
         </div>
-        <!-- 移动端菜单容器 -->
         <div class="lg:hidden hidden bg-black/60 backdrop-blur-md border-b border-chipBlue/20 absolute w-full" id="mobileMenu">
             <div class="container mx-auto px-4 py-4 flex flex-col gap-3 font-tech text-lg text-shadow" id="mobileNavWrap"></div>
         </div>
@@ -143,8 +141,8 @@
         <div class="mb-4" id="backBtnWrap">
             <a id="backLink" class="text-cyan-300 hover:underline"><i class="fa-solid fa-arrow-left mr-1"></i>返回列表</a>
         </div>
-        <div class="flex gap-6">
-            <!-- 可收起展开侧边目录，默认初始折叠 -->
+        <!-- flex布局修复：aside禁止收缩，主体min‑w‑0，items-start消除拉伸 -->
+        <div class="flex gap-6 flex-nowrap items-start">
             <aside id="tocWrap" class="hidden xl:block w-12 shrink-0 transition-all duration-300">
                 <div class="sticky top-24 bg-black/40 backdrop-blur-md rounded-lg p-4 border border-chipBlue/20 max-h-[75vh]">
                     <div class="flex justify-between items-center mb-3">
@@ -156,17 +154,16 @@
                     <nav id="tocBox" class="hidden text-xs space-y-1.5 text-gray-300 overflow-y-auto max-h-[65vh] transition-all duration-300"></nav>
                 </div>
             </aside>
-            <div id="md-wrap" class="flex-1 bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20 w-full">
+            <div id="md-wrap" class="flex-1 min-w-0 bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20 w-full">
                 <div id="md-content" class="md-content">加载中...</div>
             </div>
         </div>
 
-        <!-- ========== Giscus模块留言区 ========== -->
-        <div id="commentWrap" class="mt-10 bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20 min-w-0 overflow-visible">
-            <h3 class="text-chipBlue font-bold mb-4 text-lg"><i class="fa-solid fa-comments mr-2"></i>留言区</h3>
-            <div id="giscus-container" class="min-w-0"></div>
+        <!-- ========== Giscus模块留言区 增加最小宽度防护 ========== -->
+        <div id="commentWrap" class="mt-10 bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20 min-w-0 w-full">
+            <h3 class="text-chipBlue font-bold mb-4 text-lg"><i class="fa-solid fa-comments mr-2"></i>模块留言区</h3>
+            <div id="giscus-container" class="w-full min-w-[300px]"></div>
         </div>
-        <!-- ========== 留言区结束 ========== -->
     </main>
 
     <footer class="border-t border-chipBlue/20 bg-black/10 py-3 mt-auto">
@@ -179,7 +176,6 @@
     </footer>
 
     <script>
-        // ========= 和index、page‑base完全一致的导航渲染函数 =========
         async function renderNav() {
             try {
                 const res = await fetch('./assets/nav.json');
@@ -188,122 +184,85 @@
                 const mobileWrap = document.getElementById('mobileNavWrap');
                 pcWrap.innerHTML = '';
                 mobileWrap.innerHTML = '';
-
                 function getCurrentFile(){
                     const path = window.location.pathname;
                     return path.split('/').pop() || 'index.html';
                 }
                 const currentFile = getCurrentFile();
-
                 navData.forEach(item => {
-                    // 移动端
-                    if (item.isDrop) {
-                        item.child.forEach(sub => {
-                            const a = document.createElement('a');
-                            a.className = "py-2 hover:text-chipBlue";
-                            a.href = sub.link;
-                            a.innerText = sub.name;
-                            mobileWrap.appendChild(a);
-                        })
-                    } else {
-                        const a = document.createElement('a');
-                        a.className = "py-2 hover:text-chipBlue";
-                        const navFile = item.link.split('?')[0];
-                        if(navFile === currentFile){
-                            a.classList.add('text-chipBlue', 'border-b', 'border-chipBlue', 'pb-1');
-                        }
-                        a.href = item.link;
-                        a.innerText = item.name;
-                        mobileWrap.appendChild(a);
-                    }
-                    // PC端
-                    if (!item.isDrop) {
-                        const a = document.createElement('a');
-                        a.className = "hover:text-chipBlue";
-                        const navFile = item.link.split('?')[0];
-                        if(navFile === currentFile){
-                            a.classList.add('text-chipBlue', 'border-b', 'border-chipBlue', 'pb-1');
-                        }
-                        a.href = item.link;
-                        a.innerText = item.name;
-                        pcWrap.appendChild(a);
-                    } else {
-                        const groupDiv = document.createElement('div');
-                        groupDiv.className = "relative group pb-2";
-                        const span = document.createElement('span');
-                        span.className = "hover:text-chipBlue cursor-pointer flex items-center gap-1";
-                        span.innerHTML = `${item.name} <i class="fa-solid fa-chevron-down text-xs"></i>`;
+                    if(item.children && item.children.length>0){
+                        //下拉菜单
+                        const pcDiv = document.createElement('div');
+                        pcDiv.className = 'relative group';
+                        const aTitle = document.createElement('a');
+                        aTitle.className = 'cursor-pointer text-gray-200 group-hover:text-chipBlue';
+                        aTitle.innerHTML = `${item.label} <i class="fa-solid fa-caret-down text-xs ml-1"></i>`;
+                        const dropDiv = document.createElement('div');
+                        dropDiv.className = 'absolute hidden group-hover:block pt-2 z-50';
+                        dropDiv.innerHTML = `<div class="bg-black/80 backdrop-blur-md rounded-lg p-3 border border-chipBlue/20 min-w-[140px]">
+${item.children.map(ch=>`<a href="${ch.href}" class="block py-1.5 text-gray-200 hover:text-chipBlue">${ch.label}</a>`).join('')}
+</div>`;
+                        pcDiv.appendChild(aTitle);
+                        pcDiv.appendChild(dropDiv);
+                        pcWrap.appendChild(pcDiv);
 
-                        const dropBox = document.createElement('div');
-                        dropBox.className = "absolute hidden group-hover:block top-full left-0 mt-0 bg-black/60 backdrop-blur-md rounded-lg p-4 w-44 pointer-events-auto";
-                        item.child.forEach(sub => {
-                            const subA = document.createElement('a');
-                            subA.className = "block py-2 hover:text-chipBlue";
-                            subA.href = sub.link;
-                            subA.innerText = sub.name;
-                            dropBox.appendChild(subA);
+                        item.children.forEach(ch=>{
+                            const ma = document.createElement('a');
+                            ma.href = ch.href;
+                            ma.className = 'py-2 hover:text-chipBlue';
+                            ma.textContent = ch.label;
+                            mobileWrap.appendChild(ma);
                         })
-                        groupDiv.appendChild(span);
-                        groupDiv.appendChild(dropBox);
-                        pcWrap.appendChild(groupDiv);
+                    }else{
+                        const pcA = document.createElement('a');
+                        pcA.href = item.href;
+                        pcA.className = (item.href === currentFile) ? 'text-chipBlue border-b border-chipBlue pb-1' : 'text-gray-200 hover:text-chipBlue';
+                        pcA.textContent = item.label;
+                        pcWrap.appendChild(pcA);
+
+                        const ma = document.createElement('a');
+                        ma.href = item.href;
+                        ma.className = (item.href === currentFile) ? 'text-chipBlue py-2' : 'py-2 hover:text-chipBlue';
+                        ma.textContent = item.label;
+                        mobileWrap.appendChild(ma);
                     }
                 })
             } catch (err) {
-                console.error('导航加载失败：', err);
-                const pcWrap = document.getElementById('pcNavWrap');
-                pcWrap.innerHTML = '<span class="text-red-400">导航配置读取失败，请检查assets/nav.json</span>';
+                console.error('导航加载失败',err);
             }
         }
         renderNav();
 
+        //移动端菜单
         const menuBtn = document.getElementById('menuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
-        menuBtn.addEventListener('click', () => {
+        menuBtn.addEventListener('click',()=>{
             mobileMenu.classList.toggle('hidden');
             const icon = menuBtn.querySelector('i');
-            icon.classList.toggle('fa-bars');
-            icon.classList.toggle('fa-xmark');
-        });
-        document.querySelectorAll('#mobileMenu a').forEach(link => {
-            link.onclick = () => mobileMenu.classList.add('hidden');
-        });
+            if(mobileMenu.classList.contains('hidden')){
+                icon.className = 'fa-solid fa-bars';
+            }else{
+                icon.className = 'fa-solid fa-xmark';
+            }
+        })
+        mobileMenu.querySelectorAll('a').forEach(el=>el.onclick=()=>mobileMenu.classList.add('hidden'));
 
+        //粒子
         particlesJS("particles-js", {
             particles: {
-                number: { value: 30, density: { enable: true, value_area: 900 } },
-                color: { value: "#00A3FF" },
-                shape: { type: "circle" },
-                opacity: { value: 0.15, random: true },
-                size: { value: 1.2, random: true },
-                line_linked: {
-                    enable: true,
-                    distance: 100,
-                    color: "#00A3FF",
-                    opacity: 0.06,
-                    width: 0.4
-                },
-                move: {
-                    enable: true,
-                    speed: 0.4,
-                    direction: "none",
-                    random: true,
-                    straight: false,
-                    out_mode: "out"
-                }
+                number: { value:30, density:{enable:true,value_area:900} },
+                color:{value:"#00A3FF"},
+                shape:{type:"circle"},
+                opacity:{value:0.15, random:true},
+                size:{value:1.2, random:true},
+                line_linked:{enable:true, distance:100, color:"#00A3FF", opacity:0.06, width:0.4},
+                move:{enable:true, speed:0.4, direction:"none", random:true, straight:false, out_mode:"out"}
             },
-            interactivity: {
-                detect_on: "canvas",
-                events: {
-                    onhover: { enable: true, mode: "grab" },
-                    onclick: { enable: false },
-                    resize: true
-                },
-                modes: { grab: { distance: 120, line_linked: { opacity: 0.2 } } }
-            },
-            retina_detect: true
+            interactivity:{detect_on:"canvas",events:{onhover:{enable:true,mode:"grab"}, onclick:{enable:false}, resize:true},modes:{grab:{distance:120,line_linked:{opacity:0.2}}}},
+            retina_detect:true
         });
 
-        // ========= 核心：读取URL参数 自动生成返回链接 =========
+        //详情主逻辑
         const urlParams = new URLSearchParams(window.location.search);
         const mdFileName = urlParams.get('md');
         const catName = urlParams.get('cat') || 'codelib';
@@ -311,20 +270,19 @@
         const backBtnWrap = document.getElementById('backBtnWrap');
         const commentWrap = document.getElementById('commentWrap');
         const giscusContainer = document.getElementById('giscus-container');
-
-        backLink.href = `page-base.html?cat=${catName}`;
-
         const mdContentDom = document.getElementById('md-content');
         const tocBox = document.getElementById('tocBox');
         const tocWrap = document.getElementById('tocWrap');
 
+        backLink.href = `page-base.html?cat=${catName}`;
+
         if(!mdFileName){
-            mdContentDom.innerHTML = `<div class="text-red-400">参数缺失，请从代码库列表点击模块跳转</div>`;
+            mdContentDom.innerHTML = `<div class="text-red-400">参数缺失，请从列表页面跳转</div>`;
         }else if(typeof marked === 'undefined'){
-            mdContentDom.innerHTML = `<div class="text-red-400">marked解析库加载失败，请刷新重试</div>`;
+            mdContentDom.innerHTML = `<div class="text-red-400">marked解析库加载失败，请刷新页面</div>`;
         }else{
             const mdUrl = `./docs/${mdFileName}`;
-            console.log("加载文档：", mdUrl);
+            console.log("请求md：", new URL(mdUrl,window.location.href));
             fetch(mdUrl)
                 .then(resp=>{
                     if(!resp.ok) throw new Error(`文件不存在 ${mdFileName}`);
@@ -335,149 +293,153 @@
                         mdContentDom.innerHTML = `<div class="text-yellow-400">MD文件为空</div>`;
                         return;
                     }
-
-                    // ========== 解析YAML frontmatter元数据 ==========
+                    //YAML解析
                     let meta = {
-                        title: "模块详情 | iFPGAer",
-                        showBack: true,
-                        showToc: true,
-                        showComment: true
+                        title:"模块详情 | iFPGAer",
+                        showBack:true,
+                        showToc:true,
+                        showComment:true
                     };
-                    const fmReg = /^---\r?\n([\s\S]*?)\r?\n---\r?\n/;
+                    const fmReg = /^---\r?\n([\s\S]*?)\r?\n---/;
                     const fmMatch = mdText.match(fmReg);
                     let realMdText = mdText;
                     if(fmMatch){
                         realMdText = mdText.slice(fmMatch[0].length);
-                        const fmStr = fmMatch[1];
-                        fmStr.split('\n').forEach(line=>{
+                        const lines = fmMatch[1].split('\n');
+                        lines.forEach(line=>{
                             const kv = line.split(':');
                             if(kv.length>=2){
                                 const k = kv[0].trim();
                                 const v = kv.slice(1).join(':').trim();
-                                if(v === 'true') meta[k] = true;
-                                else if(v === 'false') meta[k] = false;
-                                else meta[k] = v;
+                                if(v==='true') meta[k]=true;
+                                else if(v==='false') meta[k]=false;
+                                else meta[k]=v;
                             }
                         })
                     }
                     document.title = meta.title;
                     backBtnWrap.style.display = meta.showBack ? 'block' : 'none';
 
-                    const html = marked.parse(realMdText);
-                    mdContentDom.innerHTML = html;
+                    mdContentDom.innerHTML = marked.parse(realMdText);
 
-                    // 提取标题生成侧边目录
+                    //构建目录
                     const headings = mdContentDom.querySelectorAll("h1,h2,h3");
                     const tocData = [];
-                    headings.forEach((h, idx)=>{
+                    headings.forEach((h,idx)=>{
                         const id = `heading-${idx}`;
                         h.id = id;
-                        tocData.push({id, text:h.innerText.trim(), level:Number(h.tagName.replace("H",""))})
-                    });
-
-                    // 追加评论区目录项，仅当评论开启
+                        tocData.push({
+                            id:id,
+                            text:h.innerText.trim(),
+                            level: Number(h.tagName.replace("H",""))
+                        })
+                    })
+                    //追加评论区目录项
                     if(meta.showComment){
                         commentWrap.id = "giscus-comment-section";
                         tocData.push({
                             id:"giscus-comment-section",
-                            text:"💬 留言区",
+                            text:"💬 评论区",
                             level:1
                         })
                     }
 
-                    // 根据元数据控制侧边目录
+                    //渲染侧边目录
                     if(!meta.showToc || tocData.length === 0){
                         tocWrap.classList.add('hidden');
                     }else{
                         tocWrap.classList.remove('hidden');
-                        tocBox.innerHTML = "";
+                        tocBox.innerHTML = '';
                         tocData.forEach(item=>{
                             const a = document.createElement('a');
-                            a.href=`#${item.id}`;
+                            a.href = `#${item.id}`;
                             a.dataset.targetId = item.id;
                             a.className = "block py-1 pl-1 border-l-2 border-transparent hover:text-chipBlue toc-item";
-                            a.style.paddingLeft = ((item.level-1)*12)+"px";
-                            a.innerText = item.text;
+                            a.style.paddingLeft = `${(item.level‑1)*12 +4}px`;
+                            a.textContent = item.text;
                             tocBox.appendChild(a);
                         })
                     }
 
-                    // 代码块复制按钮
-                    const preList = mdContentDom.querySelectorAll('pre');
-                    preList.forEach(pre=>{
-                        const codeText = pre.querySelector('code').innerText;
+                    //代码复制按钮
+                    document.querySelectorAll('.md-content pre').forEach(pre=>{
+                        const codeDom = pre.querySelector('code');
+                        if(!codeDom) return;
                         const copyBtn = document.createElement('button');
                         copyBtn.className = 'copy-btn';
-                        copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i> 复制';
-                        copyBtn.addEventListener('click',async ()=>{
+                        copyBtn.innerHTML = `<i class="fa-solid fa-copy"></i> 复制`;
+                        copyBtn.onclick = async ()=>{
                             try{
-                                await navigator.clipboard.writeText(codeText);
-                                copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> 已复制';
-                                setTimeout(()=>copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i>',1200);
+                                await navigator.clipboard.writeText(codeDom.innerText);
+                                copyBtn.innerHTML = `<i class="fa-solid fa-check"></i> 已复制`;
+                                setTimeout(()=>copyBtn.innerHTML=`<i class="fa-solid fa-copy"></i> 复制`,1200);
                             }catch(e){
                                 alert("复制失败，请手动复制代码");
                             }
-                        })
+                        }
                         pre.appendChild(copyBtn);
                     })
 
-                    // 滚动高亮当前目录项（兼容评论区锚点）
+                    //滚动高亮目录，兼容评论区锚点
                     const tocItems = tocBox.querySelectorAll('.toc-item');
                     window.addEventListener('scroll',()=>{
-                        let currentId = null;
+                        let activeId = null;
                         headings.forEach(h=>{
                             const rect = h.getBoundingClientRect();
-                            if(rect.top <= 120) currentId = h.id;
+                            if(rect.top <= 130) activeId = h.id;
                         })
-                        // 判断评论区位置
                         if(meta.showComment){
                             const comRect = commentWrap.getBoundingClientRect();
-                            if(comRect.top <=120) currentId = "giscus-comment-section";
+                            if(comRect.top <=130) activeId = "giscus-comment-section";
                         }
                         tocItems.forEach(it=>{
-                            it.classList.toggle('toc-item-active', it.dataset.targetId === currentId);
+                            if(it.dataset.targetId === activeId){
+                                it.classList.add('toc-item-active');
+                            }else{
+                                it.classList.remove('toc-item-active');
+                            }
                         })
                     })
 
-                    // ========== 目录收起展开功能【默认初始折叠】 ==========
+                    //目录折叠展开
                     const tocToggleBtn = document.getElementById('tocToggleBtn');
-                    let tocIsShow = false;
-                    tocToggleBtn.addEventListener('click', ()=>{
-                        tocIsShow = !tocIsShow;
-                        if(tocIsShow){
+                    let tocOpen = false;
+                    tocToggleBtn.addEventListener('click',()=>{
+                        tocOpen = !tocOpen;
+                        if(tocOpen){
                             tocBox.classList.remove('hidden');
-                            tocToggleBtn.innerHTML = '<i class="fa-solid fa-caret-left"></i>';
+                            tocToggleBtn.innerHTML = `<i class="fa-solid fa-caret-left"></i>`;
                             tocWrap.classList.remove('w-12');
                             tocWrap.classList.add('w-56');
                         }else{
                             tocBox.classList.add('hidden');
-                            tocToggleBtn.innerHTML = '<i class="fa-solid fa-caret-right"></i>';
+                            tocToggleBtn.innerHTML = `<i class="fa-solid fa-caret-right"></i>`;
                             tocWrap.classList.remove('w-56');
                             tocWrap.classList.add('w-12');
                         }
                     })
 
-                    // 控制评论区显示隐藏
+                    //评论区开关
                     if(meta.showComment){
-                        loadGiscus();
                         commentWrap.style.display = 'block';
+                        loadGiscus();
                     }else{
                         commentWrap.style.display = 'none';
                     }
                 })
                 .catch(err=>{
-                    mdContentDom.innerHTML = `<div class="text-red-400">加载失败：${err.message}<br>确认docs目录存在 ${mdFileName}</div>`;
+                    mdContentDom.innerHTML = `<div class="text-red-400">加载失败：${err.message}<br>请确认docs目录下该md文件已提交</div>`;
+                    console.error(err);
                 })
         }
 
-        // ========= Giscus 动态加载留言板 =========
+        //Giscus加载，iframe强制最小宽度，解决PC端头像、用户名截断
         function loadGiscus(){
             const pageTerm = mdFileName;
             const script = document.createElement('script');
             script.src = 'https://giscus.app/client.js';
             script.crossOrigin = "anonymous";
             script.async = true;
-
             script.dataset.repo = "iFPGAer/ifpgaer.github.io";
             script.dataset.repoId = "R_kgDOQmsdOg";
             script.dataset.category = "Announcements";
@@ -489,10 +451,21 @@
             script.dataset.emitMetadata = "0";
             script.dataset.inputPosition = "bottom";
             script.dataset.theme = "dark_dimmed";
-            script.dataset.lang = "zh-CN";
+            script.dataset.lang = "zh‑CN";
 
             giscusContainer.innerHTML = "";
             giscusContainer.appendChild(script);
+
+            script.onload = function(){
+                const timer = setInterval(()=>{
+                    const iframe = giscusContainer.querySelector('iframe');
+                    if(iframe){
+                        iframe.style.width = "100%";
+                        iframe.style.minWidth = "300px";
+                        clearInterval(timer);
+                    }
+                },100)
+            }
         }
     </script>
 </body>
