@@ -113,6 +113,11 @@
             z-index: -1;
             pointer-events: none;
         }
+        /* 关键：给giscus容器左侧预留48px空白，抵消头像负margin */
+        #giscus-container{
+            padding-left:48px !important;
+            margin-left:-48px !important;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
@@ -158,10 +163,10 @@
             </div>
         </div>
 
-        <!-- 修复：双层容器，外层做圆角边框，内层giscus容器无圆角允许头像向左溢出 -->
-        <div class="mt-10 bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20">
+        <!-- 双层容器，外层圆角边框 -->
+        <div class="mt-10 bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20 overflow‑visible">
             <h3 class="text-chipBlue font-bold mb-4 text-lg"><i class="fa-solid fa-comments mr-2"></i>模块留言区</h3>
-            <div id="giscus-container" class="w-full min-w-[340px]" style="overflow:visible !important;"></div>
+            <div id="giscus-container" class="w-full min-w-[340px]"></div>
         </div>
     </main>
 
