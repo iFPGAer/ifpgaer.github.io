@@ -113,6 +113,11 @@
             z-index: -1;
             pointer-events: none;
         }
+        /* 修复giscus头像裁切 */
+        #giscus-container iframe {
+            overflow: visible !important;
+            clip: auto !important;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
@@ -141,7 +146,6 @@
         <div class="mb-4" id="backBtnWrap">
             <a id="backLink" class="text-cyan-300 hover:underline"><i class="fa-solid fa-arrow-left mr-1"></i>返回列表</a>
         </div>
-        <!-- flex布局修复：aside禁止收缩，主体min‑w‑0，items-start消除拉伸 -->
         <div class="flex gap-6 flex-nowrap items-start">
             <aside id="tocWrap" class="hidden xl:block w-12 shrink-0 transition-all duration-300">
                 <div class="sticky top-24 bg-black/40 backdrop-blur-md rounded-lg p-4 border border-chipBlue/20 max-h-[75vh]">
@@ -159,10 +163,10 @@
             </div>
         </div>
 
-        <!-- ========== Giscus模块留言区 增加最小宽度防护 ========== -->
-        <div id="commentWrap" class="mt-10 bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20 min-w-0 w-full">
+        <!-- 已修复：移除min‑w‑0，两层开启overflow‑visible，解决头像裁切 -->
+        <div id="commentWrap" class="mt-10 bg-black/40 backdrop-blur-md rounded-xl p-6 md:p-8 border border-chipBlue/20 w-full overflow-visible">
             <h3 class="text-chipBlue font-bold mb-4 text-lg"><i class="fa-solid fa-comments mr-2"></i>模块留言区</h3>
-            <div id="giscus-container" class="w-full min-w-[300px]"></div>
+            <div id="giscus-container" class="w-full min-w-[340px] overflow-visible"></div>
         </div>
     </main>
 
@@ -191,7 +195,6 @@
                 const currentFile = getCurrentFile();
                 navData.forEach(item => {
                     if(item.children && item.children.length>0){
-                        //下拉菜单
                         const pcDiv = document.createElement('div');
                         pcDiv.className = 'relative group';
                         const aTitle = document.createElement('a');
@@ -433,7 +436,7 @@ ${item.children.map(ch=>`<a href="${ch.href}" class="block py-1.5 text-gray-200 
                 })
         }
 
-        //Giscus加载，iframe强制最小宽度，解决PC端头像、用户名截断
+        //Giscus加载修复，防止头像裁切
         function loadGiscus(){
             const pageTerm = mdFileName;
             const script = document.createElement('script');
@@ -461,7 +464,9 @@ ${item.children.map(ch=>`<a href="${ch.href}" class="block py-1.5 text-gray-200 
                     const iframe = giscusContainer.querySelector('iframe');
                     if(iframe){
                         iframe.style.width = "100%";
-                        iframe.style.minWidth = "300px";
+                        iframe.style.minWidth = "340px";
+                        iframe.style.overflow = "visible";
+                        iframe.style.border = "none";
                         clearInterval(timer);
                     }
                 },100)
